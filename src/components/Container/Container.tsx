@@ -1,0 +1,8 @@
+import clsx from "clsx";
+import React from "react";
+
+function Container({ children, className }: { children: React.ReactNode; className?: string }) {
+    return <div className={clsx("w-full max-w-[1440px] flex items-center justify-center", className)}>{children}</div>;
+}
+
+export default Container;
