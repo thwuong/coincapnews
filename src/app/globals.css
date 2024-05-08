@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,6 +16,7 @@
 }
 
 body {
+  font-family: "Inter", sans-serif;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -30,4 +30,49 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+.croll-hideen {
+   scrollbar-width: none;
+
+}
+.arrow-up {
+  content: '';
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  
+  border-bottom: 8px solid black;
+}
+#slide .slick-prev  {
+  left: 25px;
+  z-index: 2;
+}
+#slide .slick-next {
+  right: 25px;
+  z-index: 2;
+
+}
+#slide .slick-slide {
+  opacity: 0.5;
+}
+#slide .slick-slide.slick-active {
+  opacity: 1;
+}
+#chart-last-days {
+ max-width: 164px;
+ pointer-events: none;
+}
+.pagination li{
+ padding: 8px 16px;
+ color: rgb(88,102,126);
+ background: rgba(0,0,0,.04);
+ border-radius: 6px;
+ font-weight: 700;
+ font-size: 14px;
+ transition: 0.3s;
+}
+.pagination li.selected {
+  background: rgb(56,97,251);
+  color: white;
 }
