@@ -12,12 +12,13 @@ import Image from "next/image";
 import clsx from "clsx";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import LineChartLastDays from "../Charts/LineChartLastDays";
+import { UnitConversion } from "../TableSection/TableSection";
 
-export type DataTableProps<Data extends object> = {
-    data: Data[];
-    columns: ColumnDef<Data, any>[];
+export type DataTableProps = {
+    data: UnitConversion[];
+    columns: ColumnDef<UnitConversion, any>[];
 };
-function CoinTable<Data extends object>({ data, columns }: DataTableProps<Data>) {
+function CoinTable({ data, columns }: DataTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const table = useReactTable({
         columns,
@@ -59,15 +60,15 @@ function CoinTable<Data extends object>({ data, columns }: DataTableProps<Data>)
                                                 <Image
                                                     src={"/assets/icons/sort-down.svg"}
                                                     alt="sort-down"
-                                                    width={16}
-                                                    height={16}
+                                                    width={14}
+                                                    height={14}
                                                 />
                                             ) : (
                                                 <Image
                                                     src={"/assets/icons/sort-up.svg"}
                                                     alt="sort-up"
-                                                    width={16}
-                                                    height={16}
+                                                    width={14}
+                                                    height={14}
                                                 />
                                             )
                                         ) : null}
@@ -82,7 +83,7 @@ function CoinTable<Data extends object>({ data, columns }: DataTableProps<Data>)
             <Tbody>
                 {table.getRowModel().rows.map((row) => (
                     <Tr key={row.id}>
-                        <Td px={"4px"} w="fit-content">
+                        <Td p={"4px"} w="fit-content">
                             <Image
                                 className="cursor-pointer"
                                 src={"/assets/icons/start.svg"}
@@ -91,7 +92,7 @@ function CoinTable<Data extends object>({ data, columns }: DataTableProps<Data>)
                                 height={14}
                             />
                         </Td>
-                        <Td px={"4px"}>
+                        <Td p={"4px"}>
                             <Box display={"flex"} alignItems={"center"} gap={"8px"}>
                                 <Image
                                     className="cursor-pointer"

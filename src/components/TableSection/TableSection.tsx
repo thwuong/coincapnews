@@ -3,119 +3,95 @@ import React, { useState } from "react";
 import Container from "../Container/Container";
 import { Button, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import Image from "next/image";
-import CoinTable from "../CoinTable/CoinTable";
 
 import { createColumnHelper } from "@tanstack/react-table";
 import dynamic from "next/dynamic";
 const TablePagination = dynamic(() => import("../TablePagination/TablePagination"), { ssr: false });
-type UnitConversion = {
-    fromUnit: string;
-    toUnit: string;
-    factor: number;
+const CoinTable = dynamic(() => import("../CoinTable/CoinTable"), { ssr: false });
+export type UnitConversion = {
+    name: string;
+    icon: string;
+    rank: string;
+    code: string;
+    price: number;
+    dayRatio: string;
+    weekRatio: string;
+    totalSupply: number;
+    volume: number;
+    circulatingSupply: number;
+    weekStatistic: number[];
 };
 
 const data: UnitConversion[] = [
     {
-        fromUnit: "inches",
-        toUnit: "millimetres (mm)",
-        factor: 25.4,
-    },
-    {
-        fromUnit: "feet",
-        toUnit: "centimetres (cm)",
-        factor: 30.48,
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444,
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444,
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444,
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444,
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444,
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444,
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444,
+        name: "BNB",
+        icon: "/assets/images/bnb.webp",
+        rank: "4",
+        code: "BNB",
+        price: 3000000,
+        dayRatio: "-1.5%",
+        weekRatio: "20%",
+        totalSupply: 3000000,
+        circulatingSupply: 3000000,
+        volume: 3000000,
+        weekStatistic: [1, 2, 4, 123, 12, 3123, 1, 23, 1, 23, 1, 23],
     },
 ];
 
 const columnHelper = createColumnHelper<UnitConversion>();
 
 const columns = [
-    columnHelper.accessor("fromUnit", {
+    columnHelper.accessor("code", {
         cell: (info) => info.getValue(),
         header: "#",
     }),
-    columnHelper.accessor("fromUnit", {
+    columnHelper.accessor("name", {
         cell: (info) => info.getValue(),
         header: "Name",
     }),
-    columnHelper.accessor("fromUnit", {
+    columnHelper.accessor("price", {
         cell: (info) => info.getValue(),
         header: "Price",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("fromUnit", {
+    columnHelper.accessor("dayRatio", {
         cell: (info) => info.getValue(),
         header: "24H %",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("fromUnit", {
+    columnHelper.accessor("weekRatio", {
         cell: (info) => info.getValue(),
         header: "7D %",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("fromUnit", {
+    columnHelper.accessor("totalSupply", {
         cell: (info) => info.getValue(),
         header: "Market Cap",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("fromUnit", {
+    columnHelper.accessor("volume", {
         cell: (info) => info.getValue(),
         header: "Volume (24H)",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("toUnit", {
+    columnHelper.accessor("circulatingSupply", {
         cell: (info) => info.getValue(),
         header: "Circulating Supply",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("factor", {
+    columnHelper.accessor("weekStatistic", {
         cell: (info) => info.getValue(),
         header: "Last 7 Days",
         meta: {
