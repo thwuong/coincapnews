@@ -9,14 +9,14 @@ const Header = dynamic(() => import("@/components/Header/Header"), {
 });
 
 const meta = {
-    title: "Title",
+    title: "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",
     description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis amet molestiae soluta qui vitae facilis.",
-    image: `${WEBSITE_HOST_URL}/meta/og-preview.png`,
+        "Top cryptocurrency prices and charts, listed by market capitalization. Free access to current and historic data for Bitcoin and thousands of altcoins.",
+    image: `${WEBSITE_HOST_URL}/images/logo.png`,
 };
 export const metadata: Metadata = {
     title: {
-        template: "%s - Tilte",
+        template: "%s - Title",
         default: meta.title,
     },
     description: meta.description,
@@ -81,7 +81,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>
+            <body className="scroll-smooth">
                 <Providers>
                     <Header />
                     {children}

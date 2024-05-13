@@ -1,23 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Topbar from "../Topbar/Topbar";
 import Container from "../Container/Container";
 import Image from "next/image";
 import Link from "next/link";
 import Navigation from "../Navigation/Navigation";
-import { Box, Button, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { Box, Button, Input, InputGroup, InputLeftElement, useDisclosure } from "@chakra-ui/react";
+import UseScroll from "@/hooks/UseScroll";
+import clsx from "clsx";
+import MenuMobile from "../MenuMobile/MenuMobile";
 
 function Header() {
     const [keyword, setKeyword] = useState<string>();
+    const [scrollingUp] = UseScroll();
     const handlerSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setKeyword(e.target.value);
     };
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <header className="flex items-center justify-center flex-col">
             <Container className="px-12">
                 <Topbar />
             </Container>
-            <div className="border-gray-bg-2/30 border-t shadow w-full h-[100px] flex items-center justify-center">
+            <div
+                className={clsx(
+                    "border-gray-bg-2/30 border-t shadow z-50 w-full h-[100px] max-lg:h-20 flex items-center justify-center duration-300",
+                    scrollingUp && "fixed top-0 left-0 bg-white/70 "
+                )}
+            >
                 <Container className="px-12 justify-between">
                     <div className="gap-6 flex items-center">
                         <Link href={"/"}>
@@ -25,7 +36,7 @@ function Header() {
                         </Link>
                         <Navigation />
                     </div>
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-6 max-lg:hidden">
                         <InputGroup position={"relative"} w={"min-content"}>
                             <InputLeftElement pointerEvents="none">
                                 <Image src={"/assets/icons/search.svg"} alt="dropdown" width={16} height={16} />
@@ -74,6 +85,20 @@ function Header() {
                             Login
                         </Button>
                     </div>
+                    {/* Show table and mobile */}
+                    <div className=" items-center gap-4 hidden max-lg:flex">
+                        <Image src={"/assets/icons/noti.svg"} alt="noti" width={24} height={24} />
+                        <Image
+                            onClick={() => {
+                                onOpen();
+                            }}
+                            src={"/assets/icons/menu.svg"}
+                            alt="menu"
+                            width={24}
+                            height={24}
+                        />
+                    </div>
+                    <MenuMobile isOpen={isOpen} onClose={onClose} />
                 </Container>
             </div>
         </header>

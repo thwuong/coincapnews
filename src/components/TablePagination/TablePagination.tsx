@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import ReactPaginate from "react-paginate";
 
@@ -12,11 +13,11 @@ function TablePagination(props: TablePaginationType) {
     return (
         <ReactPaginate
             breakLabel="..."
-            nextLabel=">>"
+            nextLabel={<Image src={"/assets/icons/d-arrow-next.svg"} alt="arrow-next" width={18} height={20} />}
             onPageChange={handlePageClick}
             pageRangeDisplayed={3}
             pageCount={pageCount}
-            previousLabel="<<"
+            previousLabel={<Image src={"/assets/icons/d-arrow-pre.svg"} alt="arrow-pre" width={18} height={20} />}
             className="flex items-center gap-4 pagination"
         />
     );
