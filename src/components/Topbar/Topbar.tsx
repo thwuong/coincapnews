@@ -4,7 +4,7 @@ import LanguageMenu from "../LanguageMenu/LanguageMenu";
 import { Button, MenuButton, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 import CurrencyModal from "../Modal/CurrencyModal";
-const currenciesData = [
+export const currenciesData = [
     {
         label: "Bitcoin",
         code: "BTC",
@@ -30,27 +30,27 @@ function Topbar() {
     const [currentCurrency, setCurrentCurrency] = useState(currenciesData[0]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
-        <section className="w-full flex items-center justify-between text-12 min-h-[48px]">
-            <div className="flex items-center gap-3 text-12">
+        <section className="w-full flex items-center justify-between text-12 min-h-[48px] max-lg:overflow-x-auto">
+            <div className="flex items-center gap-3 text-12 w-full">
                 <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1">Cryptos:</span>
-                    <span className="text-primary-1">8,744</span>
+                    <span className="font-medium text-typo-1 whitespace-nowrap">Cryptos:</span>
+                    <span className="text-primary-1 whitespace-nowrap">8,744</span>
                 </div>
                 <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1">Market:</span>
-                    <span className="text-primary-1">1,717.26 B</span>
+                    <span className="font-medium text-typo-1 whitespace-nowrap">Market:</span>
+                    <span className="text-primary-1 whitespace-nowrap">1,717.26 B</span>
                 </div>
                 <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1">24h Vol:</span>
-                    <span className="text-primary-1">3.17 %</span>
+                    <span className="font-medium text-typo-1 whitespace-nowrap">24h Vol:</span>
+                    <span className="text-primary-1 whitespace-nowrap">3.17 %</span>
                 </div>
                 <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1">Dominance:</span>
-                    <span className="text-primary-1">BTC 45.63%</span>
-                    <span className="text-primary-1">ETH 17.7%</span>
+                    <span className="font-medium text-typo-1 whitespace-nowrap">Dominance:</span>
+                    <span className="text-primary-1 whitespace-nowrap">BTC 45.63%</span>
+                    <span className="text-primary-1 whitespace-nowrap">ETH 17.7%</span>
                 </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 max-lg:hidden">
                 <LanguageMenu />
                 <Button
                     onClick={() => onOpen()}

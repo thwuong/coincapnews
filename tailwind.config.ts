@@ -22,11 +22,13 @@ const config: Config = {
                 primary: {
                     1: "rgb(56,97,251)",
                     2: "#2350ff",
+                    3: "#EFF2F5",
                 },
                 up: "#16c784",
                 down: "#ea3943",
                 "gray-bg": "#777777",
                 "gray-bg-2": "#777",
+                secondary: "#F8FAFD",
             },
             fontSize: {
                 12: "12px",

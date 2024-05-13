@@ -59,6 +59,9 @@ function CurrencyModal({ isOpen, onClose }: CurrencyModalProps) {
                             {currenciesData.map((item, index) => (
                                 <Button
                                     key={index}
+                                    onClick={() => {
+                                        onClose();
+                                    }}
                                     bg={"transparent"}
                                     _hover={{
                                         bg: "gray.100",
@@ -85,6 +88,9 @@ function CurrencyModal({ isOpen, onClose }: CurrencyModalProps) {
                             {currenciesData.map((item, index) => (
                                 <Button
                                     key={index}
+                                    onClick={() => {
+                                        onClose();
+                                    }}
                                     bg={"transparent"}
                                     _hover={{
                                         bg: "gray.100",
