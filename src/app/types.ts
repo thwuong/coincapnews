@@ -10,13 +10,22 @@ export type DetailCoinType = {
         thumb: string;
     };
     market_data: {
-        total_volume: object;
-        low_24h: object;
-        high_24h: object;
-        price_change_percentage_24h_in_currency: object;
+        total_volume: any;
+        low_24h: any;
+        high_24h: any;
+        price_change_percentage_24h_in_currency: any;
         current_price: any;
     };
-    links: object;
+    links: {
+        blockchain_site: string[];
+        homepage: string[];
+        repos_url: {
+            github: string[];
+        };
+        subreddit_url: string;
+        facebook_username: string;
+        twitter_screen_name: string;
+    };
 };
 export type FeedType = {
     id: string;

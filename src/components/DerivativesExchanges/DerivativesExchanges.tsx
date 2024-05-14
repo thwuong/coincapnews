@@ -14,9 +14,10 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import TablePagination from "../TablePagination/TablePagination";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 type Exchange = {
     _source: {
@@ -95,7 +96,15 @@ const columns: ColumnDef<Exchange, any>[] = [
     }),
 ];
 
-function DerivativesExchangesTable({ data, isLoading }: { data: Exchange[]; isLoading: boolean }) {
+function DerivativesExchangesTable({
+    data,
+    isLoading,
+    currentIndex = 0,
+}: {
+    data: Exchange[];
+    isLoading: boolean;
+    currentIndex?: number;
+}) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const table = useReactTable({
         columns,
@@ -181,7 +190,7 @@ function DerivativesExchangesTable({ data, isLoading }: { data: Exchange[]; isLo
                                           left={0}
                                           bg={"#fff"}
                                       >
-                                          {row.index + 1}
+                                          {row.index + 1 + currentIndex}
                                       </Td>
                                       <Td
                                           px={"4px"}
@@ -206,9 +215,7 @@ function DerivativesExchangesTable({ data, isLoading }: { data: Exchange[]; isLo
                                           </Link>
                                       </Td>
                                       <Td px={"4px"}>
-                                          <p className="uppercase text-center text-sm leading-4 font-medium text-primary-1 ">
-                                              Cash
-                                          </p>
+                                          <p className="text-center text-sm leading-4 font-medium text-typo-4 ">Cash</p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
@@ -230,7 +237,7 @@ function DerivativesExchangesTable({ data, isLoading }: { data: Exchange[]; isLo
                                               {row.original._source.number_of_futures_pairs}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"} height={"80px"}>
+                                      <Td px={"4px"} height={"80px"} display={"flex"} justifyContent={"center"}>
                                           {row.original._source.chart && (
                                               <LineChartLastDays data={row.original._source.chart.data} isUp={true} />
                                           )}
@@ -288,14 +295,22 @@ type DerivativesExchangesProps = {
     perPage?: number;
 };
 function DerivativesExchanges({ perPage = 10 }: DerivativesExchangesProps) {
-    const { data, isLoading } = useFetchAPI(`/api/derivatives?per_page=${perPage}`);
+    const [page, setPage] = useState(1);
+
+    const { data, isLoading } = useFetchAPI(`/api/derivatives?per_page=${perPage}&centralized=true`);
+    const handlePageClick = ({ selected }: { selected: number }) => {
+        setPage(selected + 1);
+    };
     return (
         <div className="flex flex-col items-center justify-center gap-6 w-full">
             <h1 className="text-[28px] leading-9 text-center py-8 max-lg:py-6 font-bold text-typo-4/80">
                 Derivatives Exchanges
             </h1>
             {/* Table */}
-            <DerivativesExchangesTable data={data} isLoading={isLoading} />
+            <DerivativesExchangesTable data={data} isLoading={isLoading} currentIndex={(page - 1) * perPage} />
+            <div className="w-full py-4 flex justify-center">
+                <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
+            </div>
         </div>
     );
 }

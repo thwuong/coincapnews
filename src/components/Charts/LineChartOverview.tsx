@@ -47,6 +47,9 @@ function LineChartOverview({ data }: LineChartOverviewProps) {
         grid: {
             show: false,
         },
+        stroke: {
+            width: 1,
+        },
     };
     return (
         <Chart

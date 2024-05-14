@@ -1,4 +1,6 @@
-import { formatCurrency } from "@/app/utils/formatCurrency";
+"use client";
+import useFetchAPI from "@/api/baseAPI";
+import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
@@ -12,65 +14,89 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
-type ExchangeChart = {
-    coin_id: string;
-    converted_volume: any;
-    target: string;
-    bid_ask_spread_percentage: string;
-    converted_last: any;
-    base: string;
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import TablePagination from "../TablePagination/TablePagination";
+const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
+type Exchange = {
+    _source: {
+        id: string;
+        name: string;
+        chart: {
+            data: number[];
+        };
+        open_interest_btc: number;
+        trade_volume_24h_btc: number;
+        number_of_perpetual_pairs: number;
+        number_of_futures_pairs: number;
+        image: string;
+        trust_score: number;
+        trade_volume_24h_btc_normalized: number;
+        symbol: string;
+    };
 };
-export type ExchangeTableDetailProps = {
-    data: ExchangeChart[];
+export type ExchangeTableProps = {
+    data: Exchange[];
     isLoading: boolean;
-    currentIndex?: number;
 };
-const columnHelper = createColumnHelper<ExchangeChart>();
+const columnHelper = createColumnHelper<Exchange>();
 
-const columns: ColumnDef<ExchangeChart, any>[] = [
+const columns: ColumnDef<Exchange, any>[] = [
     columnHelper.group({
         header: "#",
         columns: [
-            columnHelper.accessor("base", {
+            columnHelper.accessor("_source.image", {
+                cell: (info) => info.getValue(),
+            }),
+            columnHelper.accessor("_source.symbol", {
                 cell: (info) => info.getValue(),
             }),
         ],
     }),
-    columnHelper.accessor("coin_id", {
+    columnHelper.accessor("_source.name", {
         cell: (info) => info.getValue(),
-        header: "Currency",
+        header: "Name",
     }),
-    columnHelper.accessor("target", {
+    columnHelper.accessor("_source.id", {
         cell: (info) => info.getValue(),
-        header: "Pair",
+        header: "Trust Code",
         meta: {
             center: true,
         },
     }),
-    columnHelper.accessor("converted_last", {
+    columnHelper.accessor("_source.open_interest_btc", {
         cell: (info) => info.getValue(),
-        header: "Price",
+        header: "Trade volume 24h(normalized)",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("converted_volume", {
+    columnHelper.accessor("_source.trade_volume_24h_btc", {
         cell: (info) => info.getValue(),
-        header: "Volume (24H)",
+        header: "Trade volume 24h",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("bid_ask_spread_percentage", {
+    columnHelper.accessor("_source.number_of_perpetual_pairs", {
         cell: (info) => info.getValue(),
-        header: "Volume (%)",
+        header: "Volume (7d)",
         meta: {
-            isNumeric: true,
+            center: true,
         },
     }),
 ];
-function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTableDetailProps) {
+
+function DifferentExchangesTable({
+    data,
+    isLoading,
+    currentIndex = 0,
+}: {
+    data: Exchange[];
+    isLoading: boolean;
+    currentIndex?: number;
+}) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const table = useReactTable({
         columns,
@@ -97,7 +123,7 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        className="bg-secondary"
+                                        bg={"#F8FAFD"}
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -165,29 +191,44 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                           left={6}
                                           className="bg-secondary"
                                       >
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
-                                              {row.original.coin_id}
-                                          </p>
+                                          <Link
+                                              href={`/exchanges/${row.original._source.id}`}
+                                              className="flex items-center gap-3"
+                                          >
+                                              <Image
+                                                  src={row.original._source.image}
+                                                  alt={row.original._source.name}
+                                                  width={24}
+                                                  height={24}
+                                              />
+                                              <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
+                                                  {row.original._source.name}
+                                              </p>
+                                          </Link>
                                       </Td>
                                       <Td px={"4px"}>
-                                          <p className="uppercase text-center text-sm leading-4 font-semibold text-typo-4">
-                                              {row.original.base}/{row.original.target}
+                                          <p className="uppercase text-center text-sm leading-4 font-medium ">
+                                              {row.original._source.trust_score}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.converted_last["usd"])}
+                                              {formatQuoteCurrency(
+                                                  row.original._source.trade_volume_24h_btc_normalized
+                                              )}
+                                              <span className="uppercase"> BTC</span>
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.converted_volume["usd"])}
+                                              {formatQuoteCurrency(row.original._source.trade_volume_24h_btc)}
+                                              <span className="uppercase"> BTC</span>
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
-                                          <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {Number(row.original.bid_ask_spread_percentage).toFixed(2)}%
-                                          </p>
+                                      <Td px={"4px"} height={"80px"} display={"flex"} justifyContent={"center"}>
+                                          {row.original._source.chart && (
+                                              <LineChartLastDays data={row.original._source.chart.data} isUp={true} />
+                                          )}
                                       </Td>
                                   </Tr>
                               );
@@ -210,25 +251,19 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                               </div>
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                              <Skeleton height="20px" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                              <Skeleton height="20px" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"180px"}>
-                                              <Skeleton height="20px" />
+                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
+                                              <Skeleton height="15px" />
                                           </Td>
                                       </Tr>
                                   );
@@ -238,5 +273,31 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
         </TableContainer>
     );
 }
+type DifferentExchangesProps = {
+    perPage?: number;
+    title?: string;
+    url?: string;
+};
+function DifferentExchanges({ perPage = 10, title, url }: DifferentExchangesProps) {
+    const [page, setPage] = useState(1);
+    const { data, isLoading, error } = useFetchAPI(`${url}?per_page=${perPage}&page=${page}&centralized=true`);
+    if (error) return `Error ${error}`;
+    const handlePageClick = ({ selected }: { selected: number }) => {
+        setPage(selected + 1);
+    };
+    return (
+        <div className="flex flex-col items-center justify-center gap-8 w-full">
+            {title && (
+                <h1 className="text-[28px] leading-9 text-center py-8 max-lg:py-6 font-bold text-typo-4/80">{title}</h1>
+            )}
 
-export default ExchangeTableDetail;
+            {/* Table */}
+            <DifferentExchangesTable data={data} isLoading={isLoading} currentIndex={(page - 1) * perPage} />
+            <div className="w-full py-4 flex justify-center">
+                <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
+            </div>
+        </div>
+    );
+}
+
+export default DifferentExchanges;
