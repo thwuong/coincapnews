@@ -4,9 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import dynamic from "next/dynamic";
 import Footer from "@/components/Footer/Footer";
-const Header = dynamic(() => import("@/components/Header/Header"), {
-    ssr: false,
-});
+const Header = dynamic(() => import("@/components/Header/Header"));
 
 const meta = {
     title: "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",

@@ -1,7 +1,9 @@
+"use client";
 import { Box, Button } from "@chakra-ui/react";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { usePathname } from "next/navigation";
 export const navigationHeaderData: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
@@ -48,22 +50,22 @@ export const navigationHeaderData: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
         label: "Exchanges",
-        href: "/",
+        href: "/spot",
         children: [
             {
                 icon: "/assets/images/bnb.webp",
                 label: "Spot",
-                href: "/",
+                href: "/spot",
             },
             {
                 icon: "/assets/images/bnb.webp",
                 label: "Derivatives",
-                href: "/",
+                href: "/derivatives",
             },
             {
                 icon: "/assets/images/bnb.webp",
                 label: "DEX",
-                href: "/",
+                href: "/dex",
             },
         ],
     },
@@ -80,7 +82,7 @@ export const navigationHeaderData: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
         label: "News",
-        href: "/",
+        href: "/news",
     },
 ];
 type NavItemType = {
@@ -90,6 +92,13 @@ type NavItemType = {
     children?: NavItemType[];
 };
 function NavItem({ navItem }: { navItem: NavItemType }) {
+    const pathName = usePathname();
+    let activePathCurrent = false;
+    if (navItem.children && navItem.children?.length > 0) {
+        activePathCurrent = navItem.children.some((child) => child.href == pathName);
+    } else {
+        activePathCurrent = navItem.href == pathName;
+    }
     return (
         <Box position={"relative"} className="group">
             <Button
@@ -109,7 +118,12 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     ) : undefined
                 }
             >
-                <span className="text-sm leading-4 group font-bold group-hover:text-primary-1 duration-300">
+                <span
+                    className={clsx(
+                        "text-sm leading-4 group font-bold group-hover:text-primary-1 duration-300",
+                        activePathCurrent && "text-primary-1"
+                    )}
+                >
                     {navItem.label}
                 </span>
             </Button>
@@ -127,7 +141,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                         <Button
                             key={item.label}
                             as={Link}
-                            href={navItem.href}
+                            href={item.href}
                             className="group/child"
                             bg={"transparent"}
                             _hover={{

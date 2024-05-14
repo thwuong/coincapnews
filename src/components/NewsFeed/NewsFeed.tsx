@@ -1,16 +1,18 @@
+"use client";
+import useNewsAPI from "@/api/useNewAPI";
 import { FeedType } from "@/app/types";
 import { Avatar, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
-function NewsFeedItem(props: FeedType | any) {
-    const { id } = props;
+function NewsFeedItem(props: FeedType) {
+    const { id, post_title, post_thumbnail, post_excerpt, post_date, author } = props;
     return (
         <li>
             <Link href={`/feed/${id}`} className="flex gap-8 max-md:flex-col">
                 <Image
-                    src={"/assets/images/feed.jpg"}
+                    src={post_thumbnail}
                     alt="feed"
                     width={327}
                     height={200}
@@ -19,23 +21,15 @@ function NewsFeedItem(props: FeedType | any) {
                 />
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-col">
-                        <h3 className="text-lg font-semibold text-typo-4">
-                            WHAT IS ETHEREUM LAYER 2? TOP 5 PROJECTS ON ETHEREUM LAYER 2
-                        </h3>
-                        <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">
-                            WHAT IS ETHEREUM LAYER-2? Ethereum layer-2 are solutions built on the Ethereum platform to
-                            solve the problem of transaction throughput and transaction costs. More specifically, these
-                            Layer-2 layers add another sub-layer to Ethereum to enhance performance and reduce
-                            transaction costs. In other words. Layer-2 was created to increase the scalability of
-                            Layer-1. At the same...
-                        </p>
+                        <h3 className="text-lg font-semibold text-typo-4">{post_title}</h3>
+                        <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Avatar src="https://bit.ly/broken-link" size={"sm"} />
+                        <Avatar src={author.avatar} size={"sm"} />
                         <div className="flex items-center gap-1">
-                            <h6 className="text-base leading-[26px] font-semibold text-typo-4">Anna</h6>
+                            <h6 className="text-base leading-[26px] font-semibold text-typo-4">{author.name}</h6>
                             <span>&#183;</span>
-                            <span className="text-13 leading-[17px] text-typo-2 font-medium">12-05-2024</span>
+                            <span className="text-13 leading-[17px] text-typo-2 font-medium">{post_date}</span>
                         </div>
                     </div>
                 </div>
@@ -44,16 +38,22 @@ function NewsFeedItem(props: FeedType | any) {
     );
 }
 function NewsFeed() {
+    const [limit, setLimit] = useState(Number(process.env.NEXT_PUBLIC_NEWS_PER_PAGE));
+    const { data, error, isLoading }: { data: FeedType[]; error: any; isLoading: boolean } = useNewsAPI(
+        `?limit=${limit}`
+    );
     return (
         <div className="flex flex-col gap-6 w-full">
             <h2 className="text-2xl font-bold text-typo-4">NewsFeed</h2>
             <ul className="flex flex-col gap-8 w-full">
-                <NewsFeedItem />
-                <NewsFeedItem />
-                <NewsFeedItem />
-                <NewsFeedItem />
+                {!isLoading &&
+                    data.map((item: FeedType, index: number) => {
+                        return <NewsFeedItem key={item.id} {...item} />;
+                    })}
             </ul>
             <Button
+                isLoading={isLoading}
+                onClick={() => setLimit((limit) => limit + 8)}
                 className="mx-auto"
                 w={"min-content"}
                 bg={"transparent"}

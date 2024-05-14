@@ -209,7 +209,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                 >
                                     <div className="flex flex-col items-start gap-1">
                                         <span className="text-12 font-medium text-typo-1">Ethereum</span>
-                                        <p className="text-black text-12 font-bold truncate max-w-[210px] max-lg:max-w-[150px] max-md:max-w-[100px]">
+                                        <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
                                             0xdac17f958d2ee523a2206206994597c13d831ec7
                                         </p>
                                     </div>
@@ -246,7 +246,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                     >
                                         <div className="flex flex-col items-start gap-1">
                                             <span className="text-12 font-medium text-typo-1">Ethereum</span>
-                                            <p className="text-black text-12 font-bold truncate max-w-[210px] max-lg:max-w-[150px] max-md:max-w-[100px]">
+                                            <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
                                                 0xdac17f958d2ee523a2206206994597c13d831ec7
                                             </p>
                                         </div>
@@ -260,6 +260,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                     bg: "transparent",
                                     color: "rgb(56,97,251)",
                                 }}
+                                p={"0"}
                                 className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
                                 rightIcon={
                                     <Image

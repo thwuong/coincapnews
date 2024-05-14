@@ -7,8 +7,8 @@ import Container from "../Container/Container";
 import { createColumnHelper } from "@tanstack/react-table";
 import dynamic from "next/dynamic";
 import useFetchAPI from "@/api/baseAPI";
-const TablePagination = dynamic(() => import("../TablePagination/TablePagination"), { ssr: false });
-const CoinTable = dynamic(() => import("../CoinTable/CoinTable"), { ssr: false });
+import TablePagination from "../TablePagination/TablePagination";
+const CoinTable = dynamic(() => import("../CoinTable/CoinTable"));
 export type UnitConversion = {
     _source: {
         image: string;
@@ -176,7 +176,11 @@ function TableSection() {
                 </InputGroup>
             </div>
             <CoinTable columns={columns} data={dataAPI} isLoading={isLoading} />
-            {dataAPI && <TablePagination pageCount={pageCount} handlePageClick={handlePageClick} />}
+            <TablePagination
+                className={isLoading ? "hidden" : "flex"}
+                pageCount={pageCount}
+                handlePageClick={handlePageClick}
+            />
         </Container>
     );
 }

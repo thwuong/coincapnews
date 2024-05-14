@@ -1,9 +1,10 @@
 import Container from "@/components/Container/Container";
-import TableSection from "@/components/TableSection/TableSection";
+import { DerivativesExchanges } from "@/components/DerivativesExchanges";
 import dynamic from "next/dynamic";
 
 interface PageProps {}
-const BannerSlide = dynamic(() => import("@/components/BannerSlide/BannerSlide"), { ssr: false });
+const BannerSlide = dynamic(() => import("@/components/BannerSlide/BannerSlide"));
+const TableSection = dynamic(() => import("@/components/TableSection/TableSection"));
 export default async function Page(props: PageProps) {
     return (
         <section className="w-full flex justify-center flex-col items-center">
@@ -11,6 +12,7 @@ export default async function Page(props: PageProps) {
                 <BannerSlide />
             </Container>
             <TableSection />
+            {/* <DerivativesExchanges /> */}
         </section>
     );
 }

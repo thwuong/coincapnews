@@ -3,6 +3,8 @@ import { builder, Builder, withChildren } from "@builder.io/react";
 import Counter from "./components/Counter/Counter";
 import Container from "./components/Container/Container";
 import dynamic from "next/dynamic";
+import { NewsFeed } from "./components/NewsFeed";
+import { DerivativesExchanges } from "./components/DerivativesExchanges";
 const BannerSlide = dynamic(() => import("./components/BannerSlide/BannerSlide"), {
     ssr: false,
 });
@@ -28,4 +30,17 @@ Builder.registerComponent(withChildren(Container), {
 });
 Builder.registerComponent(withChildren(BannerSlide), {
     name: "BannerSlide",
+});
+Builder.registerComponent(withChildren(NewsFeed), {
+    name: "NewsFeed",
+});
+Builder.registerComponent(withChildren(DerivativesExchanges), {
+    name: "DerivativesExchanges",
+    inputs: [
+        {
+            name: "perPage",
+            type: "number",
+            defaultValue: 10,
+        },
+    ],
 });
