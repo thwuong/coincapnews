@@ -43,6 +43,9 @@ function LineChartLastDays({ data, isUp }: LineChartLastDaysProps) {
         grid: {
             show: false,
         },
+        stroke: {
+            width: 1,
+        },
     };
     return (
         <Chart

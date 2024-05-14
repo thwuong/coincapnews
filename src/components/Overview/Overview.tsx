@@ -9,8 +9,10 @@ import {
     StatNumber,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { LineChartOverview } from "../Charts";
+const LineChartOverview = dynamic(() => import("../Charts/").then((mod) => mod.LineChartOverview));
+
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 
 function Overview() {
     const [tabActive, setTabActive] = useState("price");
@@ -218,15 +220,15 @@ function Overview() {
                         <li className="flex flex-col">
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Price Today</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">BitcoinPrice</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">BitcoinPrice</p>
                                 <p className="font-semibold text-sm">{"$61,180.00"}</p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Trading Volume</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Trading Volume</p>
                                 <p className="font-semibold text-sm">{"$13,323,496,009.00"}</p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Price Change 24h</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Price Change 24h</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">{"$61,180.00"}</p>
@@ -242,11 +244,11 @@ function Overview() {
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Volume / Market Cap</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Volume / Market Cap</p>
                                 <p className="font-semibold text-sm">{"$61,180.00"}</p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Market Rank</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Market Rank</p>
                                 <p className="font-semibold text-sm">#1</p>
                             </Box>
                         </li>
@@ -254,11 +256,11 @@ function Overview() {
                         <li className="flex flex-col">
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">BitcoinMarket Cap</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Market Cap</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Market Cap</p>
                                 <p className="font-semibold text-sm">{"$61,180.00"}</p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Fully Diluted Market Cap</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Fully Diluted Market Cap</p>
                                 <p className="font-semibold text-sm">{"$13,323,496,009.00"}</p>
                             </Box>
                         </li>
@@ -266,11 +268,11 @@ function Overview() {
                         <li className="flex flex-col">
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Price Yesterday</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Yesterday's Low / High</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Low / High</p>
                                 <p className="font-semibold text-sm">$60,698.00 / $61,759.00</p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Yesterday's Change</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Change</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">{"$61,180.00"}</p>
@@ -286,7 +288,7 @@ function Overview() {
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Yesterday's Volume</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Volume</p>
                                 <p className="font-semibold text-sm">$1,211,708,334,224.00</p>
                             </Box>
                         </li>
@@ -294,7 +296,7 @@ function Overview() {
                         <li className="flex flex-col">
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">BitcoinPrice History</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">All Time High</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">All Time High</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">{"$61,180.00"}</p>
@@ -310,7 +312,7 @@ function Overview() {
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">All Time Low</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">All Time Low</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">{"$61,180.00"}</p>
@@ -326,7 +328,7 @@ function Overview() {
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Bitcoin ROI</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Bitcoin ROI</p>
                                 <Stat className="text-right">
                                     <StatHelpText
                                         fontSize={"12px"}
@@ -343,20 +345,20 @@ function Overview() {
                         <li className="flex flex-col">
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Supply</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Circulating Supply</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Circulating Supply</p>
                                 <p className="font-semibold text-sm">19,697,531.00</p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Total Supply</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Total Supply</p>
                                 <p className="font-semibold text-sm">21,000,000.00</p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">Max Supply</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">Max Supply</p>
                                 <p className="font-semibold text-sm">21,000,000.00</p>
                             </Box>
                         </li>
                     </ul>
-                    <Button onClick={() => setIsMore(!isMore)}>
+                    <Button onClick={() => setIsMore(!isMore)} bg={"rgba(0, 0, 0, 0.04)"}>
                         <span className="font-medium text-sm text-typo-4 duration-300">
                             {isMore ? "Show Less" : "Show More"}
                         </span>

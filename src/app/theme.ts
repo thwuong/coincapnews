@@ -8,6 +8,9 @@ const overrides = extendTheme({
             },
         }),
     },
+    colors: {
+        btn: "rgba(0,0,0,0.04)",
+    },
 });
 
 const AppTheme = extendTheme(overrides);

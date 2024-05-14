@@ -8,6 +8,10 @@ const nextConfig = BuilderDevTools()({
                 protocol: "https",
                 hostname: "assets.coingecko.com",
             },
+            {
+                protocol: "https",
+                hostname: "mtc-media.tn-cdn.net",
+            },
         ],
     },
 });

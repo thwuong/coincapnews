@@ -1,14 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Topbar from "../Topbar/Topbar";
-import Container from "../Container/Container";
+import UseScroll from "@/hooks/UseScroll";
+import { Box, Button, Input, InputGroup, InputLeftElement, useDisclosure } from "@chakra-ui/react";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import Navigation from "../Navigation/Navigation";
-import { Box, Button, Input, InputGroup, InputLeftElement, useDisclosure } from "@chakra-ui/react";
-import UseScroll from "@/hooks/UseScroll";
-import clsx from "clsx";
+import React, { useState } from "react";
+import Container from "../Container/Container";
 import MenuMobile from "../MenuMobile/MenuMobile";
+import Navigation from "../Navigation/Navigation";
+import Topbar from "../Topbar/Topbar";
 
 function Header() {
     const [keyword, setKeyword] = useState<string>();
@@ -46,6 +46,7 @@ function Header() {
                                 onChange={handlerSearch}
                                 borderRadius={"99px"}
                                 height={"min-content"}
+                                bg={"btn"}
                                 width={200}
                                 py={"6px"}
                                 type="text"

@@ -25,9 +25,9 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import LineChartLastDays from "../Charts/LineChartLastDays";
 import { UnitConversion } from "../TableSection/TableSection";
-
+import dynamic from "next/dynamic";
+const LineChartLastDays = dynamic(() => import("../Charts/").then((mod) => mod.LineChartLastDays));
 export type DataTableProps = {
     data: UnitConversion[];
     columns: ColumnDef<UnitConversion, any>[];
@@ -112,7 +112,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               return (
-                                  <Tr key={row.original._source.id}>
+                                  <Tr key={row.original._source.name}>
                                       <Td
                                           p={"4px"}
                                           minW={"104px"}

@@ -9,6 +9,7 @@ import SpinnerLoading from "@/components/Loading/SpinnerLoading";
 import { NewsFeed } from "@/components/NewsFeed";
 import { Button } from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 // export async function generateStaticParams() {
@@ -33,7 +34,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                     <div className="flex flex-col gap-4 items-center ">
                         <Image src={"/assets/images/bitcoin.webp"} alt="bitcoin" width={88} height={88} />
                         <div className="flex items-center gap-2">
-                            <h4 className="text-2xl leading-[38px] text-typo-4 font-bold">{coin.id}</h4>
+                            <h4 className="text-2xl leading-[38px] text-typo-4 font-bold capitalize">{coin.id}</h4>
                             <span className="text-base leading-9 text-typo-1 uppercase">{coin.symbol}</span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -46,7 +47,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                 className="text-[11px] font-semibold"
                                 color={"white"}
                             >
-                                Rank #${coin.market_cap_rank}
+                                Rank #{coin.market_cap_rank}
                             </Button>
                             <Button size={"xs"} bg={"gray.100"} className="text-[11px] font-semibold capitalize">
                                 coin
@@ -68,13 +69,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                     bg: "#16C784",
                                 }}
                                 leftIcon={
-                                    <Image
-                                        src={"/assets/icons/sort-up.svg"}
-                                        className="fill-white text-white "
-                                        alt="left"
-                                        width={10}
-                                        height={10}
-                                    />
+                                    <Image src={"/assets/icons/sort-up-white.svg"} alt="left" width={10} height={10} />
                                 }
                             >
                                 <span className="text-white font-semibold text-sm">{2.28}%</span>
@@ -83,11 +78,14 @@ export default function Page({ params }: { params: { symbol: string } }) {
                         <p className="text-base font-medium leading-[26px] text-typo-1">Bitcoin Price (BTC)</p>
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">24h Low / 24h High</p>
-                            <p className="text-sm font-bold">$60,687.00 / $63,337.00</p>
+                            <p className="text-sm font-bold">
+                                {formatCurrency(coin.market_data.low_24h["usd"])} /{" "}
+                                {formatCurrency(coin.market_data.high_24h["usd"])}
+                            </p>
                         </div>
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">24 Hour Trading Vol</p>
-                            <p className="text-sm font-bold">$21,282,554,169.00</p>
+                            <p className="text-sm font-bold">{formatCurrency(coin.market_data.total_volume["usd"])}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4 w-full">
@@ -151,29 +149,144 @@ export default function Page({ params }: { params: { symbol: string } }) {
                     <div className="flex flex-col gap-4">
                         <h5 className="text-sm font-bold text-typo-1/80">Links</h5>
                         <div className="flex gap-2 flex-wrap">
-                            {new Array(7).fill(4).map((_, index) => {
-                                return (
-                                    <Button
-                                        key={index}
-                                        height={"fit-content"}
-                                        py={"8px"}
-                                        bg={"rgba(0, 0, 0, 0.04)"}
-                                        leftIcon={
-                                            <Image
-                                                src={"/assets/icons/sort-up.svg"}
-                                                className="fill-white text-white hover:fill-primary-1"
-                                                alt="left"
-                                                width={10}
-                                                height={10}
-                                            />
-                                        }
-                                    >
-                                        <span className="text-[11px] font-semibold capitalize text-black/80 t hover:text-primary-1">
-                                            Explorer
-                                        </span>
-                                    </Button>
-                                );
-                            })}
+                            {coin.links.blockchain_site.length > 0 && (
+                                <Button
+                                    as={Link}
+                                    href={coin.links.blockchain_site[0]}
+                                    target="_blank"
+                                    height={"fit-content"}
+                                    py={"8px"}
+                                    bg={"rgba(0, 0, 0, 0.04)"}
+                                    leftIcon={
+                                        <Image
+                                            src={"/assets/icons/explore.svg"}
+                                            className="fill-white text-white hover:fill-primary-1"
+                                            alt="left"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    }
+                                >
+                                    <span className="text-[11px] font-semibold capitalize text-black/80  hover:text-primary-1">
+                                        Explorer
+                                    </span>
+                                </Button>
+                            )}
+                            {coin.links.homepage.length > 0 && (
+                                <Button
+                                    as={Link}
+                                    href={coin.links.homepage[0]}
+                                    target="_blank"
+                                    height={"fit-content"}
+                                    py={"8px"}
+                                    bg={"rgba(0, 0, 0, 0.04)"}
+                                    leftIcon={
+                                        <Image
+                                            src={"/assets/icons/earth.svg"}
+                                            className="fill-white text-white hover:fill-primary-1"
+                                            alt="left"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    }
+                                >
+                                    <span className="text-[11px] font-semibold capitalize text-black/80 t hover:text-primary-1">
+                                        Official Website
+                                    </span>
+                                </Button>
+                            )}
+                            {coin.links.repos_url.github.length > 0 && (
+                                <Button
+                                    as={Link}
+                                    href={coin.links.repos_url.github[0]}
+                                    target="_blank"
+                                    height={"fit-content"}
+                                    py={"8px"}
+                                    bg={"rgba(0, 0, 0, 0.04)"}
+                                    leftIcon={
+                                        <Image
+                                            src={"/assets/icons/github.svg"}
+                                            className="fill-white text-white hover:fill-primary-1"
+                                            alt="left"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    }
+                                >
+                                    <span className="text-[11px] font-semibold capitalize text-black/80 t hover:text-primary-1">
+                                        Github
+                                    </span>
+                                </Button>
+                            )}
+                            {coin.links.subreddit_url && (
+                                <Button
+                                    as={Link}
+                                    href={coin.links.subreddit_url}
+                                    target="_blank"
+                                    height={"fit-content"}
+                                    py={"8px"}
+                                    bg={"rgba(0, 0, 0, 0.04)"}
+                                    leftIcon={
+                                        <Image
+                                            src={"/assets/icons/reddit.svg"}
+                                            className="fill-white text-white hover:fill-primary-1"
+                                            alt="left"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    }
+                                >
+                                    <span className="text-[11px] font-semibold capitalize text-black/80 t hover:text-primary-1">
+                                        Reddit
+                                    </span>
+                                </Button>
+                            )}
+                            {coin.links.twitter_screen_name && (
+                                <Button
+                                    as={Link}
+                                    href={`https://twitter.com/${coin.links.twitter_screen_name}`}
+                                    target="_blank"
+                                    height={"fit-content"}
+                                    py={"8px"}
+                                    bg={"rgba(0, 0, 0, 0.04)"}
+                                    leftIcon={
+                                        <Image
+                                            src={"/assets/icons/twitter.svg"}
+                                            className="fill-white text-white hover:fill-primary-1"
+                                            alt="left"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    }
+                                >
+                                    <span className="text-[11px] font-semibold capitalize text-black/80 t hover:text-primary-1">
+                                        Twitter
+                                    </span>
+                                </Button>
+                            )}
+                            {coin.links.facebook_username && (
+                                <Button
+                                    as={Link}
+                                    href={`https://www.facebook.com/${coin.links.facebook_username}`}
+                                    target="_blank"
+                                    height={"fit-content"}
+                                    py={"8px"}
+                                    bg={"rgba(0, 0, 0, 0.04)"}
+                                    leftIcon={
+                                        <Image
+                                            src={"/assets/icons/fb-circle.svg"}
+                                            className="fill-white text-white hover:fill-primary-1"
+                                            alt="left"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    }
+                                >
+                                    <span className="text-[11px] font-semibold capitalize text-black/80 t hover:text-primary-1">
+                                        Facebook
+                                    </span>
+                                </Button>
+                            )}
                         </div>
                     </div>
                     {/* Contacts detail */}
@@ -209,7 +322,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                 >
                                     <div className="flex flex-col items-start gap-1">
                                         <span className="text-12 font-medium text-typo-1">Ethereum</span>
-                                        <p className="text-black text-12 font-bold truncate max-w-[210px] max-lg:max-w-[150px] max-md:max-w-[100px]">
+                                        <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
                                             0xdac17f958d2ee523a2206206994597c13d831ec7
                                         </p>
                                     </div>
@@ -246,7 +359,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                     >
                                         <div className="flex flex-col items-start gap-1">
                                             <span className="text-12 font-medium text-typo-1">Ethereum</span>
-                                            <p className="text-black text-12 font-bold truncate max-w-[210px] max-lg:max-w-[150px] max-md:max-w-[100px]">
+                                            <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
                                                 0xdac17f958d2ee523a2206206994597c13d831ec7
                                             </p>
                                         </div>
@@ -260,6 +373,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                     bg: "transparent",
                                     color: "rgb(56,97,251)",
                                 }}
+                                p={"0"}
                                 className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
                                 rightIcon={
                                     <Image

@@ -64,7 +64,7 @@ body {
  pointer-events: none;
  margin-block: -34px;
 }
-.pagination li{
+.pagination li a{
  padding: 8px 16px;
  color: rgb(88,102,126);
  background: rgba(0,0,0,.04);
@@ -72,8 +72,14 @@ body {
  font-weight: 700;
  font-size: 14px;
  transition: 0.3s;
+ display: flex;
 }
-.pagination li.selected {
+.pagination ul:first-child,
+  .pagination ul:last-child{
+    align-self: stretch;
+  
+}
+.pagination li.selected a{
   background: rgb(56,97,251);
   color: white;
 }
