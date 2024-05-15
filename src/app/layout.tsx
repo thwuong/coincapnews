@@ -1,9 +1,8 @@
-import { WEBSITE_HOST_URL } from "./contants";
+import MainLayout from "@/components/Layouts/MainLayout";
 import type { Metadata } from "next";
-import "./globals.css";
-import { Providers } from "./providers";
 import dynamic from "next/dynamic";
-import Footer from "@/components/Footer/Footer";
+import { WEBSITE_HOST_URL } from "./contants";
+import "./globals.css";
 const Header = dynamic(() => import("@/components/Header/Header"));
 
 const meta = {
@@ -80,11 +79,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="scroll-smooth">
-                <Providers>
-                    <Header />
-                    {children}
-                    <Footer />
-                </Providers>
+                <MainLayout>{children}</MainLayout>
             </body>
         </html>
     );

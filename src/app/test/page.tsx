@@ -1,3 +1,4 @@
+import Auth from "@/components/Auth/Auth";
 import Container from "@/components/Container/Container";
 import { DerivativesExchanges } from "@/components/DerivativesExchanges";
 import dynamic from "next/dynamic";
@@ -12,7 +13,6 @@ export default async function Page(props: PageProps) {
                 <BannerSlide />
             </Container>
             <TableSection />
-            {/* <DerivativesExchanges /> */}
         </section>
     );
 }

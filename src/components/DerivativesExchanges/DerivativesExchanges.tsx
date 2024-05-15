@@ -17,7 +17,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import TablePagination from "../TablePagination/TablePagination";
+import { TablePagination } from "../TablePagination";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 type Exchange = {
     _source: {

@@ -10,7 +10,6 @@ function BannerSlide() {
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 3,
-        initialSlide: 1.5,
 
         responsive: [
             {
@@ -18,6 +17,7 @@ function BannerSlide() {
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 3,
+                    initialSlide: 1.5,
                 },
             },
             {
@@ -26,7 +26,6 @@ function BannerSlide() {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     initialSlide: 1,
-
                     infinite: true,
                     arrows: false,
                 },

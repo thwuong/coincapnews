@@ -1,1 +1,1 @@
-export { default as DerivativesExchanges } from "./DifferentExchanges";
+export { default as DifferentExchanges } from "./DifferentExchanges";

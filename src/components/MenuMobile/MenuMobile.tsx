@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Avatar,
     Box,
@@ -16,12 +18,12 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { navigationHeaderData } from "../Navigation/Navigation";
-import LanguageMenu from "../LanguageMenu/LanguageMenu";
-import CurrencyModal from "../Modal/CurrencyModal";
 import { currenciesData } from "../Topbar/Topbar";
+import { navigationHeaderData } from "../Navigation/Navigation";
+import { LanguageMenu } from "../LanguageMenu";
+import { CurrencyModal } from "../Modal";
 type MenuMobileProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -32,13 +34,18 @@ type NavItemType = {
     icon?: string;
     children?: NavItemType[];
 };
-function NavItem({ navItem }: { navItem: NavItemType }) {
+function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => void }) {
     const [showDropdown, setShowDropdown] = useState(false);
+    const router = useRouter();
+    const nextPage = (href: string = "/") => {
+        router.push(href, {
+            scroll: true,
+        });
+        onClose();
+    };
     return (
         <Box position={"relative"}>
             <Button
-                as={Link}
-                href={navItem.href}
                 className="group "
                 bg={"transparent"}
                 _hover={{
@@ -85,8 +92,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                 >
                     {navItem.children.map((item: NavItemType, index: number) => (
                         <Button
-                            as={Link}
-                            href={item.href}
+                            onClick={() => nextPage(item.href)}
                             className="group"
                             bg={"transparent"}
                             _hover={{
@@ -110,6 +116,13 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
 }
 
 function MenuMobile({ onClose, isOpen }: MenuMobileProps) {
+    const router = useRouter();
+    const nextPage = (href: string = "/") => {
+        router.push(href, {
+            scroll: true,
+        });
+        onClose();
+    };
     const [keyword, setKeyword] = useState<string>();
     const handlerSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setKeyword(e.target.value);
@@ -129,11 +142,15 @@ function MenuMobile({ onClose, isOpen }: MenuMobileProps) {
                     <Flex>
                         <Center gap={4}>
                             <Avatar src="https://bit.ly/broken-link" size={"sm"} />
-                            <Link href={"/auth"}>
+                            <div
+                                onClick={() => {
+                                    nextPage("/account");
+                                }}
+                            >
                                 <p className="text-typo-4 text-base leading-5 font-semibold capitalize">
                                     Log in / Register
                                 </p>
-                            </Link>
+                            </div>
                         </Center>
                     </Flex>
                 </DrawerHeader>
@@ -161,7 +178,7 @@ function MenuMobile({ onClose, isOpen }: MenuMobileProps) {
                         </InputGroup>
                         <nav className="w-full flex flex-col gap-1">
                             {navigationHeaderData.map((item, index) => {
-                                return <NavItem key={index} navItem={item} />;
+                                return <NavItem key={index} navItem={item} onClose={onClose} />;
                             })}
                         </nav>
                         <div className="flex items-center justify-between">

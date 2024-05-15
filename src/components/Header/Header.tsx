@@ -5,10 +5,10 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import Container from "../Container/Container";
-import MenuMobile from "../MenuMobile/MenuMobile";
-import Navigation from "../Navigation/Navigation";
-import Topbar from "../Topbar/Topbar";
+import { Container } from "../Container";
+import { Topbar } from "../Topbar";
+import { Navigation } from "../Navigation";
+import { MenuMobile } from "../MenuMobile";
 
 function Header() {
     const [keyword, setKeyword] = useState<string>();
@@ -72,6 +72,8 @@ function Header() {
                             <Image src={"/assets/icons/noti.svg"} alt="noti" width={24} height={24} />
                         </Box>
                         <Button
+                            as={Link}
+                            href={"/account"}
                             bgColor={"#3861fb"}
                             _hover={{
                                 bgColor: "none",
