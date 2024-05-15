@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
-import LanguageMenu from "../LanguageMenu/LanguageMenu";
-import { Button, MenuButton, useDisclosure } from "@chakra-ui/react";
+import { Button, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
+import { useState } from "react";
+import LanguageMenu from "../LanguageMenu/LanguageMenu";
 import CurrencyModal from "../Modal/CurrencyModal";
+import useFetchAPI from "@/api/baseAPI";
+import { formatCurrency, formatCurrencyHasUnit, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 export const currenciesData = [
     {
         label: "Bitcoin",
@@ -26,30 +28,62 @@ export const currenciesData = [
         type: "Fiat Currencies",
     },
 ];
+
+type MarketData = {
+    _source: {
+        data: {
+            active_cryptocurrencies: string;
+            market_cap_change_percentage_24h_usd: number;
+            total_market_cap: any;
+            total_volume: any;
+            market_cap_percentage: {
+                btc: number;
+                eth: number;
+            };
+        };
+    };
+};
 function Topbar() {
     const [currentCurrency, setCurrentCurrency] = useState(currenciesData[0]);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { data, isLoading }: { data: MarketData[]; isLoading: boolean } = useFetchAPI(`/api/global?centralized=true`);
+
     return (
         <section className="w-full flex items-center justify-between text-12 min-h-[48px] max-lg:overflow-x-auto">
-            <div className="flex items-center gap-3 text-12 w-full">
-                <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1 whitespace-nowrap">Cryptos:</span>
-                    <span className="text-primary-1 whitespace-nowrap">8,744</span>
+            {!isLoading ? (
+                <div className="flex items-center gap-3 text-12 w-full animate-fade">
+                    <div className="flex items-center gap-1">
+                        <span className="font-medium text-typo-1 whitespace-nowrap">Cryptos:</span>
+                        <span className="text-primary-1 whitespace-nowrap">
+                            {formatQuoteCurrency(Number(data[2]._source.data.active_cryptocurrencies))}
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <span className="font-medium text-typo-1 whitespace-nowrap">Market:</span>
+                        <span className="text-primary-1 whitespace-nowrap">
+                            {formatCurrencyHasUnit(Number(data[2]._source.data.total_market_cap["usd"]))}
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <span className="font-medium text-typo-1 whitespace-nowrap">24h Vol:</span>
+                        <span className="text-primary-1 whitespace-nowrap">
+                            {Number(data[2]._source.data.market_cap_change_percentage_24h_usd).toFixed(2)}%
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <span className="font-medium text-typo-1 whitespace-nowrap">Dominance:</span>
+                        <span className="text-primary-1 whitespace-nowrap">
+                            BTC {data[2]._source.data.market_cap_percentage.btc.toFixed(2)}%
+                        </span>
+                        <span className="text-primary-1 whitespace-nowrap">
+                            ETH {data[2]._source.data.market_cap_percentage.eth.toFixed(2)}%
+                        </span>
+                    </div>
                 </div>
-                <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1 whitespace-nowrap">Market:</span>
-                    <span className="text-primary-1 whitespace-nowrap">1,717.26 B</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1 whitespace-nowrap">24h Vol:</span>
-                    <span className="text-primary-1 whitespace-nowrap">3.17 %</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <span className="font-medium text-typo-1 whitespace-nowrap">Dominance:</span>
-                    <span className="text-primary-1 whitespace-nowrap">BTC 45.63%</span>
-                    <span className="text-primary-1 whitespace-nowrap">ETH 17.7%</span>
-                </div>
-            </div>
+            ) : (
+                <>Loading...</>
+            )}
+
             <div className="flex items-center gap-2 max-lg:hidden">
                 <LanguageMenu />
                 <Button

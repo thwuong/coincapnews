@@ -3,9 +3,9 @@
 import useFetchAPI from "@/api/baseAPI";
 import { DetailCoinType } from "@/app/types";
 import { formatCurrency } from "@/app/utils/formatCurrency";
-import Container from "@/components/Container/Container";
-import DetailTabs from "@/components/DetailTabs/DetailTabs";
-import SpinnerLoading from "@/components/Loading/SpinnerLoading";
+import { Container } from "@/components/Container";
+import { DetailTabs } from "@/components/DetailTabs";
+import { SpinnerLoading } from "@/components/Loading";
 import { NewsFeed } from "@/components/NewsFeed";
 import { Button } from "@chakra-ui/react";
 import Image from "next/image";

@@ -1,14 +1,13 @@
 "use client";
-import { Box, Input, InputGroup, InputLeftElement, Spinner } from "@chakra-ui/react";
+import { Box, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { useState } from "react";
-import Container from "../Container/Container";
 
+import useFetchAPI from "@/api/baseAPI";
 import { createColumnHelper } from "@tanstack/react-table";
 import dynamic from "next/dynamic";
-import useFetchAPI from "@/api/baseAPI";
-import TablePagination from "../TablePagination/TablePagination";
-const CoinTable = dynamic(() => import("../CoinTable/CoinTable"));
+import { TablePagination } from "../TablePagination";
+const CoinTable = dynamic(() => import("../CoinTable").then((mod) => mod.CoinTable));
 export type UnitConversion = {
     _source: {
         image: string;
@@ -137,8 +136,8 @@ function TableSection() {
     );
 
     return (
-        <Container className="px-12 flex-col gap-8 py-6 pb-32">
-            <div className="flex items-center justify-between w-full">
+        <section className="flex flex-col items-center gap-8 py-6 pb-32 w-full">
+            <section className="flex items-center justify-between w-full">
                 <Box
                     _hover={{
                         bg: "transparent",
@@ -174,14 +173,14 @@ function TableSection() {
                         className="placeholder:text-13"
                     />
                 </InputGroup>
-            </div>
+            </section>
             <CoinTable columns={columns} data={dataAPI} isLoading={isLoading} />
             <TablePagination
                 className={isLoading ? "hidden" : "flex"}
                 pageCount={pageCount}
                 handlePageClick={handlePageClick}
             />
-        </Container>
+        </section>
     );
 }
 

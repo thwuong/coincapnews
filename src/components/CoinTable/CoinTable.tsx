@@ -27,7 +27,7 @@ import Link from "next/link";
 import React from "react";
 import { UnitConversion } from "../TableSection/TableSection";
 import dynamic from "next/dynamic";
-const LineChartLastDays = dynamic(() => import("../Charts/").then((mod) => mod.LineChartLastDays));
+const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 export type DataTableProps = {
     data: UnitConversion[];
     columns: ColumnDef<UnitConversion, any>[];
@@ -60,7 +60,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        bg={"#fff"}
+                                        className="bg-secondary"
                                         position={index === 0 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index === 0 && width <= 768 ? 2 : 0}
                                         left={0}
@@ -118,7 +118,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                           minW={"104px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          bg={"#fff"}
+                                          className="bg-secondary"
                                       >
                                           <Box display={"flex"} alignItems={"center"} gap={"8px"}>
                                               <Image

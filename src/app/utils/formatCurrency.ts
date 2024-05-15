@@ -5,3 +5,7 @@ export const formatQuoteCurrency = (amount: number, code: string = "USD", lang: 
     const value = new Intl.NumberFormat(lang).format(amount);
     return value;
 };
+export const formatCurrencyHasUnit = (amount: number, lang: string = "en-US") => {
+    const value = amount / 1e9;
+    return value.toFixed(2) + "B";
+};

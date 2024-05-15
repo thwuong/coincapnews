@@ -53,9 +53,10 @@ body {
 #slide .slick-slide.slick-active {
   opacity: 1;
 }
-.slick-slide > div {
-  margin: 0 30px;
+.slick-track .slick-slide:not(:nth-child(3n)) > div {
+  margin-right:30px;
 }
+
 .slick-list {
   margin: 0 -30px;
 }
@@ -82,4 +83,10 @@ body {
 .pagination li.selected a{
   background: rgb(56,97,251);
   color: white;
+}
+/* Mobile */
+@media only screen and (max-width: 600px) {
+  .slick-track .slick-slide:not(:nth-child(3n)) > div {
+    margin-right:0;
+  }
 }

@@ -3,7 +3,7 @@ import { Box, Button, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import Container from "../Container/Container";
+import { Container } from "../Container";
 const navData: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",

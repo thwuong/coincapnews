@@ -18,6 +18,7 @@ const config: Config = {
                     2: "#58667e",
                     3: "#394048",
                     4: "#222531",
+                    5: "rgb(33,33,33)",
                 },
                 primary: {
                     1: "rgb(56,97,251)",
@@ -33,12 +34,13 @@ const config: Config = {
             fontSize: {
                 12: "12px",
                 13: "13px",
+                32: "32px",
             },
             fontFamily: {
                 inter: '"Inter", sans-serif',
             },
         },
     },
-    plugins: [],
+    plugins: [require("tailwindcss-animated")],
 };
 export default config;

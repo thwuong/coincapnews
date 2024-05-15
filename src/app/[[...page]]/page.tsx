@@ -5,29 +5,29 @@ import { RenderBuilderContent } from "../../components/builder";
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
 interface PageProps {
-  params: {
-    page: string[];
-  };
+    params: {
+        page: string[];
+    };
 }
 
 export default async function Page(props: PageProps) {
-  const builderModelName = "page";
+    const builderModelName = "page";
 
-  const content = await builder
-    // Get the page content from Builder with the specified options
-    .get(builderModelName, {
-      userAttributes: {
-        // Use the page path specified in the URL to fetch the content
-        urlPath: "/" + (props?.params?.page?.join("/") || ""),
-      },
-    })
-    // Convert the result to a promise
-    .toPromise();
+    const content = await builder
+        // Get the page content from Builder with the specified options
+        .get(builderModelName, {
+            userAttributes: {
+                // Use the page path specified in the URL to fetch the content
+                urlPath: "/" + (props?.params?.page?.join("/") || ""),
+            },
+        })
+        // Convert the result to a promise
+        .toPromise();
 
-  return (
-    <>
-      {/* Render the Builder page */}
-      <RenderBuilderContent content={content} model={builderModelName} />
-    </>
-  );
+    return (
+        <>
+            {/* Render the Builder page */}
+            <RenderBuilderContent content={content} model={builderModelName} />
+        </>
+    );
 }

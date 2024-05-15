@@ -72,12 +72,12 @@ export const navigationHeaderData: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
         label: "Knowledge",
-        href: "/",
+        href: "/knowledge",
     },
     {
         icon: "/assets/images/bnb.webp",
         label: "Converter",
-        href: "/",
+        href: "/converter",
     },
     {
         icon: "/assets/images/bnb.webp",
