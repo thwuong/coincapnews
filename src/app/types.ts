@@ -2,8 +2,8 @@ export type DetailCoinType = {
     id: string;
     name: string;
     symbol: string;
-    market_cap_rank: string;
-    description: object;
+    market_cap_rank: number;
+    description: any;
     image: {
         large: string;
         small: string;
@@ -15,6 +15,17 @@ export type DetailCoinType = {
         high_24h: any;
         price_change_percentage_24h_in_currency: any;
         current_price: any;
+        price_change_24h_in_currency: any;
+        market_cap: any;
+        fully_diluted_valuation: any;
+        ath: any;
+        atl: any;
+        atl_change_percentage: any;
+        ath_change_percentage: any;
+        total_supply: number;
+        max_supply: number;
+        circulating_supply: number;
+        market_cap_change_percentage_24h: number;
     };
     links: {
         blockchain_site: string[];
@@ -26,6 +37,18 @@ export type DetailCoinType = {
         facebook_username: string;
         twitter_screen_name: string;
     };
+    tickers: [
+        {
+            coin_id: string;
+            market: {
+                name: string;
+            };
+            converted_volume: any;
+            converted_last: any;
+            base: string;
+            target: string;
+        }
+    ];
 };
 export type FeedType = {
     id: string;
@@ -65,4 +88,14 @@ export type DetailExchangeType = {
             base: string;
         }
     ];
+};
+export type NavItemType = {
+    label?: string;
+    href?: string;
+    icon?: string;
+    children?: NavItemType[];
+};
+export type NewDataType = {
+    price?: number;
+    change24?: number;
 };

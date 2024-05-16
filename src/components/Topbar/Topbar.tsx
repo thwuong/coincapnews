@@ -1,33 +1,12 @@
 "use client";
+import useFetchAPI from "@/api/baseAPI";
+import { formatCurrencyHasUnit, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import { currenciesData } from "@/fakedata/fakedata";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
 import LanguageMenu from "../LanguageMenu/LanguageMenu";
 import CurrencyModal from "../Modal/CurrencyModal";
-import useFetchAPI from "@/api/baseAPI";
-import { formatCurrency, formatCurrencyHasUnit, formatQuoteCurrency } from "@/app/utils/formatCurrency";
-export const currenciesData = [
-    {
-        label: "Bitcoin",
-        code: "BTC",
-        type: "Cryptocurrencies",
-    },
-    {
-        label: "Ethereum",
-        code: "ETH",
-        type: "Cryptocurrencies",
-    },
-    {
-        label: "Chinese Yuan",
-        code: "CNY",
-        type: "Fiat Currencies",
-    },
-    {
-        label: "United States Dollar",
-        code: "USD",
-        type: "Fiat Currencies",
-    },
-];
 
 type MarketData = {
     _source: {

@@ -27,6 +27,8 @@ import Link from "next/link";
 import React from "react";
 import { UnitConversion } from "../TableSection/TableSection";
 import dynamic from "next/dynamic";
+import UseSocket from "@/hooks/UseSocket";
+import getNewData from "@/app/utils/getNewData";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 export type DataTableProps = {
     data: UnitConversion[];
@@ -46,6 +48,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
         },
     });
     const [width] = UseResize();
+    const { stream } = UseSocket();
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -111,11 +114,14 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                 <Tbody>
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
+                              let convertId = `${row.original._source.symbol}USDT`.toLocaleUpperCase();
+
                               return (
                                   <Tr key={row.original._source.name}>
                                       <Td
                                           p={"4px"}
                                           minW={"104px"}
+                                          height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
                                           className="bg-secondary"
@@ -153,7 +159,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                           {row.original._source.market_cap_rank}
                                                       </Badge>
                                                       <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
-                                                          {row.original._source.name}
+                                                          {row.original._source.symbol}
                                                       </span>
                                                   </Box>
                                               </Box>
@@ -161,19 +167,31 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original._source.current_price)}
+                                              {formatCurrency(
+                                                  getNewData(
+                                                      stream[convertId]?.price,
+                                                      row.original._source.current_price
+                                                  )
+                                              )}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm leading-4 font-semibold font-inter",
-                                                  row.original._source.price_change_percentage_24h_in_currency > 0
+                                                  getNewData(
+                                                      stream[convertId]?.change24,
+                                                      row.original._source.price_change_percentage_24h_in_currency
+                                                  ) > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original._source.price_change_percentage_24h_in_currency.toFixed(2)}%
+                                              {getNewData(
+                                                  stream[convertId]?.change24,
+                                                  row.original._source.price_change_percentage_24h_in_currency
+                                              ).toFixed(2)}
+                                              %
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
@@ -221,11 +239,11 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                   return (
                                       <Tr key={index}>
                                           <Td
+                                              height={"120px"}
                                               p={"4px"}
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
-                                              bg={"#fff"}
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />

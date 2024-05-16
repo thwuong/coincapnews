@@ -16,6 +16,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fontsource/inter": "^5.0.18",
     "@tanstack/react-table": "^8.16.0",
     "apexcharts": "^3.49.0",
     "clsx": "^2.1.1",
@@ -28,6 +29,7 @@
     "react-paginate": "^8.2.0",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.7.5",
     "swr": "^2.2.5",
     "tailwindcss-animated": "^1.0.1"
   },

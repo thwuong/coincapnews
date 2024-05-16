@@ -20,10 +20,9 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { currenciesData } from "../Topbar/Topbar";
-import { navigationHeaderData } from "../Navigation/Navigation";
 import { LanguageMenu } from "../LanguageMenu";
 import { CurrencyModal } from "../Modal";
+import { currenciesData, navigationHeaderData } from "@/fakedata/fakedata";
 type MenuMobileProps = {
     isOpen: boolean;
     onClose: () => void;

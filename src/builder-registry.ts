@@ -9,6 +9,7 @@ import { Heading } from "./components/Heading";
 import { Auth } from "./components/Auth";
 import { TableSection } from "./components/TableSection";
 import { ConvertAmount } from "./components/ConvertAmount";
+import { Paragraph } from "./components/Paragraph";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
@@ -70,18 +71,36 @@ Builder.registerComponent(withChildren(Heading), {
         {
             name: "textAlign",
             type: "string",
-            options: [
+            enum: ["left", "center", "right"],
+        },
+    ],
+});
+Builder.registerComponent(withChildren(Paragraph), {
+    name: "Paragraph",
+    inputs: [
+        {
+            name: "className",
+            type: "string",
+        },
+        {
+            name: "children",
+            type: "richText",
+            defaultValue:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu lacus eget purus congue porta.",
+        },
+        {
+            name: "style",
+            type: "object",
+            subFields: [
                 {
-                    name: "Text Left",
-                    value: "left",
+                    name: "textAlign",
+                    type: "string",
+                    enum: ["left", "center", "right"],
+                    defaultValue: "left",
                 },
                 {
-                    name: "Text Center",
-                    value: "center",
-                },
-                {
-                    name: "Text Right",
-                    value: "right",
+                    name: "maxWidth",
+                    type: "string",
                 },
             ],
         },
