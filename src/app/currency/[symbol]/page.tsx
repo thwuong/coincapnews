@@ -1,32 +1,39 @@
 "use client";
 
 import useFetchAPI from "@/api/baseAPI";
-import { DetailCoinType } from "@/app/types";
+import { DetailCoinType, NewDataType } from "@/app/types";
 import { formatCurrency } from "@/app/utils/formatCurrency";
+import getNewData from "@/app/utils/getNewData";
 import { Container } from "@/components/Container";
 import { DetailTabs } from "@/components/DetailTabs";
 import { SpinnerLoading } from "@/components/Loading";
 import { NewsFeed } from "@/components/NewsFeed";
+import { socketDetail } from "@/socket/client";
 import { Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-
-// export async function generateStaticParams() {
-//     const { data, isLoading, error } = useFetchAPI(`/api/coins`);
-
-//     return data.map((coin) => ({
-//       symbol: coin.symbol,
-//     }))
-//   }
+import { useEffect, useState } from "react";
 
 export default function Page({ params }: { params: { symbol: string } }) {
+    const [stream, setStream] = useState<NewDataType | any>();
     const { data: coin, isLoading }: { data: DetailCoinType; isLoading: boolean } = useFetchAPI(
         `/api/coins/details/${params.symbol}`
     );
 
-    if (isLoading) return <SpinnerLoading />;
+    useEffect(() => {
+        if (!coin) return;
+        const socket = socketDetail(coin.symbol);
+        function getMessage(this: WebSocket, ev: MessageEvent<any>) {
+            const streamData = JSON.parse(ev.data);
 
+            setStream({
+                price: parseFloat(streamData.data.c),
+                change24: parseFloat(streamData.data.P),
+            });
+        }
+        socket.onmessage = getMessage;
+    }, [coin]);
+    if (isLoading) return <SpinnerLoading />;
     return (
         <main className="pt-10 pb-20 w-full bg-[#ffffff] flex items-center justify-center">
             <Container className="px-12 flex-col gap-4">
@@ -58,7 +65,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                         <p className="text-[13px] font-medium leading-[21px] text-typo-1">Bitcoin Price (BTC)</p>
                         <div className="flex items-center justify-between w-full">
                             <h4 className="font-bold text-[32px] leading-[41px]">
-                                {formatCurrency(coin.market_data?.current_price["usd"])}
+                                {formatCurrency(getNewData(stream?.price, coin.market_data?.current_price["usd"]))}
                             </h4>
                             <Button
                                 width={"fit-content"}
@@ -72,7 +79,13 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                     <Image src={"/assets/icons/sort-up-white.svg"} alt="left" width={10} height={10} />
                                 }
                             >
-                                <span className="text-white font-semibold text-sm">{2.28}%</span>
+                                <span className="text-white font-semibold text-sm">
+                                    {getNewData(
+                                        stream?.change24,
+                                        coin.market_data.market_cap_change_percentage_24h
+                                    ).toFixed(2)}
+                                    %
+                                </span>
                             </Button>
                         </div>
                         <p className="text-base font-medium leading-[26px] text-typo-1">Bitcoin Price (BTC)</p>
@@ -408,7 +421,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                     </div>
                 </div>
                 {/* Tabs */}
-                <DetailTabs />
+                <DetailTabs coinData={coin} newData={stream} />
                 {/* Feeds */}
                 <NewsFeed />
             </Container>

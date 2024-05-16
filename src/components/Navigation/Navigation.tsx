@@ -1,96 +1,12 @@
 "use client";
+import { NavItemType } from "@/app/types";
+import { navigationHeaderData } from "@/fakedata/fakedata";
 import { Box, Button } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-export const navigationHeaderData: NavItemType[] = [
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Crypto",
-        href: "/",
-        children: [
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Coin ranking",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Recently Added",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "NFT",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "BSC",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "DeFi",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Polkadot Eco",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Gainers And Losers",
-                href: "/",
-            },
-        ],
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Exchanges",
-        href: "/spot",
-        children: [
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Spot",
-                href: "/spot",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Derivatives",
-                href: "/derivatives",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "DEX",
-                href: "/dex",
-            },
-        ],
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Knowledge",
-        href: "/knowledge",
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Converter",
-        href: "/converter",
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "News",
-        href: "/news",
-    },
-];
-type NavItemType = {
-    label?: string;
-    href?: string;
-    icon?: string;
-    children?: NavItemType[];
-};
+
 function NavItem({ navItem }: { navItem: NavItemType }) {
     const pathName = usePathname();
     let activePathCurrent = false;
@@ -154,7 +70,14 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                             gap={0.5}
                             p={2}
                             height={"fit-content"}
-                            leftIcon={<Image src={"/assets/images/bnb.webp"} alt="dropdown" width={24} height={24} />}
+                            leftIcon={
+                                <Image
+                                    src={item.icon ? item.icon : "/assets/images/bnb.webp"}
+                                    alt="dropdown"
+                                    width={24}
+                                    height={24}
+                                />
+                            }
                         >
                             <span className="text-sm leading-4 font-bold group-hover/child:text-primary-1 duration-300">
                                 {item.label}

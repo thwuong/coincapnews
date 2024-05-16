@@ -3,12 +3,21 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { ShareModal } from "../Modal";
 import Overview from "../Overview/Overview";
+import { DetailCoinType, NewDataType } from "@/app/types";
+import { useState } from "react";
+import { TablePagination } from "../TablePagination";
 const ExchangeTable = dynamic(() => import("../ExchangeTable").then((mod) => mod.ExchangeTable));
-function DetailTabs() {
+function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: NewDataType }) {
     const { isOpen, onClose, onOpen } = useDisclosure();
+    const [selected, setSelected] = useState(10);
+    const [page, setPage] = useState(1);
+
+    const handlePageClick = ({ selected }: { selected: number }) => {
+        setPage(selected + 1);
+    };
     return (
         <section className="py-10 flex flex-col gap-8 w-full">
-            <Tabs variant="unstyled" defaultIndex={1}>
+            <Tabs variant="unstyled">
                 <TabList
                     gap={"4px"}
                     borderBlock={"1px solid rgb(239, 242, 245)"}
@@ -64,7 +73,7 @@ function DetailTabs() {
                 </TabList>
                 <TabPanels>
                     <TabPanel p={"0px"}>
-                        <Overview />
+                        <Overview overviewData={coinData} newData={newData} />
                     </TabPanel>
                     <TabPanel p={"20px 0"}>
                         <h4 className="text-[20px] text-typo-4/80 leading-[25px] font-bold">Markets / Exchanges</h4>
@@ -79,12 +88,13 @@ function DetailTabs() {
                                 className="font-semibold text-typo-4"
                             />
                             <Select
-                                defaultValue={"10"}
+                                defaultValue={selected}
                                 w={"fit-content"}
                                 bg={"rgb(0,0,0,0.04)"}
                                 border={"none"}
                                 borderRadius={"8px"}
                                 fontSize={"14px"}
+                                onChange={(e) => setSelected(Number(e.target.value))}
                                 className="font-semibold text-typo-4"
                             >
                                 <option value="10">10</option>
@@ -94,21 +104,30 @@ function DetailTabs() {
                             </Select>
                         </div>
                         <ExchangeTable
-                            data={[
-                                {
-                                    name: "Exchange",
-                                    pair: "BTC/USDT",
-                                    price: 61522,
-                                    volume: 788284681,
-                                    update: "Recently",
-                                },
-                            ]}
+                            data={coinData.tickers.slice((page - 1) * selected, selected * page)}
                             isLoading={false}
+                            currentIndex={(page - 1) * selected}
                         />
+                        {coinData.tickers.length / selected > 1 && (
+                            <div className="w-full py-4 flex justify-center">
+                                <TablePagination
+                                    disbledPre
+                                    disbledNext
+                                    pageCount={coinData.tickers.length / selected}
+                                    handlePageClick={handlePageClick}
+                                />
+                            </div>
+                        )}
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-            <ShareModal isOpen={isOpen} onClose={onClose} />
+            <ShareModal
+                newData={newData}
+                oldData={coinData.market_data.current_price["usd"]}
+                symbol={coinData.symbol}
+                isOpen={isOpen}
+                onClose={onClose}
+            />
         </section>
     );
 }

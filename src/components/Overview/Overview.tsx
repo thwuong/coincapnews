@@ -13,13 +13,38 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 import clsx from "clsx";
+import { NewDataType } from "@/app/types";
+import getNewData from "@/app/utils/getNewData";
+import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 const LineChartOverview = dynamic(() => import("../Charts/").then((mod) => mod.LineChartOverview));
-
-function Overview() {
+type OverviewProps = {
+    description: any;
+    market_data: {
+        total_volume: any;
+        low_24h: any;
+        high_24h: any;
+        price_change_percentage_24h_in_currency: any;
+        current_price: any;
+        price_change_24h_in_currency: any;
+        market_cap: any;
+        fully_diluted_valuation: any;
+        market_cap_change_percentage_24h: number;
+        ath: any;
+        atl: any;
+        atl_change_percentage: any;
+        ath_change_percentage: any;
+        total_supply: number;
+        max_supply: number;
+        circulating_supply: number;
+    };
+    market_cap_rank: number;
+};
+function Overview({ overviewData, newData }: { overviewData: OverviewProps; newData: NewDataType | any }) {
     const [tabActive, setTabActive] = useState("price");
     const [datetime, setDatetime] = useState("1D");
     const [isMore, setIsMore] = useState(false);
     const [readMore, setReadMore] = useState(false);
+
     return (
         <section className="grid grid-cols-12 gap-5 w-full max-lg:grid-cols-1">
             {/* Chart */}
@@ -140,39 +165,12 @@ function Overview() {
                             readMore ? "h-auto" : "h-[300px]"
                         )}
                     >
-                        <p>
-                            Bitcoin is the first successful internet money based on peer-to-peer technology; whereby no
-                            central bank or authority is involved in the transaction and production of the Bitcoin
-                            currency. It was created by an anonymous individual/group under the name, Satoshi Nakamoto.
-                            The source code is available publicly as an open source project, anybody can look at it and
-                            be part of the developmental process.
-                        </p>
-                        <br />
-                        <p>
-                            Bitcoin is changing the way we see money as we speak. The idea was to produce a means of
-                            exchange, independent of any central authority, that could be transferred electronically in
-                            a secure, verifiable and immutable way. It is a decentralized peer-to-peer internet currency
-                            making mobile payment easy, very low transaction fees, protects your identity, and it works
-                            anywhere all the time with no central authority and banks.
-                        </p>
-                        <br />
-                        <p>
-                            Bitcoin is designed to have only 21 million BTC ever created, thus making it a deflationary
-                            currency. Bitcoin uses the SHA-256 hashing algorithm with an average transaction
-                            confirmation time of 10 minutes. Miners today are mining Bitcoin using ASIC chip dedicated
-                            to only mining Bitcoin, and the hash rate has shot up to peta hashes.
-                        </p>
-                        <br />
-                        <p>
-                            Being the first successful online cryptography currency, Bitcoin has inspired other
-                            alternative currencies such as Litecoin, Peercoin, Primecoin, and so on.
-                        </p>
-                        <br />
-                        <p>
-                            The cryptocurrency then took off with the innovation of the turing-complete smart contract
-                            by Ethereum which led to the development of other amazing projects such as EOS, Tron, and
-                            even crypto-collectibles such as CryptoKitties.
-                        </p>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: overviewData.description["en"],
+                            }}
+                            id="description"
+                        ></div>
                         {!readMore && (
                             <div className="absolute bottom-0 h-1/3 w-full bg-gradient-to-b from-white/0 to-white"></div>
                         )}
@@ -222,17 +220,27 @@ function Overview() {
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Price Today</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">BitcoinPrice</p>
-                                <p className="font-semibold text-sm">{"$61,180.00"}</p>
+                                <p className="font-semibold text-sm">
+                                    {formatCurrency(
+                                        getNewData(newData?.price, overviewData.market_data.current_price["usd"])
+                                    )}
+                                </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Trading Volume</p>
-                                <p className="font-semibold text-sm">{"$13,323,496,009.00"}</p>
+                                <p className="font-semibold text-sm">
+                                    {formatCurrency(overviewData.market_data.total_volume["usd"])}
+                                </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Price Change 24h</p>
                                 <Stat className="text-right">
                                     <StatNumber>
-                                        <p className="font-semibold text-sm">{"$61,180.00"}</p>
+                                        <p className="font-semibold text-sm">
+                                            {formatCurrency(
+                                                overviewData.market_data.price_change_24h_in_currency["usd"]
+                                            )}
+                                        </p>
                                     </StatNumber>
                                     <StatHelpText
                                         fontSize={"12px"}
@@ -240,17 +248,33 @@ function Overview() {
                                         className={10 > 0 ? "text-up" : "text-down"}
                                     >
                                         <StatArrow type="increase" w={"8px"} h={"8px"} />
-                                        9.05%
+                                        {getNewData(
+                                            newData?.change24,
+                                            overviewData.market_data.market_cap_change_percentage_24h
+                                        ).toFixed(2)}
+                                        %
                                     </StatHelpText>
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">24h Low / 24h High</p>
+                                <p className="font-semibold text-sm">
+                                    {formatCurrency(overviewData.market_data.low_24h["usd"])} {" / "}
+                                    {formatCurrency(overviewData.market_data.high_24h["usd"])}
+                                </p>
+                            </Box>
+                            <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Volume / Market Cap</p>
-                                <p className="font-semibold text-sm">{"$61,180.00"}</p>
+                                <p className="font-semibold text-sm">
+                                    {formatQuoteCurrency(
+                                        overviewData.market_data.total_volume["usd"] /
+                                            overviewData.market_data.market_cap["usd"]
+                                    )}
+                                </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Market Rank</p>
-                                <p className="font-semibold text-sm">#1</p>
+                                <p className="font-semibold text-sm">#{overviewData.market_cap_rank}</p>
                             </Box>
                         </li>
                         {/* BitcoinMarket Cap */}
@@ -258,11 +282,15 @@ function Overview() {
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">BitcoinMarket Cap</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Market Cap</p>
-                                <p className="font-semibold text-sm">{"$61,180.00"}</p>
+                                <p className="font-semibold text-sm">
+                                    {formatCurrency(overviewData.market_data.market_cap["usd"])}
+                                </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Fully Diluted Market Cap</p>
-                                <p className="font-semibold text-sm">{"$13,323,496,009.00"}</p>
+                                <p className="font-semibold text-sm">
+                                    {formatCurrency(overviewData.market_data.fully_diluted_valuation["usd"])}
+                                </p>
                             </Box>
                         </li>
                         {/* Bitcoin Price Yesterday */}
@@ -270,27 +298,33 @@ function Overview() {
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Price Yesterday</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Low / High</p>
-                                <p className="font-semibold text-sm">$60,698.00 / $61,759.00</p>
+                                <p className="font-semibold text-sm">
+                                    {formatCurrency(overviewData.market_data.low_24h["usd"])} {" / "}
+                                    {formatCurrency(overviewData.market_data.high_24h["usd"])}
+                                </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Change</p>
                                 <Stat className="text-right">
-                                    <StatNumber>
-                                        <p className="font-semibold text-sm">{"$61,180.00"}</p>
-                                    </StatNumber>
                                     <StatHelpText
                                         fontSize={"12px"}
                                         fontWeight={"600"}
-                                        className={10 > 0 ? "text-up" : "text-down"}
+                                        className={
+                                            overviewData.market_data.market_cap_change_percentage_24h > 0
+                                                ? "text-up"
+                                                : "text-down"
+                                        }
                                     >
                                         <StatArrow type="increase" w={"8px"} h={"8px"} />
-                                        9.05%
+                                        {overviewData.market_data.market_cap_change_percentage_24h.toFixed(2)}%
                                     </StatHelpText>
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Volume</p>
-                                <p className="font-semibold text-sm">$1,211,708,334,224.00</p>
+                                <p className="font-semibold text-sm">
+                                    {formatCurrency(overviewData.market_data.market_cap["usd"])}
+                                </p>
                             </Box>
                         </li>
                         {/* BitcoinPrice History */}
@@ -300,15 +334,32 @@ function Overview() {
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">All Time High</p>
                                 <Stat className="text-right">
                                     <StatNumber>
-                                        <p className="font-semibold text-sm">{"$61,180.00"}</p>
+                                        <p className="font-semibold text-sm">
+                                            {formatCurrency(overviewData.market_data.ath["usd"])}
+                                        </p>
                                     </StatNumber>
                                     <StatHelpText
                                         fontSize={"12px"}
                                         fontWeight={"600"}
-                                        className={10 > 0 ? "text-up" : "text-down"}
+                                        className={
+                                            overviewData.market_data.ath_change_percentage["usd"] > 0
+                                                ? "text-up"
+                                                : "text-down"
+                                        }
                                     >
-                                        <StatArrow type="increase" w={"8px"} h={"8px"} />
-                                        9.05%
+                                        <StatArrow
+                                            type={
+                                                overviewData.market_data.ath_change_percentage["usd"] > 0
+                                                    ? "increase"
+                                                    : "decrease"
+                                            }
+                                            w={"8px"}
+                                            h={"8px"}
+                                        />
+                                        {formatQuoteCurrency(
+                                            overviewData.market_data.ath_change_percentage["usd"].toFixed(2)
+                                        )}
+                                        %
                                     </StatHelpText>
                                 </Stat>
                             </Box>
@@ -316,15 +367,32 @@ function Overview() {
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">All Time Low</p>
                                 <Stat className="text-right">
                                     <StatNumber>
-                                        <p className="font-semibold text-sm">{"$61,180.00"}</p>
+                                        <p className="font-semibold text-sm">
+                                            {formatCurrency(overviewData.market_data.atl["usd"])}
+                                        </p>
                                     </StatNumber>
                                     <StatHelpText
                                         fontSize={"12px"}
                                         fontWeight={"600"}
-                                        className={10 > 0 ? "text-up" : "text-down"}
+                                        className={
+                                            overviewData.market_data.atl_change_percentage["usd"] > 0
+                                                ? "text-up"
+                                                : "text-down"
+                                        }
                                     >
-                                        <StatArrow type="increase" w={"8px"} h={"8px"} />
-                                        9.05%
+                                        <StatArrow
+                                            type={
+                                                overviewData.market_data.atl_change_percentage["usd"] > 0
+                                                    ? "increase"
+                                                    : "decrease"
+                                            }
+                                            w={"8px"}
+                                            h={"8px"}
+                                        />
+                                        {formatQuoteCurrency(
+                                            overviewData.market_data.atl_change_percentage["usd"].toFixed(2)
+                                        )}
+                                        %
                                     </StatHelpText>
                                 </Stat>
                             </Box>
@@ -347,15 +415,21 @@ function Overview() {
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Supply</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Circulating Supply</p>
-                                <p className="font-semibold text-sm">19,697,531.00</p>
+                                <p className="font-semibold text-sm">
+                                    {formatQuoteCurrency(overviewData.market_data.circulating_supply)}
+                                </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Total Supply</p>
-                                <p className="font-semibold text-sm">21,000,000.00</p>
+                                <p className="font-semibold text-sm">
+                                    {formatQuoteCurrency(overviewData.market_data.total_supply)}
+                                </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Max Supply</p>
-                                <p className="font-semibold text-sm">21,000,000.00</p>
+                                <p className="font-semibold text-sm">
+                                    {formatQuoteCurrency(overviewData.market_data.max_supply)}
+                                </p>
                             </Box>
                         </li>
                     </ul>

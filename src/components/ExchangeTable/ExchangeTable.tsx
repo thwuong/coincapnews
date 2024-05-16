@@ -14,48 +14,57 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 type Exchange = {
-    name: string;
-    pair: string;
-    price: number;
-    volume: number;
-    update: string;
+    coin_id: string;
+    market: {
+        name: string;
+    };
+    converted_volume: any;
+    converted_last: any;
+    base: string;
+    target: string;
 };
 export type ExchangeTableProps = {
     data: Exchange[];
     isLoading: boolean;
+    currentIndex?: number;
 };
 const columnHelper = createColumnHelper<Exchange>();
 
 const columns: ColumnDef<Exchange, any>[] = [
     columnHelper.group({
         header: "#",
+        columns: [
+            columnHelper.accessor("coin_id", {
+                cell: (info) => info.getValue(),
+            }),
+        ],
     }),
-    columnHelper.accessor("name", {
+    columnHelper.accessor("market.name", {
         cell: (info) => info.getValue(),
         header: "Name",
     }),
-    columnHelper.accessor("pair", {
+    columnHelper.accessor("base", {
         cell: (info) => info.getValue(),
         header: "Pair",
         meta: {
             center: true,
         },
     }),
-    columnHelper.accessor("price", {
+    columnHelper.accessor("converted_last", {
         cell: (info) => info.getValue(),
         header: "Price",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("volume", {
+    columnHelper.accessor("converted_volume", {
         cell: (info) => info.getValue(),
         header: "Volume (24H)",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("update", {
+    columnHelper.accessor("target", {
         cell: (info) => info.getValue(),
         header: "Update",
         meta: {
@@ -63,7 +72,7 @@ const columns: ColumnDef<Exchange, any>[] = [
         },
     }),
 ];
-function ExchangeTable({ data, isLoading }: ExchangeTableProps) {
+function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const table = useReactTable({
         columns,
@@ -90,7 +99,7 @@ function ExchangeTable({ data, isLoading }: ExchangeTableProps) {
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        bg={"#fff"}
+                                        className="bg-secondary"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -142,14 +151,9 @@ function ExchangeTable({ data, isLoading }: ExchangeTableProps) {
                     {!isLoading
                         ? table.getRowModel().rows.map((row, index) => {
                               return (
-                                  <Tr key={row.original.name}>
-                                      <Td
-                                          px={"8px"}
-                                          position={width <= 768 ? "sticky" : undefined}
-                                          left={0}
-                                          bg={"#fff"}
-                                      >
-                                          {index + 1}
+                                  <Tr key={row.index}>
+                                      <Td px={"8px"} position={width <= 768 ? "sticky" : undefined} left={0}>
+                                          {index + 1 + currentIndex}
                                       </Td>
                                       <Td
                                           px={"4px"}
@@ -159,27 +163,27 @@ function ExchangeTable({ data, isLoading }: ExchangeTableProps) {
                                           bg={"#fff"}
                                       >
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
-                                              {row.original.name}
+                                              {row.original.market.name}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="uppercase text-center text-sm leading-4 font-medium text-primary-1 ">
-                                              {row.original.pair}
+                                              {row.original.base}/{row.original.target}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.price)}
+                                              {formatCurrency(row.original.converted_last["usd"])}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.volume)}
+                                              {formatCurrency(row.original.converted_volume["usd"])}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {row.original.update}
+                                              Recently
                                           </p>
                                       </Td>
                                   </Tr>
@@ -195,7 +199,6 @@ function ExchangeTable({ data, isLoading }: ExchangeTableProps) {
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
-                                              bg={"#fff"}
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />

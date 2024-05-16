@@ -1,5 +1,5 @@
 import { StyleFunctionProps, extendTheme } from "@chakra-ui/react";
-
+import "@fontsource/inter";
 const overrides = extendTheme({
     styles: {
         global: (props: StyleFunctionProps) => ({
