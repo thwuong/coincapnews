@@ -19,6 +19,8 @@ import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency"
 const LineChartOverview = dynamic(() => import("../Charts/").then((mod) => mod.LineChartOverview));
 type OverviewProps = {
     description: any;
+    name: string;
+    symbol: string;
     market_data: {
         total_volume: any;
         low_24h: any;
@@ -158,7 +160,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                 />
                 {/* About coin */}
                 <div className="py-6 flex flex-col gap-5">
-                    <h2 className="text-[25px] font-bold text-typo-4">About Bitcoin</h2>
+                    <h2 className="text-[25px] font-bold text-typo-4">About {overviewData.name}</h2>
                     <div
                         className={clsx(
                             "text-base text-typo-1 leading-[26px] overflow-hidden relative",
@@ -191,7 +193,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
             <div className="col-span-4 flex flex-col mt-12 gap-6 max-lg:col-span-1">
                 <div className="rounded-lg border border-[rgb(239,242,245)]">
                     <Box className="py-5 px-4 flex items-center justify-between gap-4" bg={"white"}>
-                        <p className="font-semibold text-sm text-black uppercase">BTC</p>
+                        <p className="font-semibold text-sm text-black uppercase">{overviewData.symbol}</p>
                         <NumberInput>
                             <NumberInputField
                                 px={"0px"}
@@ -213,13 +215,17 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                 </div>
                 {/* Price Status */}
                 <div className="rounded-lg bg-secondary p-6 flex flex-col gap-6">
-                    <h2 className="text-2xl font-bold text-typo-4">BTC Price Status</h2>
+                    <h2 className="text-2xl font-bold text-typo-4">
+                        <span className="uppercase">{overviewData.symbol}</span> Price Status
+                    </h2>
                     <ul className={clsx("flex flex-col gap-6 overflow-hidden", isMore ? "h-auto" : "h-[430px]")}>
                         {/* Bitcoin Price Today */}
                         <li className="flex flex-col">
-                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Price Today</h6>
+                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">
+                                {overviewData.name} Price Today
+                            </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">BitcoinPrice</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">{overviewData.name}Price</p>
                                 <p className="font-semibold text-sm">
                                     {formatCurrency(
                                         getNewData(newData?.price, overviewData.market_data.current_price["usd"])
@@ -279,7 +285,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                         </li>
                         {/* BitcoinMarket Cap */}
                         <li className="flex flex-col">
-                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">BitcoinMarket Cap</h6>
+                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">
+                                {overviewData.name}Market Cap
+                            </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Market Cap</p>
                                 <p className="font-semibold text-sm">
@@ -295,7 +303,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                         </li>
                         {/* Bitcoin Price Yesterday */}
                         <li className="flex flex-col">
-                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Price Yesterday</h6>
+                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">
+                                {overviewData.name} Price Yesterday
+                            </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Low / High</p>
                                 <p className="font-semibold text-sm">
@@ -329,7 +339,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                         </li>
                         {/* BitcoinPrice History */}
                         <li className="flex flex-col">
-                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">BitcoinPrice History</h6>
+                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">
+                                {overviewData.name}Price History
+                            </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">All Time High</p>
                                 <Stat className="text-right">
@@ -397,7 +409,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">Bitcoin ROI</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap ">{overviewData.name} ROI</p>
                                 <Stat className="text-right">
                                     <StatHelpText
                                         fontSize={"12px"}
@@ -412,7 +424,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                         </li>
                         {/* Bitcoin Supply */}
                         <li className="flex flex-col">
-                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">Bitcoin Supply</h6>
+                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">{overviewData.name} Supply</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Circulating Supply</p>
                                 <p className="font-semibold text-sm">
