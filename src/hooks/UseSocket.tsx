@@ -1,16 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import { socket } from "../socket/client";
+import { connectSocket } from "../socket/client";
 function UseSocket() {
     const [isConnected, setIsConnected] = useState(false);
     const [stream, setStream] = useState<any>({});
+    const [scInstance, setScInstance] = useState<WebSocket>();
 
     useEffect(() => {
-        if (socket.OPEN) {
-            onConnect();
-        }
-
-        function onConnect() {
+        const socket = connectSocket();
+        function onConnect(this: WebSocket) {
+            setScInstance(this);
             setIsConnected(true);
         }
 
@@ -39,6 +38,7 @@ function UseSocket() {
     return {
         isConnected,
         stream,
+        scInstance,
     };
 }
 

@@ -1,5 +1,7 @@
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import getNewData from "@/app/utils/getNewData";
 import UseResize from "@/hooks/UseResize";
+import { connectSocket } from "@/socket/client";
 import {
     Badge,
     Box,
@@ -22,13 +24,11 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { UnitConversion } from "../TableSection/TableSection";
-import dynamic from "next/dynamic";
-import UseSocket from "@/hooks/UseSocket";
-import getNewData from "@/app/utils/getNewData";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 export type DataTableProps = {
     data: UnitConversion[];
@@ -37,6 +37,9 @@ export type DataTableProps = {
 };
 function CoinTable({ data, columns, isLoading }: DataTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [scInstance, setScInstance] = React.useState<WebSocket>();
+    const [stream, setStream] = React.useState<any>({});
+
     const table = useReactTable({
         columns,
         data,
@@ -48,7 +51,38 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
         },
     });
     const [width] = UseResize();
-    const { stream } = UseSocket();
+    const router = useRouter();
+    const nextPage = (href: string) => {
+        scInstance?.close();
+        router.push(`/currency/${href}`);
+    };
+    React.useEffect(() => {
+        const socket = connectSocket();
+        function onConnect(this: WebSocket) {
+            setScInstance(this);
+        }
+
+        function onDisconnect() {}
+        function getMessage(this: WebSocket, ev: MessageEvent<any>) {
+            const streamData = JSON.parse(ev.data);
+            setStream((preStream: any) => ({
+                ...preStream,
+                [streamData.data.s]: {
+                    price: parseFloat(streamData.data.c),
+                    change24: parseFloat(streamData.data.P),
+                },
+            }));
+        }
+
+        socket.onopen = onConnect;
+        socket.onmessage = getMessage;
+
+        return () => {
+            socket.onclose = onConnect;
+            socket.onclose = onDisconnect;
+            socket.close();
+        };
+    }, []);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -134,7 +168,12 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                   width={14}
                                                   height={14}
                                               />
-                                              <Link href={`/currency/${row.original._source.id}`}>
+                                              <div
+                                                  className="flex items-center gap-2 cursor-pointer"
+                                                  onClick={() => {
+                                                      nextPage(row.original._source.id);
+                                                  }}
+                                              >
                                                   <Image
                                                       className="cursor-pointer"
                                                       src={row.original._source.image}
@@ -142,27 +181,23 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                       width={24}
                                                       height={24}
                                                   />
-                                              </Link>
-                                              <Box
-                                                  flexDirection={"column"}
-                                                  as={Link}
-                                                  href={`/currency/${row.original._source.id}`}
-                                              >
-                                                  <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
-                                                      {row.original._source.name}
-                                                  </p>
-                                                  <Box display={"flex"} alignItems={"center"} gap={"4px"}>
-                                                      <Badge
-                                                          p={"4px"}
-                                                          className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
-                                                      >
-                                                          {row.original._source.market_cap_rank}
-                                                      </Badge>
-                                                      <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
-                                                          {row.original._source.symbol}
-                                                      </span>
+                                                  <Box flexDirection={"column"}>
+                                                      <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
+                                                          {row.original._source.name}
+                                                      </p>
+                                                      <Box display={"flex"} alignItems={"center"} gap={"4px"}>
+                                                          <Badge
+                                                              p={"4px"}
+                                                              className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
+                                                          >
+                                                              {row.original._source.market_cap_rank}
+                                                          </Badge>
+                                                          <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
+                                                              {row.original._source.symbol}
+                                                          </span>
+                                                      </Box>
                                                   </Box>
-                                              </Box>
+                                              </div>
                                           </Box>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>

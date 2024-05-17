@@ -32,6 +32,9 @@ export default function Page({ params }: { params: { symbol: string } }) {
             });
         }
         socket.onmessage = getMessage;
+        () => {
+            socket.close();
+        };
     }, [coin]);
     if (isLoading) return <SpinnerLoading />;
     return (
@@ -39,7 +42,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
             <Container className="px-12 flex-col gap-4">
                 <div className="grid grid-cols-3 w-full items-center gap-8 max-lg:grid-cols-1">
                     <div className="flex flex-col gap-4 items-center ">
-                        <Image src={"/assets/images/bitcoin.webp"} alt="bitcoin" width={88} height={88} />
+                        <Image src={coin.image.small} alt="bitcoin" width={88} height={88} />
                         <div className="flex items-center gap-2">
                             <h4 className="text-2xl leading-[38px] text-typo-4 font-bold capitalize">{coin.id}</h4>
                             <span className="text-base leading-9 text-typo-1 uppercase">{coin.symbol}</span>
@@ -62,7 +65,9 @@ export default function Page({ params }: { params: { symbol: string } }) {
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 items-start ">
-                        <p className="text-[13px] font-medium leading-[21px] text-typo-1">Bitcoin Price (BTC)</p>
+                        <p className="text-[13px] font-medium leading-[21px] text-typo-1">
+                            {coin.name} Price <span className="uppercase">({coin.symbol})</span>
+                        </p>
                         <div className="flex items-center justify-between w-full">
                             <h4 className="font-bold text-[32px] leading-[41px]">
                                 {formatCurrency(getNewData(stream?.price, coin.market_data?.current_price["usd"]))}
@@ -88,7 +93,9 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                 </span>
                             </Button>
                         </div>
-                        <p className="text-base font-medium leading-[26px] text-typo-1">Bitcoin Price (BTC)</p>
+                        <p className="text-base font-medium leading-[26px] text-typo-1">
+                            {coin.name} Price <span className="uppercase">({coin.symbol})</span>
+                        </p>
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">24h Low / 24h High</p>
                             <p className="text-sm font-bold">
@@ -208,7 +215,7 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                     </span>
                                 </Button>
                             )}
-                            {coin.links.repos_url.github.length > 0 && (
+                            {coin.links.repos_url?.github.length > 0 && (
                                 <Button
                                     as={Link}
                                     href={coin.links.repos_url.github[0]}
