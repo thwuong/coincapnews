@@ -239,7 +239,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">Price Change 24h</p>
+                                <p className="text-typo-1 text-sm whitespace-nowrap">Price Change 24h</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
@@ -251,9 +251,27 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                     <StatHelpText
                                         fontSize={"12px"}
                                         fontWeight={"600"}
-                                        className={10 > 0 ? "text-up" : "text-down"}
+                                        className={
+                                            getNewData(
+                                                newData?.change24,
+                                                overviewData.market_data.market_cap_change_percentage_24h
+                                            ) > 0
+                                                ? "text-up"
+                                                : "text-down"
+                                        }
                                     >
-                                        <StatArrow type="increase" w={"8px"} h={"8px"} />
+                                        <StatArrow
+                                            type={
+                                                getNewData(
+                                                    newData?.change24,
+                                                    overviewData.market_data.market_cap_change_percentage_24h
+                                                ) > 0
+                                                    ? "increase"
+                                                    : "decrease"
+                                            }
+                                            w={"8px"}
+                                            h={"8px"}
+                                        />
                                         {getNewData(
                                             newData?.change24,
                                             overviewData.market_data.market_cap_change_percentage_24h
@@ -325,7 +343,15 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                                 : "text-down"
                                         }
                                     >
-                                        <StatArrow type="increase" w={"8px"} h={"8px"} />
+                                        <StatArrow
+                                            type={
+                                                overviewData.market_data.market_cap_change_percentage_24h > 0
+                                                    ? "increase"
+                                                    : "decrease"
+                                            }
+                                            w={"8px"}
+                                            h={"8px"}
+                                        />
                                         {overviewData.market_data.market_cap_change_percentage_24h.toFixed(2)}%
                                     </StatHelpText>
                                 </Stat>

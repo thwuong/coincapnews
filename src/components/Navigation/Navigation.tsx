@@ -18,7 +18,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
     return (
         <Box position={"relative"} className="group">
             <Button
-                as={Link}
+                as={"a"}
                 href={navItem.href}
                 bg={"transparent"}
                 _hover={{
@@ -56,7 +56,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     {navItem.children.map((item: NavItemType, index: number) => (
                         <Button
                             key={item.label}
-                            as={Link}
+                            as={"a"}
                             href={item.href}
                             className="group/child"
                             bg={"transparent"}

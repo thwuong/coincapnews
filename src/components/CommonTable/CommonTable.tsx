@@ -1,4 +1,3 @@
-import { CoinType } from "@/app/types";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import getNewData from "@/app/utils/getNewData";
 import UseResize from "@/hooks/UseResize";
@@ -19,6 +18,7 @@ import {
 import {
     ColumnDef,
     SortingState,
+    createColumnHelper,
     flexRender,
     getCoreRowModel,
     getSortedRowModel,
@@ -29,14 +29,92 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { CoinType } from "@/app/types";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
+
+const columnHelper = createColumnHelper<CoinType>();
+
+const columns = [
+    columnHelper.group({
+        header: "#",
+        columns: [
+            columnHelper.accessor("_source.id", {
+                cell: (info) => info.getValue(),
+            }),
+            columnHelper.accessor("_source.image", {
+                cell: (info) => info.getValue(),
+            }),
+            columnHelper.accessor("_source.market_cap_rank", {
+                cell: (info) => info.getValue(),
+            }),
+            columnHelper.accessor("_source.id", {
+                cell: (info) => info.getValue(),
+            }),
+        ],
+    }),
+    columnHelper.accessor("_source.name", {
+        cell: (info) => info.getValue(),
+        header: "Name",
+    }),
+    columnHelper.accessor("_source.current_price", {
+        cell: (info) => info.getValue(),
+        header: "Price",
+        meta: {
+            isNumeric: true,
+        },
+    }),
+    columnHelper.accessor("_source.price_change_percentage_1h_in_currency", {
+        cell: (info) => info.getValue(),
+        header: "1H",
+        meta: {
+            isNumeric: true,
+        },
+    }),
+    columnHelper.accessor("_source.price_change_percentage_24h_in_currency", {
+        cell: (info) => info.getValue(),
+        header: "24H",
+        meta: {
+            isNumeric: true,
+        },
+    }),
+    columnHelper.accessor("_source.price_change_percentage_7d_in_currency", {
+        cell: (info) => info.getValue(),
+        header: "7D",
+        meta: {
+            isNumeric: true,
+        },
+    }),
+    columnHelper.accessor("_source.volume_24h", {
+        cell: (info) => info.getValue(),
+        header: "Volume 24H",
+        meta: {
+            isNumeric: true,
+        },
+    }),
+    columnHelper.accessor("_source.market_cap", {
+        cell: (info) => info.getValue(),
+        header: "Market Cap",
+        meta: {
+            isNumeric: true,
+        },
+    }),
+    columnHelper.accessor("_source.sparkline_in_7d.price", {
+        cell: (info) => info.getValue(),
+        header: "Last 7 Days",
+        meta: {
+            isNumeric: true,
+        },
+    }),
+];
+
 export type DataTableProps = {
     data: CoinType[];
-    columns: ColumnDef<CoinType, any>[];
     isLoading: boolean;
+    currentIndex?: number;
 };
-function CoinTable({ data, columns, isLoading }: DataTableProps) {
+function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [scInstance, setScInstance] = React.useState<WebSocket>();
     const [stream, setStream] = React.useState<any>({});
 
     const table = useReactTable({
@@ -51,34 +129,37 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
     });
     const [width] = UseResize();
     const router = useRouter();
+    const nextPage = (href: string) => {
+        scInstance?.close();
+        router.push(`/currency/${href}`);
+    };
+    // React.useEffect(() => {
+    //     const socket = connectSocket();
+    //     function onConnect(this: WebSocket) {
+    //         setScInstance(this);
+    //     }
 
-    React.useEffect(() => {
-        if (!data) return;
-        const url = data.map((i) => `${i._source.symbol}usdt@ticker/`).join("");
-        const socket = connectSocket(url);
-        function onConnect(this: WebSocket) {}
+    //     function onDisconnect() {}
+    //     function getMessage(this: WebSocket, ev: MessageEvent<any>) {
+    //         const streamData = JSON.parse(ev.data);
+    //         setStream((preStream: any) => ({
+    //             ...preStream,
+    //             [streamData.data.s]: {
+    //                 price: parseFloat(streamData.data.c),
+    //                 change24: parseFloat(streamData.data.P),
+    //             },
+    //         }));
+    //     }
 
-        function onDisconnect() {}
-        function getMessage(this: WebSocket, ev: MessageEvent<any>) {
-            const streamData = JSON.parse(ev.data);
-            setStream((preStream: any) => ({
-                ...preStream,
-                [streamData.data.s]: {
-                    price: parseFloat(streamData.data.c),
-                    change24: parseFloat(streamData.data.P),
-                },
-            }));
-        }
+    //     socket.onopen = onConnect;
+    //     socket.onmessage = getMessage;
 
-        socket.onopen = onConnect;
-        socket.onmessage = getMessage;
-
-        return () => {
-            socket.onclose = onConnect;
-            socket.onclose = onDisconnect;
-            socket.close();
-        };
-    }, [data]);
+    //     return () => {
+    //         socket.onclose = onConnect;
+    //         socket.onclose = onDisconnect;
+    //         socket.close();
+    //     };
+    // }, []);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -148,6 +229,11 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
 
                               return (
                                   <Tr key={row.original._source.name}>
+                                      <Td px={"4px"}>
+                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                              {row.index + 1 + currentIndex}
+                                          </p>
+                                      </Td>
                                       <Td
                                           p={"4px"}
                                           minW={"104px"}
@@ -157,17 +243,11 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                           className="bg-secondary"
                                       >
                                           <Box display={"flex"} alignItems={"center"} gap={"8px"}>
-                                              <Image
-                                                  className="cursor-pointer"
-                                                  src={"/assets/icons/start.svg"}
-                                                  alt="sort-down"
-                                                  width={14}
-                                                  height={14}
-                                              />
-
-                                              <a
+                                              <div
                                                   className="flex items-center gap-2 cursor-pointer"
-                                                  href={`/currency/${row.original._source.id}`}
+                                                  onClick={() => {
+                                                      nextPage(row.original._source.id);
+                                                  }}
                                               >
                                                   <Image
                                                       className="cursor-pointer"
@@ -176,23 +256,10 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                       width={24}
                                                       height={24}
                                                   />
-                                                  <Box flexDirection={"column"}>
-                                                      <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
-                                                          {row.original._source.name}
-                                                      </p>
-                                                      <Box display={"flex"} alignItems={"center"} gap={"4px"}>
-                                                          <Badge
-                                                              p={"4px"}
-                                                              className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
-                                                          >
-                                                              {row.original._source.market_cap_rank}
-                                                          </Badge>
-                                                          <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
-                                                              {row.original._source.symbol}
-                                                          </span>
-                                                      </Box>
-                                                  </Box>
-                                              </a>
+                                                  <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
+                                                      {row.original._source.name}
+                                                  </p>
+                                              </div>
                                           </Box>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
@@ -211,7 +278,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                   "capitalize text-sm leading-4 font-semibold font-inter",
                                                   getNewData(
                                                       stream[convertId]?.change24,
-                                                      row.original._source.price_change_percentage_24h_in_currency
+                                                      row.original._source.price_change_percentage_1h_in_currency
                                                   ) > 0
                                                       ? "text-up"
                                                       : "text-down"
@@ -219,9 +286,21 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                           >
                                               {getNewData(
                                                   stream[convertId]?.change24,
-                                                  row.original._source.price_change_percentage_24h_in_currency
+                                                  row.original._source.price_change_percentage_1h_in_currency
                                               ).toFixed(2)}
                                               %
+                                          </p>
+                                      </Td>
+                                      <Td isNumeric={true} px={"4px"}>
+                                          <p
+                                              className={clsx(
+                                                  "capitalize text-sm leading-4 font-semibold font-inter",
+                                                  row.original._source.price_change_percentage_24h_in_currency > 0
+                                                      ? "text-up"
+                                                      : "text-down"
+                                              )}
+                                          >
+                                              {row.original._source.price_change_percentage_24h_in_currency.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
@@ -246,12 +325,6 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                               {formatQuoteCurrency(row.original._source.total_volume)}
                                           </p>
                                       </Td>
-                                      <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                          <div className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter flex gap-1 justify-end">
-                                              <p>{formatQuoteCurrency(row.original._source.total_supply)}</p>
-                                              <p className="uppercase">{row.original._source.symbol}</p>
-                                          </div>
-                                      </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"180px"}>
                                           <Box display={"flex"} justifyContent={"end"}>
                                               <LineChartLastDays
@@ -268,8 +341,11 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
+                                          <Td isNumeric={true} px={"4px"}>
+                                              <Skeleton height="14px" w={"40px"} />
+                                          </Td>
                                           <Td
-                                              height={"120px"}
+                                              height={"100px"}
                                               p={"4px"}
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
@@ -277,29 +353,29 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
-                                                  <Skeleton height="10px" width={"50%"} />
+                                                  <Skeleton height="14px" width={"50%"} />
                                               </div>
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"180px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                       </Tr>
                                   );
@@ -310,4 +386,4 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
     );
 }
 
-export default CoinTable;
+export default CommonTable;

@@ -154,11 +154,11 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     className="border-l border-white duration-300"
                 >
                     {navItem.children.map((item: NavItemType, index: number) => (
-                        <Link href={item.href || "/"} key={item.label}>
+                        <a href={item.href || "/"} key={item.label}>
                             <span className="text-base whitespace-nowrap leading-[1.5] font-bold text-white hover:text-typo-1 duration-300">
                                 {item.label}
                             </span>
-                        </Link>
+                        </a>
                     ))}
                 </Box>
             )}

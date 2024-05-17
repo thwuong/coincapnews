@@ -6,6 +6,7 @@ import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay 
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useToast } from "@chakra-ui/react";
 type ShareModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -15,12 +16,22 @@ type ShareModalProps = {
 };
 function ShareModal({ isOpen, onClose, newData, oldData, symbol }: ShareModalProps) {
     const [currentUrl, setCurrentUrl] = useState("");
+    const toast = useToast();
     useEffect(() => {
         if (typeof window !== undefined) {
             setCurrentUrl(window.location.href);
         }
     }, []);
-
+    const copyLink = () => {
+        navigator.clipboard.writeText(currentUrl);
+        toast({
+            title: "Link Copied",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+        });
+    };
     return (
         <Modal
             scrollBehavior={"inside"}
@@ -57,7 +68,13 @@ function ShareModal({ isOpen, onClose, newData, oldData, symbol }: ShareModalPro
                             <p className="text-12 font-medium text-black">Or copy link</p>
                             <div className="py-1 pr-1 pl-2 text-base rounded-lg border border-typo-1/20 flex gap-1 items-center">
                                 <p className="flex-1 text-12">{currentUrl}</p>
-                                <Button bg={"rgb(56,97,251)"} height={"fit-content"} w={"fit-content"} p={"8px 12px"}>
+                                <Button
+                                    bg={"rgb(56,97,251)"}
+                                    height={"fit-content"}
+                                    w={"fit-content"}
+                                    p={"8px 12px"}
+                                    onClick={copyLink}
+                                >
                                     <div className="flex items-center gap-1.5">
                                         <Image
                                             src={"/assets/icons/copy-white.svg"}
