@@ -99,3 +99,40 @@ export type NewDataType = {
     price?: number;
     change24?: number;
 };
+export type CoinType = {
+    _source: {
+        image: string;
+        name: string;
+        currency: string;
+        id: string;
+        atl: number;
+        atl_change_percentage: number;
+        circulating_supply: number;
+        current_price: number;
+        fully_diluted_valuation: number;
+        high_24h: number;
+        low_24h: number;
+        market_cap: number;
+        market_cap_change_24h: number;
+        market_cap_change_percentage_24h: number;
+        market_cap_rank: number;
+        max_supply: number;
+        price_change_24h: number;
+        price_change_percentage_1h_in_currency: number;
+        price_change_percentage_1y_in_currency: number;
+        price_change_percentage_7d_in_currency: number;
+        price_change_percentage_14d_in_currency: number;
+        price_change_percentage_24h: number;
+        price_change_percentage_24h_in_currency: number;
+        price_change_percentage_30d_in_currency: number;
+        price_change_percentage_200d_in_currency: number;
+        roi: string;
+        sparkline_in_7d: {
+            price: number[];
+        };
+        symbol: string;
+        total_supply: number;
+        total_volume: number;
+        volume_24h: number;
+    };
+};

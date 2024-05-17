@@ -7,7 +7,7 @@ function UseSocket() {
     const [scInstance, setScInstance] = useState<WebSocket>();
 
     useEffect(() => {
-        const socket = connectSocket();
+        const socket = connectSocket("/");
         function onConnect(this: WebSocket) {
             setScInstance(this);
             setIsConnected(true);

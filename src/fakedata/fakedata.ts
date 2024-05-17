@@ -36,32 +36,32 @@ export const navigationHeaderData: NavItemType[] = [
             {
                 icon: "/assets/icons/new.svg",
                 label: "Recently Added",
-                href: "/",
+                href: "/recently_added",
             },
             {
                 icon: "/assets/icons/nft.svg",
                 label: "NFT",
-                href: "/",
+                href: "/nft",
             },
             {
                 icon: "/assets/icons/bsc.svg",
                 label: "BSC",
-                href: "/",
+                href: "/bsc",
             },
             {
                 icon: "/assets/icons/defi.svg",
                 label: "DeFi",
-                href: "/",
+                href: "/defi",
             },
             {
                 icon: "/assets/icons/polka.svg",
                 label: "Polkadot Eco",
-                href: "/",
+                href: "/polkadot_eco",
             },
             {
                 icon: "/assets/icons/change.svg",
                 label: "Gainers And Losers",
-                href: "/",
+                href: "/gainers-and-losers",
             },
         ],
     },

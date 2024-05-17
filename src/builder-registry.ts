@@ -10,6 +10,7 @@ import { Auth } from "./components/Auth";
 import { TableSection } from "./components/TableSection";
 import { ConvertAmount } from "./components/ConvertAmount";
 import { Paragraph } from "./components/Paragraph";
+import { CommonSection } from "./components/CommonSection";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
@@ -114,4 +115,21 @@ Builder.registerComponent(withChildren(TableSection), {
 });
 Builder.registerComponent(withChildren(ConvertAmount), {
     name: "ConvertAmount",
+});
+Builder.registerComponent(withChildren(CommonSection), {
+    name: "CommonSection",
+    inputs: [
+        {
+            name: "totalPage",
+            type: "number",
+            defaultValue: 100,
+            required: true,
+        },
+        {
+            name: "perPage",
+            type: "number",
+            defaultValue: 10,
+            required: true,
+        },
+    ],
 });
