@@ -5,7 +5,7 @@ import { Box, Button, Input, InputGroup, InputLeftElement, useDisclosure } from 
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Container } from "../Container";
 import { MenuMobile } from "../MenuMobile";
 import { Navigation } from "../Navigation";
@@ -13,10 +13,9 @@ import { Topbar } from "../Topbar";
 function Header() {
     const [keyword, setKeyword] = useState<string>();
     const [searchList, setSearchList] = useState<CoinType[]>();
-
     const [scrollingUp] = UseScroll();
     const handlerSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setKeyword(e.target.value);
+        console.log(e.target.value);
     };
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -76,7 +75,7 @@ function Header() {
                                 <Image src={"/assets/icons/noti.svg"} alt="noti" width={24} height={24} />
                             </Box>
                             <Button
-                                as={"a"}
+                                as={Link}
                                 href={"/account"}
                                 bgColor={"#3861fb"}
                                 _hover={{

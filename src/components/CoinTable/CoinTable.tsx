@@ -27,6 +27,7 @@ import {
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
@@ -37,8 +38,7 @@ export type DataTableProps = {
 };
 function CoinTable({ data, columns, isLoading }: DataTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [stream, setStream] = React.useState<any>({});
-
+    let ref = React.useRef<any>();
     const table = useReactTable({
         columns,
         data,
@@ -50,7 +50,6 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
         },
     });
     const [width] = UseResize();
-    const router = useRouter();
 
     React.useEffect(() => {
         if (!data) return;
@@ -61,13 +60,15 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
         function onDisconnect() {}
         function getMessage(this: WebSocket, ev: MessageEvent<any>) {
             const streamData = JSON.parse(ev.data);
-            setStream((preStream: any) => ({
-                ...preStream,
-                [streamData.data.s]: {
-                    price: parseFloat(streamData.data.c),
-                    change24: parseFloat(streamData.data.P),
-                },
-            }));
+            document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`)!.innerHTML = formatCurrency(
+                parseFloat(streamData.data.c)
+            );
+            document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)!.innerHTML = `${parseFloat(
+                streamData.data.P
+            ).toFixed(2)}%`;
+            document
+                .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
+                ?.classList.add(streamData.data.P > 0 ? "text-up" : "text-down");
         }
 
         socket.onopen = onConnect;
@@ -141,13 +142,13 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                     ))}
                 </Thead>
                 {/* replace data */}
-                <Tbody>
+                <Tbody ref={ref}>
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               let convertId = `${row.original._source.symbol}USDT`.toLocaleUpperCase();
 
                               return (
-                                  <Tr key={row.original._source.name}>
+                                  <Tr key={row.original._source.name} data-symbol={convertId}>
                                       <Td
                                           p={"4px"}
                                           minW={"104px"}
@@ -165,7 +166,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                   height={14}
                                               />
 
-                                              <a
+                                              <Link
                                                   className="flex items-center gap-2 cursor-pointer"
                                                   href={`/currency/${row.original._source.id}`}
                                               >
@@ -192,36 +193,24 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                           </span>
                                                       </Box>
                                                   </Box>
-                                              </a>
+                                              </Link>
                                           </Box>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(
-                                                  getNewData(
-                                                      stream[convertId]?.price,
-                                                      row.original._source.current_price
-                                                  )
-                                              )}
+                                          <p className="capitalize price text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                              {formatCurrency(row.original._source.current_price)}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
-                                                  "capitalize text-sm leading-4 font-semibold font-inter",
-                                                  getNewData(
-                                                      stream[convertId]?.change24,
-                                                      row.original._source.price_change_percentage_24h_in_currency
-                                                  ) > 0
+                                                  "capitalize text-sm leading-4 change24 font-semibold font-inter",
+                                                  row.original._source.price_change_percentage_24h_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {getNewData(
-                                                  stream[convertId]?.change24,
-                                                  row.original._source.price_change_percentage_24h_in_currency
-                                              ).toFixed(2)}
-                                              %
+                                              {row.original._source.price_change_percentage_24h_in_currency.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>

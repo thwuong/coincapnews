@@ -154,11 +154,11 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     className="border-l border-white duration-300"
                 >
                     {navItem.children.map((item: NavItemType, index: number) => (
-                        <a href={item.href || "/"} key={item.label}>
+                        <Link href={item.href || "/"} key={item.label}>
                             <span className="text-base whitespace-nowrap leading-[1.5] font-bold text-white hover:text-typo-1 duration-300">
                                 {item.label}
                             </span>
-                        </a>
+                        </Link>
                     ))}
                 </Box>
             )}
@@ -172,7 +172,9 @@ function Footer() {
             <Container className="px-12 relative pt-32 flex-col gap-10">
                 <div className="max-lg:hidden w-full absolute top-0 translate-y-[-50%] flex justify-between py-10 px-8 bg-white rounded-lg shadow-xl">
                     <div className="flex items-center gap-8">
-                        <Image src={"/assets/icons/newletters.svg"} alt="newletters" width={45} height={45} />
+                        <Link href={"/"}>
+                            <Image src={"/assets/icons/newletters.svg"} alt="newletters" width={45} height={45} />
+                        </Link>
                         <div className="text-typo-4">
                             <h4 className="font-bold text-base  capitalize">Subscribe To Our Newsletter</h4>
                             <p className="text-[15px] leading-[22.5px] opacity-80">
