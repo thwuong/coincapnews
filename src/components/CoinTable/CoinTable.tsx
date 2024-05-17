@@ -1,5 +1,7 @@
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import getNewData from "@/app/utils/getNewData";
 import UseResize from "@/hooks/UseResize";
+import { connectSocket } from "@/socket/client";
 import {
     Badge,
     Box,
@@ -22,15 +24,11 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { UnitConversion } from "../TableSection/TableSection";
-import dynamic from "next/dynamic";
-import UseSocket from "@/hooks/UseSocket";
-import getNewData from "@/app/utils/getNewData";
-import { useRouter } from "next/navigation";
-import { connectSocket } from "@/socket/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 export type DataTableProps = {
     data: UnitConversion[];
