@@ -1,19 +1,17 @@
 import MainLayout from "@/components/Layouts/MainLayout";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { WEBSITE_HOST_URL } from "./contants";
 import "./globals.css";
-const Header = dynamic(() => import("@/components/Header/Header"));
 
 const meta = {
     title: "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",
     description:
         "Top cryptocurrency prices and charts, listed by market capitalization. Free access to current and historic data for Bitcoin and thousands of altcoins.",
-    image: `${WEBSITE_HOST_URL}/images/logo.png`,
+    image: `${WEBSITE_HOST_URL}images/logo.png`,
 };
 export const metadata: Metadata = {
     title: {
-        template: "%s - Title",
+        template: "%s",
         default: meta.title,
     },
     description: meta.description,

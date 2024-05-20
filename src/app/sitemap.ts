@@ -1,24 +1,25 @@
 import { MetadataRoute } from "next";
-// import { getAllArticles } from "@/lib/articles";
-import { WEBSITE_HOST_URL } from "./contants";
+import { NEWS_HOST_URL, WEBSITE_HOST_URL } from "./contants";
+import { FeedType } from "./types";
 
 type changeFrequency = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    let articles = [
-        {
-            id: "abc",
+    const response = await fetch(`${NEWS_HOST_URL}`, {
+        headers: {
+            Authorization: "Basic ZmxtOlhpelB5RHFQYTk1eUdkVUwoeXUhdzlqVQ==",
         },
-    ];
+    });
+    const articles = await response.json();
     const changeFrequency = "daily" as changeFrequency;
 
-    const posts = articles.map(({ id }: { id: string }) => ({
-        url: `${WEBSITE_HOST_URL}/posts/${id}`,
+    const posts = articles.map(({ post_title }: FeedType) => ({
+        url: `${WEBSITE_HOST_URL}news/${post_title}`,
         lastModified: new Date(),
         changeFrequency,
     }));
 
-    const routes = ["", "/about", "/posts"].map((route) => ({
+    const routes = ["", "about", "news"].map((route) => ({
         url: `${WEBSITE_HOST_URL}${route}`,
         lastModified: new Date().toISOString(),
         changeFrequency,

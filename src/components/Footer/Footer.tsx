@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Container } from "../Container";
+import { navigationHeaderData } from "@/fakedata/fakedata";
 const navData: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
@@ -155,7 +156,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                 >
                     {navItem.children.map((item: NavItemType, index: number) => (
                         <Link href={item.href || "/"} key={item.label}>
-                            <span className="text-base whitespace-nowrap leading-[1.5] font-bold text-white hover:text-typo-1 duration-300">
+                            <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-bold text-white hover:text-typo-1 duration-300">
                                 {item.label}
                             </span>
                         </Link>
@@ -266,7 +267,7 @@ function Footer() {
                             SUPPORT
                         </h3>
                         <nav className="flex flex-col gap-4">
-                            {navDataOfSupport.map((item, index) => {
+                            {navigationHeaderData.map((item, index) => {
                                 return <NavItem key={index} navItem={item} />;
                             })}
                         </nav>
