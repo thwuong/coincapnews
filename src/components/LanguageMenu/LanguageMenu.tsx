@@ -32,7 +32,7 @@ function LanguageMenu() {
             >
                 <span className="text-12 font-semibold">{currentLang.label}</span>
             </MenuButton>
-            <MenuList p={2}>
+            <MenuList p={2} zIndex={11}>
                 {langData
                     .filter((item) => item.code !== currentLang.code)
                     .map((item) => (

@@ -24,7 +24,7 @@ export const currenciesData = [
 ];
 export const navigationHeaderData: NavItemType[] = [
     {
-        icon: "/assets/images/bnb.webp",
+        icon: "/assets/icons/coin.svg",
         label: "Crypto",
         href: "/",
         children: [
@@ -66,7 +66,7 @@ export const navigationHeaderData: NavItemType[] = [
         ],
     },
     {
-        icon: "/assets/icons/bnb.webp",
+        icon: "/assets/icons/exchange.svg",
         label: "Exchanges",
         href: "/spot",
         children: [
@@ -88,17 +88,17 @@ export const navigationHeaderData: NavItemType[] = [
         ],
     },
     {
-        icon: "/assets/icons/bnb.webp",
+        icon: "/assets/icons/news.svg",
         label: "Knowledge",
         href: "/knowledge",
     },
     {
-        icon: "/assets/icons/bnb.webp",
+        icon: "/assets/icons/convert.svg",
         label: "Converter",
         href: "/converter",
     },
     {
-        icon: "/assets/icons/bnb.webp",
+        icon: "/assets/icons/newspaper.svg",
         label: "News",
         href: "/news",
     },

@@ -13,7 +13,6 @@ import { Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-export const dynamicParams = true;
 export default function Page({ params }: { params: { symbol: string } }) {
     const [stream, setStream] = useState<NewDataType | any>();
     const { data: coin, isLoading }: { data: DetailCoinType; isLoading: boolean } = useFetchAPI(
