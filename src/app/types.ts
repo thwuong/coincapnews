@@ -56,6 +56,7 @@ export type FeedType = {
     post_excerpt: string;
     post_thumbnail: string;
     post_date: string;
+    post_permalink: string;
     author: {
         avatar: string;
         name: string;
@@ -93,6 +94,7 @@ export type NavItemType = {
     label?: string;
     href?: string;
     icon?: string;
+    key?: string;
     children?: NavItemType[];
 };
 export type NewDataType = {

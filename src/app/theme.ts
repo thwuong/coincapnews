@@ -1,10 +1,11 @@
 import { StyleFunctionProps, extendTheme } from "@chakra-ui/react";
-import "@fontsource/inter";
+// Supports weights 100-900
+import "@fontsource-variable/inter";
 const overrides = extendTheme({
     styles: {
         global: (props: StyleFunctionProps) => ({
             body: {
-                fontFamily: '"Inter", sans-serif',
+                fontFamily: '"Inter Variable", sans-serif',
             },
         }),
     },

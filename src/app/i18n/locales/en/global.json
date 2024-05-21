@@ -1,0 +1,47 @@
+{
+    "topbar": {
+        "cryptos" : "Cryptos",
+        "market" : "Market",
+        "24h_vol" : "24h Vol",
+        "dominance" : "Dominance"
+    },
+    "header" : {
+        "crypto" : "Crypto",
+        "coin_ranking" : "Coin ranking",
+        "recently_added" : "Recently Added",
+        "nft" : "NFT",
+        "bsc" : "BSC",
+        "defi" : "DeFi",
+        "polkadot_eco" : "Polkadot Eco",
+        "gainers_and_losers" : "Gainers And Losers",
+        "exchanges" : "Exchanges",
+        "spot" : "Spot",
+        "derivatives" : "Derivatives",
+        "dex" : "DEX",
+        "knowledge": "Knowledge",
+        "converter": "Converter",
+        "news": "News"
+    },
+    "footer" : {
+        "crypto" : "Crypto",
+        "coin_ranking" : "Coin ranking",
+        "recently_added" : "Recently Added",
+        "nft" : "NFT",
+        "bsc" : "BSC",
+        "defi" : "DeFi",
+        "polkadot_eco" : "Polkadot Eco",
+        "gainers_and_losers" : "Gainers And Losers",
+        "exchanges" : "Exchanges",
+        "spot" : "Spot",
+        "derivatives" : "Derivatives",
+        "dex" : "DEX",
+        "knowledge": "Knowledge",
+        "converter": "Converter",
+        "news": "News",
+        "about" : "About",
+        "privacy" : "Privacy",
+        "terms" : "Terms",
+        "faq": "FAQ",
+        "submit_coin": "Submit coin"
+    }
+}

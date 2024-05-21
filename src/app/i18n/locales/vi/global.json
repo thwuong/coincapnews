@@ -1,0 +1,47 @@
+{
+  "topbar": {
+    "cryptos" : "Các loại tiền điện tử",
+    "market" : "Market",
+    "24h_vol" : "Khối lượng giao dịch trong 24 giờ",
+    "dominance" : "Tỷ lệ thống trị"
+},
+    "header": {
+        "crypto": "Tiền điện tử",
+        "coin_ranking": "Xếp hàng",
+        "recently_added": "Tiền điện tử vừa cập nhật",
+        "nft": "NFT",
+        "bsc": "BSC",
+        "defi": "DeFi",
+        "polkadot_eco": "Sinh thái chấm bi",
+        "gainers_and_losers": "Đồng tiền tăng giá & rớt giá",
+        "exchanges": "Sàn giao dịch",
+        "spot": "Giao ngay",
+        "derivatives": "Phát sinh",
+        "dex": "DEX",
+        "knowledge": "Kiến thức",
+        "converter": "Bộ quy đổi",
+        "news": "Tin tức"
+      },
+      "footer" : {
+        "crypto": "Tiền điện tử",
+        "coin_ranking": "Xếp hàng",
+        "recently_added": "Tiền điện tử vừa cập nhật",
+        "nft": "NFT",
+        "bsc": "BSC",
+        "defi": "DeFi",
+        "polkadot_eco": "Sinh thái chấm bi",
+        "gainers_and_losers": "Đồng tiền tăng giá & rớt giá",
+        "exchanges": "Sàn giao dịch",
+        "spot": "Giao ngay",
+        "derivatives": "Phát sinh",
+        "dex": "DEX",
+        "knowledge": "Kiến thức",
+        "converter": "Bộ quy đổi",
+        "news": "Tin tức",
+        "about" : "Thông tin",
+        "privacy" : "Bảo mật",
+        "terms" : "Điều khoản dịch vụ",
+        "faq": "Câu hỏi thường gặp",
+        "submit_coin": "Thêm coin"
+    }
+}

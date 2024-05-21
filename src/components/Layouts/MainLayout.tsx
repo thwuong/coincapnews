@@ -5,19 +5,21 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-function MainLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+interface LayoutProps {
+    params: {
+        lang: string;
+    };
+    children: Readonly<React.ReactNode>;
+}
+function MainLayout({ children, params: { lang } }: LayoutProps) {
     const { ToastContainer } = createStandaloneToast();
     const pathName = usePathname();
 
     return (
         <Providers>
-            {pathName !== "/account" && <Header />}
+            {pathName !== `/${lang}/account` && <Header lang={lang} />}
             {children}
-            {pathName !== "/account" && <Footer />}
+            {pathName !== `/${lang}/account` && <Footer />}
             <ToastContainer />
         </Providers>
     );

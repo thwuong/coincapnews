@@ -10,7 +10,12 @@ import { Container } from "../Container";
 import { MenuMobile } from "../MenuMobile";
 import { Navigation } from "../Navigation";
 import { Topbar } from "../Topbar";
-function Header() {
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { setCurrentLang } from "@/lib/features/lang/langSlice";
+type HeaderProps = {
+    lang: string;
+};
+function Header({ lang }: HeaderProps) {
     const [keyword, setKeyword] = useState<string>();
     const [searchList, setSearchList] = useState<CoinType[]>();
     const [scrollingUp] = UseScroll();
@@ -19,11 +24,15 @@ function Header() {
     };
 
     const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const langStore = useAppSelector((state) => state.langStore);
+    const dispatch = useAppDispatch();
+    if (!langStore.currentLanguage) {
+        dispatch(setCurrentLang(lang));
+    }
     return (
         <header className="flex items-center justify-center flex-col">
             <Container className="px-12">
-                <Topbar />
+                <Topbar lang={lang} />
             </Container>
             <div
                 className={clsx(
@@ -104,7 +113,7 @@ function Header() {
                                 height={24}
                             />
                         </div>
-                        <MenuMobile isOpen={isOpen} onClose={onClose} />
+                        <MenuMobile lang={lang} isOpen={isOpen} onClose={onClose} />
                     </section>
                 </Container>
             </div>

@@ -1,13 +1,14 @@
 import MainLayout from "@/components/Layouts/MainLayout";
+import { dir } from "i18next";
 import type { Metadata } from "next";
-import { WEBSITE_HOST_URL } from "./contants";
-import "./globals.css";
-
+import { WEBSITE_HOST_URL } from "../contants";
+import "../globals.css";
+import { languages } from "../i18n/settings";
 const meta = {
     title: "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",
     description:
         "Top cryptocurrency prices and charts, listed by market capitalization. Free access to current and historic data for Bitcoin and thousands of altcoins.",
-    image: `${WEBSITE_HOST_URL}images/logo.png`,
+    image: `${WEBSITE_HOST_URL}assets/images/logo.png`,
 };
 export const metadata: Metadata = {
     title: {
@@ -69,15 +70,21 @@ export const metadata: Metadata = {
         },
     },
 };
-export default function RootLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+interface LayoutProps {
+    params: {
+        lang: string;
+    };
+    children: Readonly<React.ReactNode>;
+}
+
+export async function generateStaticParams() {
+    return languages.map((lng) => ({ lng }));
+}
+export default function RootLayout({ children, params: { lang } }: LayoutProps) {
     return (
-        <html lang="en">
+        <html lang={lang} dir={dir(lang)}>
             <body className="scroll-smooth">
-                <MainLayout>{children}</MainLayout>
+                <MainLayout params={{ lang }}>{children}</MainLayout>
             </body>
         </html>
     );

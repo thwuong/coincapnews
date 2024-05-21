@@ -74,6 +74,12 @@ Builder.registerComponent(withChildren(Heading), {
             type: "string",
             enum: ["left", "center", "right"],
         },
+        {
+            name: "headingTag",
+            type: "string",
+            enum: ["h1", "h2", "h3", "h4", "h5", "h6"],
+            defaultValue: "h1",
+        },
     ],
 });
 Builder.registerComponent(withChildren(Paragraph), {

@@ -1,5 +1,5 @@
 import { builder } from "@builder.io/sdk";
-import { RenderBuilderContent } from "../../components/builder";
+import { RenderBuilderContent } from "../../../components/builder";
 import { Metadata } from "next";
 
 // Builder Public API Key set in .env file
@@ -8,8 +8,12 @@ builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 interface PageProps {
     params: {
         page: string[];
+        lang: string;
     };
 }
+// export function generateStaticParams() {
+//     return ["", "converter", "news", "derivatives", "spot", "dex"];
+// }
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
     // fetch data
     const builderModelName = "page";

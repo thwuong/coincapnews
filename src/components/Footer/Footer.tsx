@@ -4,135 +4,36 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Container } from "../Container";
-import { navigationHeaderData } from "@/fakedata/fakedata";
-const navData: NavItemType[] = [
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Crypto",
-        href: "/",
-        children: [
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Coin ranking",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Recently Added",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "NFT",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "BSC",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "DeFi",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Polkadot Eco",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Gainers And Losers",
-                href: "/",
-            },
-        ],
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Exchanges",
-        href: "/",
-        children: [
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Spot",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "Derivatives",
-                href: "/",
-            },
-            {
-                icon: "/assets/images/bnb.webp",
-                label: "DEX",
-                href: "/",
-            },
-        ],
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Knowledge",
-        href: "/",
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Converter",
-        href: "/",
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "News",
-        href: "/",
-    },
-];
-const navDataOfCompany: NavItemType[] = [
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "About",
-        href: "/about",
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Privacy",
-        href: "/privacy",
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Terms",
-        href: "/terms",
-    },
-];
-const navDataOfSupport: NavItemType[] = [
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "FAQ",
-        href: "/",
-    },
-    {
-        icon: "/assets/images/bnb.webp",
-        label: "Submit coin",
-        href: "/",
-    },
-];
+import { navDataOfCompany, navDataOfSupport, navigationHeaderData } from "@/fakedata/fakedata";
+import { useTranslation } from "@/app/i18n/client";
+import { useAppSelector } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
+
 type NavItemType = {
     label?: string;
     href?: string;
     icon?: string;
+    key?: string;
     children?: NavItemType[];
 };
 function NavItem({ navItem }: { navItem: NavItemType }) {
     const [showDropdown, setShowDropdown] = useState(false);
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const router = useRouter();
+    const { t } = useTranslation(currentLanguage);
     return (
         <Box position={"relative"}>
             <div
-                className="flex items-center gap-4 pb-2"
+                className="flex items-center gap-4 pb-2 cursor-pointer"
                 onClick={() => {
                     setShowDropdown(!showDropdown);
+                    if (!navItem.children) {
+                        router.push(navItem.href || "/");
+                    }
                 }}
             >
                 <span className="text-base max-lg:text-13 leading-[1.5] group font-bold text-white hover:text-typo-1 duration-300">
-                    {navItem.label}
+                    {t(`footer.${navItem.key}`)}
                 </span>
                 {navItem.children &&
                     navItem.children.length > 0 &&
@@ -157,7 +58,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     {navItem.children.map((item: NavItemType, index: number) => (
                         <Link href={item.href || "/"} key={item.label}>
                             <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-bold text-white hover:text-typo-1 duration-300">
-                                {item.label}
+                                {t(`footer.${item.key}`)}
                             </span>
                         </Link>
                     ))}
@@ -247,7 +148,7 @@ function Footer() {
                             Coincapnews
                         </h3>
                         <nav className="flex flex-col gap-4">
-                            {navData.map((item, index) => {
+                            {navigationHeaderData.map((item, index) => {
                                 return <NavItem key={index} navItem={item} />;
                             })}
                         </nav>
@@ -267,7 +168,7 @@ function Footer() {
                             SUPPORT
                         </h3>
                         <nav className="flex flex-col gap-4">
-                            {navigationHeaderData.map((item, index) => {
+                            {navDataOfSupport.map((item, index) => {
                                 return <NavItem key={index} navItem={item} />;
                             })}
                         </nav>

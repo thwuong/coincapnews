@@ -10,10 +10,17 @@ import { SpinnerLoading } from "@/components/Loading";
 import { NewsFeed } from "@/components/NewsFeed";
 import { socketDetail } from "@/socket/client";
 import { Button } from "@chakra-ui/react";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-export default function Page({ params }: { params: { symbol: string } }) {
+interface PageProps {
+    params: {
+        symbol: string;
+        lang: string;
+    };
+}
+export default function Page({ params }: PageProps) {
     const [stream, setStream] = useState<NewDataType | any>();
     const { data: coin, isLoading }: { data: DetailCoinType; isLoading: boolean } = useFetchAPI(
         `/api/coins/details/${params.symbol}`
@@ -76,12 +83,33 @@ export default function Page({ params }: { params: { symbol: string } }) {
                                 width={"fit-content"}
                                 height={"fit-content"}
                                 py={"8px"}
-                                bg={"#16C784"}
+                                bg={
+                                    getNewData(stream?.change24, coin.market_data.market_cap_change_percentage_24h) > 0
+                                        ? "#16C784"
+                                        : "#ea3943"
+                                }
                                 _hover={{
-                                    bg: "#16C784",
+                                    bg:
+                                        getNewData(
+                                            stream?.change24,
+                                            coin.market_data.market_cap_change_percentage_24h
+                                        ) > 0
+                                            ? "rgba(22, 199, 132,0.8)"
+                                            : "rgba(234, 57, 67,0.8)",
                                 }}
                                 leftIcon={
-                                    <Image src={"/assets/icons/sort-up-white.svg"} alt="left" width={10} height={10} />
+                                    <Image
+                                        src={"/assets/icons/sort-up-white.svg"}
+                                        className={clsx(
+                                            getNewData(
+                                                stream?.change24,
+                                                coin.market_data.market_cap_change_percentage_24h
+                                            ) < 0 && "rotate-180"
+                                        )}
+                                        alt="left"
+                                        width={10}
+                                        height={10}
+                                    />
                                 }
                             >
                                 <span className="text-white font-semibold text-sm">

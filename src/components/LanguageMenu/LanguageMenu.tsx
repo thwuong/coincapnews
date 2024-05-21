@@ -1,8 +1,16 @@
 "use client";
+import { setCurrentLang } from "@/lib/features/lang/langSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-const langData = [
+type LangType = {
+    label: string;
+    code: string;
+    icon: string;
+};
+const langData: LangType[] = [
     {
         label: "Tiếng Việt",
         code: "vi",
@@ -14,8 +22,21 @@ const langData = [
         icon: "/assets/icons/en.jpg",
     },
 ];
-function LanguageMenu() {
-    const [currentLang, setCurrentLang] = useState(langData[0]);
+type LanguageMenuProps = {
+    lang: string;
+};
+function LanguageMenu({ lang }: LanguageMenuProps) {
+    const [currLang, setCurrLang] = useState(langData.find((l) => l.code === lang) || langData[0]);
+    const router = useRouter();
+    const path = usePathname();
+    const dispatch = useAppDispatch();
+
+    const selectedLang = (item: LangType) => {
+        const currentHref = path.replace(currLang.code, item.code);
+        setCurrLang(item);
+        dispatch(setCurrentLang(item.code));
+        router.push(currentHref);
+    };
     return (
         <Menu>
             <MenuButton
@@ -25,16 +46,16 @@ function LanguageMenu() {
                 }}
                 borderRadius={6}
                 height={7}
+                minW={"fit-content"}
                 as={Button}
-                alignItems={"center"}
-                leftIcon={<Image src={currentLang.icon} alt="dropdown" width={18} height={18} />}
+                leftIcon={<Image src={currLang.icon} alt="dropdown" width={18} height={18} />}
                 rightIcon={<Image src={"/assets/icons/dropdown.svg"} alt="dropdown" width={12} height={12} />}
             >
-                <span className="text-12 font-semibold">{currentLang.label}</span>
+                <span className="text-12 font-semibold">{currLang.label}</span>
             </MenuButton>
             <MenuList p={2} zIndex={11}>
                 {langData
-                    .filter((item) => item.code !== currentLang.code)
+                    .filter((item) => item.code !== currLang.code)
                     .map((item) => (
                         <MenuItem
                             bg={"transparent"}
@@ -45,7 +66,7 @@ function LanguageMenu() {
                             borderRadius={6}
                             gap={2}
                             key={item.code}
-                            onClick={() => setCurrentLang(item)}
+                            onClick={() => selectedLang(item)}
                         >
                             <Image src={item.icon} alt="dropdown" width={18} height={12} />
                             <span className="text-12 font-semibold">{item.label}</span>
