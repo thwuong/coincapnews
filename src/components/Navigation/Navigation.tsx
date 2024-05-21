@@ -1,6 +1,8 @@
 "use client";
+import { useTranslation } from "@/app/i18n/client";
 import { NavItemType } from "@/app/types";
 import { navigationHeaderData } from "@/fakedata/fakedata";
+import { useAppSelector } from "@/lib/hooks";
 import { Box, Button } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
@@ -9,6 +11,9 @@ import { usePathname } from "next/navigation";
 
 function NavItem({ navItem }: { navItem: NavItemType }) {
     const pathName = usePathname();
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage);
+
     let activePathCurrent = false;
     if (navItem.children && navItem.children?.length > 0) {
         activePathCurrent = navItem.children.some((child) => child.href == pathName);
@@ -40,7 +45,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                         activePathCurrent && "text-primary-1"
                     )}
                 >
-                    {navItem.label}
+                    {t(`header.${navItem.key}`)}
                 </span>
             </Button>
             {navItem.children && navItem.children.length > 0 && (
@@ -66,8 +71,8 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                             borderRadius={6}
                             alignItems={"center"}
                             justifyContent={"start"}
-                            width={200}
                             gap={0.5}
+                            minW={260}
                             p={2}
                             height={"fit-content"}
                             leftIcon={
@@ -80,7 +85,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                             }
                         >
                             <span className="text-sm leading-4 font-bold group-hover/child:text-primary-1 duration-300">
-                                {item.label}
+                                {t(`header.${item.key}`)}
                             </span>
                         </Button>
                     ))}

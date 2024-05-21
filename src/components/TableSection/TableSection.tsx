@@ -109,7 +109,7 @@ function TableSection() {
                         bg: "transparent",
                     }}
                     cursor={"pointer"}
-                    bg={"gray.50"}
+                    bg={"gray.100"}
                     borderRadius={"6px"}
                     gap={"4px"}
                     p={"8px"}

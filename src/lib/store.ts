@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import coinSlice from "./features/coins/coinSlice";
+import langSlice from "./features/lang/langSlice";
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             coinStore: coinSlice,
+            langStore: langSlice,
         },
     });
 };

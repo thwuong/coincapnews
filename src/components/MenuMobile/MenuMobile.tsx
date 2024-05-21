@@ -26,6 +26,7 @@ import { currenciesData, navigationHeaderData } from "@/fakedata/fakedata";
 type MenuMobileProps = {
     isOpen: boolean;
     onClose: () => void;
+    lang: string;
 };
 type NavItemType = {
     label?: string;
@@ -114,7 +115,7 @@ function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => vo
     );
 }
 
-function MenuMobile({ onClose, isOpen }: MenuMobileProps) {
+function MenuMobile({ onClose, isOpen, lang }: MenuMobileProps) {
     const router = useRouter();
     const nextPage = (href: string = "/") => {
         router.push(href, {
@@ -181,7 +182,7 @@ function MenuMobile({ onClose, isOpen }: MenuMobileProps) {
                             })}
                         </nav>
                         <div className="flex items-center justify-between">
-                            <LanguageMenu />
+                            <LanguageMenu lang={lang} />
                             <Button
                                 onClick={() => onOpenCurrency()}
                                 bg={"transparent"}

@@ -7,10 +7,10 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 function NewsFeedItem(props: FeedType) {
-    const { id, post_title, post_thumbnail, post_excerpt, post_date, author } = props;
+    const { id, post_title, post_thumbnail, post_excerpt, post_date, author, post_permalink } = props;
     return (
         <li>
-            <Link href={`/feed/${id}`} className="flex gap-8 max-md:flex-col">
+            <Link href={`${post_permalink}`} className="flex gap-8 max-md:flex-col" target="_blank">
                 <Image
                     src={post_thumbnail}
                     alt="feed"

@@ -1,7 +1,12 @@
 import fetchAPI from "@/api/fetchAPI";
 import { DetailExchangeType } from "@/app/types";
 import ExchangesContent from "@/components/ExchangesContent/ExchangesContent";
-
+interface PageProps {
+    params: {
+        id: string;
+        lang: string;
+    };
+}
 export async function generateStaticParams() {
     const data = await fetchAPI("/api/exchanges");
     return data.map((coin: DetailExchangeType) => ({
@@ -10,6 +15,6 @@ export async function generateStaticParams() {
         name: coin.name,
     }));
 }
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: PageProps) {
     return <ExchangesContent params={{ id: params.id }} />;
 }
