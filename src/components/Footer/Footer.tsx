@@ -72,7 +72,7 @@ function Footer() {
     return (
         <footer className="w-full flex justify-center items-center bg-[#00043F]">
             <Container className="px-12 relative pt-32 flex-col gap-10">
-                <div className="max-lg:hidden w-full absolute top-0 translate-y-[-50%] flex justify-between py-10 px-8 bg-white rounded-lg shadow-xl">
+                <div className="max-lg:hidden w-[calc(100%-96px)] absolute top-0 translate-y-[-50%] flex justify-between py-10 px-8 bg-white rounded-lg shadow-xl">
                     <div className="flex items-center gap-8">
                         <Link href={"/"}>
                             <Image src={"/assets/icons/newletters.svg"} alt="newletters" width={45} height={45} />
@@ -88,11 +88,11 @@ function Footer() {
                         <Input placeholder="Your Email (required)" required size="lg" type="email" />
                         <Button
                             className="uppercase text-white text-[14.5px] font-bold tracking-[0.44px] leading-[36px]"
-                            bg={"#4F73FF"}
-                            color={"white"}
+                            bg={"rgb(56,97,251)"}
                             _hover={{
-                                bg: "#3861FB",
+                                bg: "rgba(56,97,251,0.8)",
                             }}
+                            color={"white"}
                             borderRadius={"4px"}
                             type="submit"
                             px={"17px"}

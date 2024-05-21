@@ -11,9 +11,9 @@ interface PageProps {
         lang: string;
     };
 }
-// export function generateStaticParams() {
-//     return ["", "converter", "news", "derivatives", "spot", "dex"];
-// }
+export function generateStaticParams() {
+    return ["", "converter", "news", "derivatives", "spot", "dex","submit-coin","terms-of-use"];
+}
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
     // fetch data
     const builderModelName = "page";

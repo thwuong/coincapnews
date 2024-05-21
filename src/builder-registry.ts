@@ -11,6 +11,7 @@ import { TableSection } from "./components/TableSection";
 import { ConvertAmount } from "./components/ConvertAmount";
 import { Paragraph } from "./components/Paragraph";
 import { CommonSection } from "./components/CommonSection";
+import { SumbitCoin } from "./components/SubmitCoin";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
@@ -138,4 +139,7 @@ Builder.registerComponent(withChildren(CommonSection), {
             required: true,
         },
     ],
+});
+Builder.registerComponent(withChildren(SumbitCoin), {
+    name: "SumbitCoin",
 });

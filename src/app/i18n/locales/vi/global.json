@@ -43,5 +43,25 @@
         "terms" : "Điều khoản dịch vụ",
         "faq": "Câu hỏi thường gặp",
         "submit_coin": "Thêm coin"
+    },
+    "account": {
+      "my_account": "TÀI KHOẢN CỦA TÔI",
+      "first_name": "Tên đầu tiên",
+      "last_name": "Họ",
+      "display_name": "Tên hiển thị",
+      "placeholder_first_name": "Nhập tên đầu tiên",
+      "placeholder_last_name": "Nhập họ",
+      "placeholder_display_name": "Nhập tên hiển thị",
+      "helper_display_name": "Đây sẽ là cách tên của bạn được hiển thị trong phần tài khoản và trong phần đánh giá",
+      "email_address": "Địa chỉ email",
+      "placeholder_email_address": "Nhập email",
+      "password_change" : "THAY ĐỔI MẬT KHẨU",
+      "current_password": "Mật khẩu hiện tại (để trống hoặc không thay đổi)",
+      "placeholder_current_password": "Mật khẩu hiện tại",
+      "new_password": "Mật khẩu mới (để trống hoặc không thay đổi)",
+      "placeholder_new_password": "Mật khẩu mới",
+      "comfirm_password": "Xác nhận mật khẩu mới",
+      "placeholder_comfirm_password": "Xác nhận mật khẩu mới",
+      "btn": "Lưu thay đổi"
     }
 }

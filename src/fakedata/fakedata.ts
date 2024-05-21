@@ -128,13 +128,13 @@ export const navDataOfCompany: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
         label: "Privacy",
-        href: "/terms-of-use",
+        href: "/privacy-policy",
         key: "privacy",
     },
     {
         icon: "/assets/images/bnb.webp",
         label: "Terms",
-        href: "/terms",
+        href: "/terms-of-use",
         key: "terms",
     },
 ];
@@ -148,7 +148,7 @@ export const navDataOfSupport: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
         label: "Submit coin",
-        href: "/",
+        href: "/submit-coin",
         key: "submit_coin",
     },
 ];
