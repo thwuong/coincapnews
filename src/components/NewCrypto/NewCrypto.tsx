@@ -17,6 +17,8 @@ import {
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { useAppSelector } from "@/lib/hooks";
+import { useTranslation } from "@/app/i18n/client";
 type NewCryptoType = {
     _source: {
         id: string;
@@ -126,6 +128,8 @@ function NewCryptoTable({
         },
     });
     const [width] = UseResize();
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -160,7 +164,7 @@ function NewCryptoTable({
                                                     "capitalize text-12 font-semibold font-inter text-typo-4"
                                                 )}
                                             >
-                                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                                {t(`table.${header.column.columnDef.header}`)}
                                             </p>
 
                                             {header.column.getIsSorted() ? (

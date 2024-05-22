@@ -12,6 +12,7 @@ import { Navigation } from "../Navigation";
 import { Topbar } from "../Topbar";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setCurrentLang } from "@/lib/features/lang/langSlice";
+import { useTranslation } from "@/app/i18n/client";
 type HeaderProps = {
     lang: string;
 };
@@ -29,6 +30,7 @@ function Header({ lang }: HeaderProps) {
     if (!langStore.currentLanguage) {
         dispatch(setCurrentLang(lang));
     }
+    const { t } = useTranslation(lang, "home");
     return (
         <header className="flex items-center justify-center flex-col">
             <Container className="px-12">
@@ -62,7 +64,7 @@ function Header({ lang }: HeaderProps) {
                                     width={200}
                                     py={"6px"}
                                     type="text"
-                                    placeholder="Search coin"
+                                    placeholder={t("search coin")}
                                 />
                                 {searchList && searchList?.length > 0 && (
                                     <Box
@@ -97,7 +99,7 @@ function Header({ lang }: HeaderProps) {
                                 letterSpacing={"0.4px"}
                                 lineHeight={"18px"}
                             >
-                                Login
+                                {t("login")}
                             </Button>
                         </div>
                         {/* Show table and mobile */}

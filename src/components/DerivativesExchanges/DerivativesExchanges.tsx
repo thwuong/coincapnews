@@ -18,6 +18,8 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { TablePagination } from "../TablePagination";
+import { useAppSelector } from "@/lib/hooks";
+import { useTranslation } from "@/app/i18n/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 type Exchange = {
     _source: {
@@ -117,6 +119,8 @@ function DerivativesExchangesTable({
         },
     });
     const [width] = UseResize();
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -151,7 +155,7 @@ function DerivativesExchangesTable({
                                                     "capitalize text-12 font-semibold text-typo-4 font-inter"
                                                 )}
                                             >
-                                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                                {t(`table.${header.column.columnDef.header}`)}
                                             </p>
 
                                             {header.column.getIsSorted() ? (

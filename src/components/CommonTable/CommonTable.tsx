@@ -30,6 +30,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { CoinType } from "@/app/types";
+import { useAppSelector } from "@/lib/hooks";
+import { useTranslation } from "@/app/i18n/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 
 const columnHelper = createColumnHelper<CoinType>();
@@ -160,6 +162,8 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
     //         socket.close();
     //     };
     // }, []);
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -194,7 +198,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                                     "capitalize text-12 font-semibold text-typo-4 font-inter"
                                                 )}
                                             >
-                                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                                {t(`table.${header.column.columnDef.header}`)}
                                             </p>
 
                                             {header.column.getIsSorted() ? (
