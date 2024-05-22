@@ -18,6 +18,8 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import TablePagination from "../TablePagination/TablePagination";
+import { useAppSelector } from "@/lib/hooks";
+import { useTranslation } from "@/app/i18n/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 type Exchange = {
     _source: {
@@ -67,14 +69,14 @@ const columns: ColumnDef<Exchange, any>[] = [
     }),
     columnHelper.accessor("_source.open_interest_btc", {
         cell: (info) => info.getValue(),
-        header: "Trade volume 24h(normalized)",
+        header: "Trade Volume 24h(Normalized)",
         meta: {
             isNumeric: true,
         },
     }),
     columnHelper.accessor("_source.trade_volume_24h_btc", {
         cell: (info) => info.getValue(),
-        header: "Trade volume 24h",
+        header: "Trade Volume 24h",
         meta: {
             isNumeric: true,
         },
@@ -109,6 +111,8 @@ function DifferentExchangesTable({
         },
     });
     const [width] = UseResize();
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -143,7 +147,7 @@ function DifferentExchangesTable({
                                                     "capitalize text-12 font-semibold text-typo-4 font-inter"
                                                 )}
                                             >
-                                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                                {t(`table.${header.column.columnDef.header}`)}
                                             </p>
 
                                             {header.column.getIsSorted() ? (

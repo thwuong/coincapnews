@@ -8,6 +8,8 @@ import { CoinType } from "@/app/types";
 import { createColumnHelper } from "@tanstack/react-table";
 import dynamic from "next/dynamic";
 import { TablePagination } from "../TablePagination";
+import { useAppSelector } from "@/lib/hooks";
+import { useTranslation } from "@/app/i18n/client";
 const CoinTable = dynamic(() => import("../CoinTable").then((mod) => mod.CoinTable));
 
 const columnHelper = createColumnHelper<CoinType>();
@@ -100,7 +102,8 @@ function TableSection() {
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/markets?page=${page}&per_page=${process.env.NEXT_PUBLIC_PER_PAGE}`
     );
-
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage, "home");
     return (
         <section className="flex flex-col items-center gap-8 py-6 pb-32 w-full">
             <section className="flex items-center justify-between w-full">
@@ -119,7 +122,7 @@ function TableSection() {
                     justifyContent={"center"}
                 >
                     <Image src={"/assets/icons/start.svg"} alt="start" width={14} height={14} />
-                    <span className="text-12 font-bold max-lg:hidden">Watchlist</span>
+                    <span className="text-12 font-bold max-lg:hidden">{t("watchlist")}</span>
                 </Box>
                 <InputGroup position={"relative"} w={"min-content"}>
                     <InputLeftElement pointerEvents="none">
@@ -135,7 +138,7 @@ function TableSection() {
                         type="text"
                         bg={"gray.50"}
                         border={"none"}
-                        placeholder="Search coin"
+                        placeholder={t("search coin")}
                         className="placeholder:text-13"
                     />
                 </InputGroup>

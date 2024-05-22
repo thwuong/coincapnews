@@ -1,5 +1,7 @@
+import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
+import { useAppSelector } from "@/lib/hooks";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
     ColumnDef,
@@ -85,6 +87,8 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
         },
     });
     const [width] = UseResize();
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -119,7 +123,7 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                                     "capitalize text-12 font-semibold text-typo-4 font-inter"
                                                 )}
                                             >
-                                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                                {t(`table.${header.column.columnDef.header}`)}
                                             </p>
 
                                             {header.column.getIsSorted() ? (

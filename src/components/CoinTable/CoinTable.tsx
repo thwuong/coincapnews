@@ -1,6 +1,8 @@
+import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
+import { useAppSelector } from "@/lib/hooks";
 import { connectSocket } from "@/socket/client";
 import {
     Badge,
@@ -81,6 +83,8 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             socket.close();
         };
     }, [data]);
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -91,7 +95,6 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                 if (header.depth === 2) {
                                     return;
                                 }
-
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
@@ -115,7 +118,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                     "capitalize text-12 font-semibold text-typo-4 font-inter"
                                                 )}
                                             >
-                                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                                {t(`table.${header.column.columnDef.header}`)}
                                             </p>
 
                                             {header.column.getIsSorted() ? (

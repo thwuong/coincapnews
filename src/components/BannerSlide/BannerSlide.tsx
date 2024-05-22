@@ -6,18 +6,15 @@ import Slider, { Settings } from "react-slick";
 import Image from "next/image";
 function BannerSlide() {
     const settings: Settings = {
-        infinite: true,
         speed: 500,
+        autoplay: true,
         slidesToShow: 3,
-        slidesToScroll: 3,
-
+        centerMode: true,
         responsive: [
             {
                 breakpoint: 1440,
                 settings: {
                     slidesToShow: 3,
-                    slidesToScroll: 3,
-                    initialSlide: 1.5,
                 },
             },
             {
@@ -28,6 +25,7 @@ function BannerSlide() {
                     initialSlide: 1,
                     infinite: true,
                     arrows: false,
+                    centerMode: false,
                 },
             },
         ],
