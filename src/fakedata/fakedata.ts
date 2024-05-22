@@ -30,12 +30,6 @@ export const navigationHeaderData: NavItemType[] = [
         href: "/",
         children: [
             {
-                icon: "/assets/icons/ranking.svg",
-                label: "Coin ranking",
-                key: "coin_ranking",
-                href: "/",
-            },
-            {
                 icon: "/assets/icons/new.svg",
                 label: "Recently Added",
                 key: "recently_added",

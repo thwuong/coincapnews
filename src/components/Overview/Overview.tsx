@@ -11,11 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-
 import clsx from "clsx";
 import { NewDataType } from "@/app/types";
 import getNewData from "@/app/utils/getNewData";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import { useAppSelector } from "@/lib/hooks";
 const LineChartOverview = dynamic(() => import("../Charts/").then((mod) => mod.LineChartOverview));
 type OverviewProps = {
     description: any;
@@ -46,7 +46,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
     const [datetime, setDatetime] = useState("1D");
     const [isMore, setIsMore] = useState(false);
     const [readMore, setReadMore] = useState(false);
-
+    const { currentLanguage } = useAppSelector((state) => state.langStore);
     return (
         <section className="grid grid-cols-12 gap-5 w-full max-lg:grid-cols-1">
             {/* Chart */}
@@ -169,7 +169,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                     >
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: overviewData.description["en"],
+                                __html: overviewData.description[currentLanguage || "en"],
                             }}
                             id="description"
                         ></div>

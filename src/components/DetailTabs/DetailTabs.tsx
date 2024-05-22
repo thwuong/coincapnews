@@ -2,7 +2,7 @@ import { Button, Input, Select, Tab, TabList, TabPanel, TabPanels, Tabs, useDisc
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { ShareModal } from "../Modal";
-import Overview from "../Overview/Overview";
+import { Overview } from "../Overview";
 import { DetailCoinType, NewDataType } from "@/app/types";
 import { useState } from "react";
 import { TablePagination } from "../TablePagination";

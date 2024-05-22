@@ -1,6 +1,6 @@
 import fetchAPI from "@/api/fetchAPI";
 import { DetailExchangeType } from "@/app/types";
-import ExchangesContent from "@/components/ExchangesContent/ExchangesContent";
+import { ExchangesContent } from "@/components/ExchangesContent";
 interface PageProps {
     params: {
         id: string;
