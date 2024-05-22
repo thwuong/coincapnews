@@ -1,3 +1,7 @@
+"use client";
+import React, { useState } from "react";
+import { TablePagination } from "../TablePagination";
+import useFetchAPI from "@/api/baseAPI";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
@@ -12,67 +16,104 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
-type Exchange = {
-    coin_id: string;
-    market: {
+import Link from "next/link";
+type NewCryptoType = {
+    _source: {
+        id: string;
+        image: string;
         name: string;
+        current_price: number;
+        price_change_percentage_1h_in_currency: number;
+        price_change_percentage_24h_in_currency: number;
+        market_cap: number;
+        volume_24h: number;
+        blockchain: string;
+        added: string;
+        atl_date: string;
     };
-    converted_volume: any;
-    converted_last: any;
-    base: string;
-    target: string;
 };
 export type ExchangeTableProps = {
-    data: Exchange[];
+    data: NewCryptoType[];
     isLoading: boolean;
-    currentIndex?: number;
 };
-const columnHelper = createColumnHelper<Exchange>();
+const columnHelper = createColumnHelper<NewCryptoType>();
 
-const columns: ColumnDef<Exchange, any>[] = [
+const columns: ColumnDef<NewCryptoType, any>[] = [
     columnHelper.group({
         header: "#",
         columns: [
-            columnHelper.accessor("coin_id", {
+            columnHelper.accessor("_source.image", {
                 cell: (info) => info.getValue(),
             }),
         ],
+        meta: {
+            position: "center",
+        },
     }),
-    columnHelper.accessor("market.name", {
+    columnHelper.accessor("_source.name", {
         cell: (info) => info.getValue(),
         header: "Name",
     }),
-    columnHelper.accessor("base", {
-        cell: (info) => info.getValue(),
-        header: "Pair",
-        meta: {
-            center: true,
-        },
-    }),
-    columnHelper.accessor("converted_last", {
+    columnHelper.accessor("_source.current_price", {
         cell: (info) => info.getValue(),
         header: "Price",
         meta: {
-            isNumeric: true,
+            position: "center",
         },
     }),
-    columnHelper.accessor("converted_volume", {
+    columnHelper.accessor("_source.price_change_percentage_1h_in_currency", {
         cell: (info) => info.getValue(),
-        header: "Volume (24H)",
+        header: "1H",
         meta: {
-            isNumeric: true,
+            position: "center",
         },
     }),
-    columnHelper.accessor("target", {
+    columnHelper.accessor("_source.price_change_percentage_24h_in_currency", {
         cell: (info) => info.getValue(),
-        header: "Update",
+        header: "24H",
         meta: {
-            isNumeric: true,
+            position: "center",
+        },
+    }),
+    columnHelper.accessor("_source.market_cap", {
+        cell: (info) => info.getValue(),
+        header: "Market Cap",
+        meta: {
+            position: "center",
+        },
+    }),
+    columnHelper.accessor("_source.volume_24h", {
+        cell: (info) => info.getValue(),
+        header: "Volume 24H",
+        meta: {
+            position: "center",
+        },
+    }),
+    columnHelper.accessor("_source.blockchain", {
+        cell: (info) => info.getValue(),
+        header: "Blockchain",
+        meta: {
+            position: "center",
+        },
+    }),
+    columnHelper.accessor("_source.added", {
+        cell: (info) => info.getValue(),
+        header: "Added",
+        meta: {
+            position: "center",
         },
     }),
 ];
-function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps) {
+
+function NewCryptoTable({
+    data,
+    isLoading,
+    currentIndex = 0,
+}: {
+    data: NewCryptoType[];
+    isLoading: boolean;
+    currentIndex?: number;
+}) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const table = useReactTable({
         columns,
@@ -99,7 +140,7 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        className="bg-secondary"
+                                        bg={"#fff"}
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -111,12 +152,12 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                         <Box
                                             display={"flex"}
                                             alignItems={"center"}
-                                            justifyContent={(meta?.isNumeric || meta?.center) && "center"}
+                                            justifyContent={meta?.position || "start"}
                                             flexDirection={"row"}
                                         >
                                             <p
                                                 className={clsx(
-                                                    "capitalize text-12 font-semibold text-typo-4 font-inter"
+                                                    "capitalize text-12 font-semibold font-inter text-typo-4"
                                                 )}
                                             >
                                                 {flexRender(header.column.columnDef.header, header.getContext())}
@@ -149,16 +190,18 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                 {/* replace data */}
                 <Tbody>
                     {!isLoading
-                        ? table.getRowModel().rows.map((row, index) => {
+                        ? table.getRowModel().rows.map((row) => {
                               return (
                                   <Tr key={row.index}>
                                       <Td
                                           px={"8px"}
-                                          bg={"#fff"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
+                                          bg={"#fff"}
+                                          textAlign={"center"}
+                                          fontWeight={"500"}
                                       >
-                                          {index + 1 + currentIndex}
+                                          {row.index + 1 + currentIndex}
                                       </Td>
                                       <Td
                                           px={"4px"}
@@ -167,28 +210,70 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                           left={6}
                                           bg={"#fff"}
                                       >
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
-                                              {row.original.market.name}
+                                          <Link
+                                              href={`/currency/${row.original._source.id}`}
+                                              className="flex items-center gap-3"
+                                          >
+                                              <Image
+                                                  src={row.original._source.image}
+                                                  alt={row.original._source.name}
+                                                  width={24}
+                                                  height={24}
+                                              />
+                                              <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
+                                                  {row.original._source.name}
+                                              </p>
+                                          </Link>
+                                      </Td>
+                                      <Td px={"4px"}>
+                                          <p className="text-center text-sm leading-4 font-medium text-typo-4 ">
+                                              {formatCurrency(row.original._source.current_price)}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
-                                          <p className="uppercase text-center text-sm leading-4 font-medium text-primary-1 ">
-                                              {row.original.base}/{row.original.target}
+                                          <p
+                                              className={clsx(
+                                                  "capitalize text-sm text-center leading-4 change24 font-medium ",
+                                                  row.original._source.price_change_percentage_1h_in_currency > 0
+                                                      ? "text-up"
+                                                      : "text-down"
+                                              )}
+                                          >
+                                              {row.original._source.price_change_percentage_1h_in_currency?.toFixed(2)}%
+                                          </p>
+                                      </Td>
+                                      <Td px={"4px"}>
+                                          <p
+                                              className={clsx(
+                                                  "capitalize text-sm text-center leading-4 change24 font-medium ",
+                                                  row.original._source.price_change_percentage_24h_in_currency > 0
+                                                      ? "text-up"
+                                                      : "text-down"
+                                              )}
+                                          >
+                                              {row.original._source.price_change_percentage_24h_in_currency?.toFixed(2)}
+                                              %
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.converted_last["usd"])}
+                                              {formatCurrency(row.original._source.market_cap)}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.converted_volume["usd"])}
+                                              {formatCurrency(row.original._source.volume_24h)}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              Recently
+                                              {/* {row.original._source.blockchain} */}
+                                              Blockchanin
+                                          </p>
+                                      </Td>
+                                      <Td px={"4px"}>
+                                          <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
+                                              {new Date(row.original._source.atl_date).getTime()}
                                           </p>
                                       </Td>
                                   </Tr>
@@ -204,6 +289,7 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
+                                              bg={"#fff"}
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
@@ -211,25 +297,25 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                               </div>
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"180px"}>
-                                              <Skeleton height="20px" />
+                                              <Skeleton height="15px" />
                                           </Td>
                                       </Tr>
                                   );
@@ -239,5 +325,25 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
         </TableContainer>
     );
 }
+type NewCryptoProps = {
+    perPage?: number;
+};
+function NewCrypto({ perPage = 10 }: NewCryptoProps) {
+    const [page, setPage] = useState(1);
 
-export default ExchangeTable;
+    const { data, isLoading } = useFetchAPI(`/api/coins/markets?page=${page}&per_page=${perPage}&centralized=true`);
+    const handlePageClick = ({ selected }: { selected: number }) => {
+        setPage(selected + 1);
+    };
+    return (
+        <section className="flex flex-col items-center justify-center gap-6 w-full">
+            {/* Table */}
+            <NewCryptoTable data={data} isLoading={isLoading} currentIndex={(page - 1) * perPage} />
+            <div className="w-full py-4 flex justify-center">
+                <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
+            </div>
+        </section>
+    );
+}
+
+export default NewCrypto;

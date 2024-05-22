@@ -1,6 +1,5 @@
 import { CoinType } from "@/app/types";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
-import getNewData from "@/app/utils/getNewData";
 import UseResize from "@/hooks/UseResize";
 import { connectSocket } from "@/socket/client";
 import {
@@ -28,7 +27,6 @@ import clsx from "clsx";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 export type DataTableProps = {
@@ -66,6 +64,9 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)!.innerHTML = `${parseFloat(
                 streamData.data.P
             ).toFixed(2)}%`;
+            document
+                .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
+                ?.classList.remove(streamData.data.P < 0 ? "text-up" : "text-down");
             document
                 .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
                 ?.classList.add(streamData.data.P > 0 ? "text-up" : "text-down");
