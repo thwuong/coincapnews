@@ -103,17 +103,20 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                                 <option value="100">100</option>
                             </Select>
                         </div>
-                        <ExchangeTable
-                            data={coinData.tickers.slice((page - 1) * selected, selected * page)}
-                            isLoading={false}
-                            currentIndex={(page - 1) * selected}
-                        />
-                        {coinData.tickers.length / selected > 1 && (
+                        {coinData.tickers && (
+                            <ExchangeTable
+                                data={coinData.tickers?.slice((page - 1) * selected, selected * page)}
+                                isLoading={false}
+                                currentIndex={(page - 1) * selected}
+                            />
+                        )}
+
+                        {coinData.tickers?.length / selected > 1 && (
                             <div className="w-full py-4 flex justify-center">
                                 <TablePagination
                                     disbledPre
                                     disbledNext
-                                    pageCount={coinData.tickers.length / selected}
+                                    pageCount={coinData.tickers?.length / selected}
                                     handlePageClick={handlePageClick}
                                 />
                             </div>
@@ -122,8 +125,9 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                 </TabPanels>
             </Tabs>
             <ShareModal
+                image={coinData.image?.small}
                 newData={newData}
-                oldData={coinData.market_data.current_price["usd"]}
+                oldData={coinData?.market_data.current_price["usd"]}
                 symbol={coinData.symbol}
                 isOpen={isOpen}
                 onClose={onClose}

@@ -49,7 +49,7 @@ function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => vo
         });
         onClose();
     };
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     let activePathCurrent = false;
     if (navItem.children && navItem.children?.length > 0) {
@@ -207,7 +207,7 @@ function MenuMobile({ onClose, isOpen, lang }: MenuMobileProps) {
                             })}
                         </nav>
                         <div className="flex items-center justify-between">
-                            <LanguageMenu lang={lang} />
+                            <LanguageMenu />
                             <Button
                                 onClick={() => onOpenCurrency()}
                                 bg={"transparent"}

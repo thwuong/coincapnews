@@ -40,67 +40,67 @@ const columns = [
     columnHelper.group({
         header: "#",
         columns: [
-            columnHelper.accessor("_source.id", {
+            columnHelper.accessor("id", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.image", {
+            columnHelper.accessor("image", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.market_cap_rank", {
+            columnHelper.accessor("market_cap_rank", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.id", {
+            columnHelper.accessor("id", {
                 cell: (info) => info.getValue(),
             }),
         ],
     }),
-    columnHelper.accessor("_source.name", {
+    columnHelper.accessor("name", {
         cell: (info) => info.getValue(),
         header: "Name",
     }),
-    columnHelper.accessor("_source.current_price", {
+    columnHelper.accessor("current_price", {
         cell: (info) => info.getValue(),
         header: "Price",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.price_change_percentage_1h_in_currency", {
+    columnHelper.accessor("price_change_percentage_1h_in_currency", {
         cell: (info) => info.getValue(),
         header: "1H",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.price_change_percentage_24h_in_currency", {
+    columnHelper.accessor("price_change_percentage_24h_in_currency", {
         cell: (info) => info.getValue(),
         header: "24H",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.price_change_percentage_7d_in_currency", {
+    columnHelper.accessor("price_change_percentage_7d_in_currency", {
         cell: (info) => info.getValue(),
         header: "7D",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.volume_24h", {
+    columnHelper.accessor("volume_24h", {
         cell: (info) => info.getValue(),
         header: "Volume 24H",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.market_cap", {
+    columnHelper.accessor("market_cap", {
         cell: (info) => info.getValue(),
         header: "Market Cap",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.sparkline_in_7d.price", {
+    columnHelper.accessor("sparkline_in_7d.price", {
         cell: (info) => info.getValue(),
         header: "Last 7 Days",
         meta: {
@@ -162,7 +162,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
     //         socket.close();
     //     };
     // }, []);
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -229,10 +229,10 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                 <Tbody>
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
-                              let convertId = `${row.original._source.symbol}USDT`.toLocaleUpperCase();
+                              let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
 
                               return (
-                                  <Tr key={row.original._source.name}>
+                                  <Tr key={row.original.name}>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
                                               {row.index + 1 + currentIndex}
@@ -250,18 +250,18 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                               <div
                                                   className="flex items-center gap-2 cursor-pointer"
                                                   onClick={() => {
-                                                      nextPage(row.original._source.id);
+                                                      nextPage(row.original.id);
                                                   }}
                                               >
                                                   <Image
                                                       className="cursor-pointer"
-                                                      src={row.original._source.image}
-                                                      alt={row.original._source.name}
+                                                      src={row.original.image}
+                                                      alt={row.original.name}
                                                       width={24}
                                                       height={24}
                                                   />
                                                   <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
-                                                      {row.original._source.name}
+                                                      {row.original.name}
                                                   </p>
                                               </div>
                                           </Box>
@@ -269,10 +269,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
                                               {formatCurrency(
-                                                  getNewData(
-                                                      stream[convertId]?.price,
-                                                      row.original._source.current_price
-                                                  )
+                                                  getNewData(stream[convertId]?.price, row.original.current_price)
                                               )}
                                           </p>
                                       </Td>
@@ -282,58 +279,54 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                                   "capitalize text-sm leading-4 font-semibold font-inter",
                                                   getNewData(
                                                       stream[convertId]?.change24,
-                                                      row.original._source.price_change_percentage_1h_in_currency
+                                                      row.original.price_change_percentage_1h_in_currency
                                                   ) > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {getNewData(
-                                                  stream[convertId]?.change24,
-                                                  row.original._source.price_change_percentage_1h_in_currency
-                                              ).toFixed(2)}
-                                              %
+                                              {row.original.price_change_percentage_1h_in_currency?.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm leading-4 font-semibold font-inter",
-                                                  row.original._source.price_change_percentage_24h_in_currency > 0
+                                                  row.original.price_change_percentage_24h_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original._source.price_change_percentage_24h_in_currency.toFixed(2)}%
+                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm leading-4 font-semibold font-inter",
-                                                  row.original._source.price_change_percentage_7d_in_currency > 0
+                                                  row.original.price_change_percentage_7d_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original._source.price_change_percentage_7d_in_currency.toFixed(2)}%
+                                              {row.original.price_change_percentage_7d_in_currency?.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"138px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original._source.market_cap)}
+                                              {formatQuoteCurrency(row.original.market_cap)}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"118px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original._source.total_volume)}
+                                              {formatQuoteCurrency(row.original.total_volume)}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"180px"}>
                                           <Box display={"flex"} justifyContent={"end"}>
                                               <LineChartLastDays
-                                                  isUp={row.original._source.price_change_percentage_7d_in_currency > 0}
-                                                  data={row.original._source.sparkline_in_7d.price}
+                                                  isUp={row.original.price_change_percentage_7d_in_currency > 0}
+                                                  data={row.original.sparkline_in_7d.price}
                                               />
                                           </Box>
                                       </Td>

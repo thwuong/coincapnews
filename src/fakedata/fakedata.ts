@@ -57,7 +57,7 @@ export const navigationHeaderData: NavItemType[] = [
                 icon: "/assets/icons/polka.svg",
                 label: "Polkadot Eco",
                 key: "polkadot_eco",
-                href: "/polkadot-eco",
+                href: "/polkadot",
             },
             {
                 icon: "/assets/icons/change.svg",

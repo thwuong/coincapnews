@@ -16,11 +16,14 @@ import { NewDataType } from "@/app/types";
 import getNewData from "@/app/utils/getNewData";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import { useAppSelector } from "@/lib/hooks";
+import useFetchAPI from "@/api/baseAPI";
+import { SpinnerLoading } from "../Loading";
 const LineChartOverview = dynamic(() => import("../Charts/").then((mod) => mod.LineChartOverview));
 type OverviewProps = {
     description: any;
     name: string;
     symbol: string;
+    id: string;
     market_data: {
         total_volume: any;
         low_24h: any;
@@ -43,10 +46,15 @@ type OverviewProps = {
 };
 function Overview({ overviewData, newData }: { overviewData: OverviewProps; newData: NewDataType | any }) {
     const [tabActive, setTabActive] = useState("price");
-    const [datetime, setDatetime] = useState("1D");
+    const [datetime, setDatetime] = useState("1");
     const [isMore, setIsMore] = useState(false);
     const [readMore, setReadMore] = useState(false);
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+
+    const { data, isLoading } = useFetchAPI(
+        `/api/coins/market_chart/${overviewData.id}?vs_currency=usd&days=${datetime}`
+    );
+
     return (
         <section className="grid grid-cols-12 gap-5 w-full max-lg:grid-cols-1">
             {/* Chart */}
@@ -80,115 +88,114 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                     <div className="flex items-center p-1 rounded-lg bg-primary-3 gap-2 w-fit max-md:w-full">
                         <Button
                             className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("1D")}
+                            onClick={() => setDatetime("1")}
                             height={"min-content"}
                             _hover={{
                                 bg: "white",
                             }}
-                            bg={datetime === "1D" ? "white" : ""}
+                            bg={datetime === "1" ? "white" : ""}
                         >
                             <span className="text-black font-semibold leading-[30px] text-13">1D</span>
                         </Button>
                         <Button
                             className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("7D")}
+                            onClick={() => setDatetime("7")}
                             height={"min-content"}
                             _hover={{
                                 bg: "white",
                             }}
-                            bg={datetime === "7D" ? "white" : ""}
+                            bg={datetime === "7" ? "white" : ""}
                         >
                             <span className="text-black font-semibold leading-[30px] text-13">7D</span>
                         </Button>
                         <Button
                             className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("1M")}
+                            onClick={() => setDatetime("30")}
                             height={"min-content"}
                             _hover={{
                                 bg: "white",
                             }}
-                            bg={datetime === "1M" ? "white" : ""}
+                            bg={datetime === "30" ? "white" : ""}
                         >
                             <span className="text-black font-semibold leading-[30px] text-13">1M</span>
                         </Button>
                         <Button
                             className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("3M")}
+                            onClick={() => setDatetime("90")}
                             height={"min-content"}
                             _hover={{
                                 bg: "white",
                             }}
-                            bg={datetime === "3M" ? "white" : ""}
+                            bg={datetime === "90" ? "white" : ""}
                         >
                             <span className="text-black font-semibold leading-[30px] text-13">3M</span>
                         </Button>
                         <Button
                             className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("6M")}
+                            onClick={() => setDatetime("180")}
                             height={"min-content"}
                             _hover={{
                                 bg: "white",
                             }}
-                            bg={datetime === "6M" ? "white" : ""}
+                            bg={datetime === "180" ? "white" : ""}
                         >
                             <span className="text-black font-semibold leading-[30px] text-13">6M</span>
                         </Button>
                         <Button
                             className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("1Y")}
+                            onClick={() => setDatetime("365")}
                             height={"min-content"}
                             _hover={{
                                 bg: "white",
                             }}
-                            bg={datetime === "1Y" ? "white" : ""}
+                            bg={datetime === "365" ? "white" : ""}
                         >
                             <span className="text-black font-semibold leading-[30px] text-13">1Y</span>
                         </Button>
                     </div>
                 </div>
-                <LineChartOverview
-                    data={[
-                        {
-                            x: new Date("2018-02-12").getTime(),
-                            y: 0,
-                        },
-                        {
-                            x: new Date("2018-02-12").getTime(),
-                            y: 76,
-                        },
-                    ]}
-                />
+                {isLoading && <SpinnerLoading />}
+                {data && (
+                    <LineChartOverview
+                        data={data?.prices}
+                        isUp={overviewData.market_data?.market_cap_change_percentage_24h > 0}
+                    />
+                )}
                 {/* About coin */}
-                <div className="py-6 flex flex-col gap-5">
-                    <h2 className="text-[25px] font-bold text-typo-4">About {overviewData.name}</h2>
-                    <div
-                        className={clsx(
-                            "text-base text-typo-1 leading-[26px] overflow-hidden relative",
-                            readMore ? "h-auto" : "h-[300px]"
-                        )}
-                    >
+                {overviewData.description && (
+                    <div className="py-6 flex flex-col gap-5">
+                        <h2 className="text-[25px] font-bold text-typo-4">About {overviewData.name}</h2>(
                         <div
-                            dangerouslySetInnerHTML={{
-                                __html: overviewData.description[currentLanguage || "en"],
-                            }}
-                            id="description"
-                        ></div>
-                        {!readMore && (
-                            <div className="absolute bottom-0 h-1/3 w-full bg-gradient-to-b from-white/0 to-white"></div>
-                        )}
+                            className={clsx(
+                                "text-base text-typo-1 leading-[26px] overflow-hidden relative",
+                                readMore ? "h-auto" : "h-[300px]"
+                            )}
+                        >
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: overviewData.description[currentLanguage] || overviewData.description["en"],
+                                }}
+                                id="description"
+                            ></div>
+                            {!readMore && (
+                                <div className="absolute bottom-0 h-1/3 w-full bg-gradient-to-b from-white/0 to-white"></div>
+                            )}
+                        </div>
+                        )
+                        <Button
+                            onClick={() => setReadMore(!readMore)}
+                            width={"min-content"}
+                            height={"fit-content"}
+                            py={"8px"}
+                        >
+                            <span className="font-semibold text-sm text-primary-1 duration-300">
+                                {readMore ? "Read Less" : "Read More"}
+                            </span>
+                        </Button>
                     </div>
-                    <Button
-                        onClick={() => setReadMore(!readMore)}
-                        width={"min-content"}
-                        height={"fit-content"}
-                        py={"8px"}
-                    >
-                        <span className="font-semibold text-sm text-primary-1 duration-300">
-                            {readMore ? "Read Less" : "Read More"}
-                        </span>
-                    </Button>
-                </div>
+                )}
             </div>
+
             {/* Info */}
             <div className="col-span-4 flex flex-col mt-12 gap-6 max-lg:col-span-1">
                 <div className="rounded-lg border border-[rgb(239,242,245)]">
@@ -228,14 +235,14 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">{overviewData.name}Price</p>
                                 <p className="font-semibold text-sm">
                                     {formatCurrency(
-                                        getNewData(newData?.price, overviewData.market_data.current_price["usd"])
+                                        getNewData(newData?.price, overviewData.market_data?.current_price?.usd)
                                     )}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Trading Volume</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data.total_volume["usd"])}
+                                    {formatCurrency(overviewData.market_data.total_volume?.usd)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
@@ -244,7 +251,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
                                             {formatCurrency(
-                                                overviewData.market_data.price_change_24h_in_currency["usd"]
+                                                overviewData.market_data?.price_change_24h_in_currency?.usd || 0
                                             )}
                                         </p>
                                     </StatNumber>
@@ -254,7 +261,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         className={
                                             getNewData(
                                                 newData?.change24,
-                                                overviewData.market_data.market_cap_change_percentage_24h
+                                                overviewData.market_data?.market_cap_change_percentage_24h || 0
                                             ) > 0
                                                 ? "text-up"
                                                 : "text-down"
@@ -264,7 +271,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                             type={
                                                 getNewData(
                                                     newData?.change24,
-                                                    overviewData.market_data.market_cap_change_percentage_24h
+                                                    overviewData.market_data?.market_cap_change_percentage_24h || 0
                                                 ) > 0
                                                     ? "increase"
                                                     : "decrease"
@@ -274,8 +281,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         />
                                         {getNewData(
                                             newData?.change24,
-                                            overviewData.market_data.market_cap_change_percentage_24h
-                                        ).toFixed(2)}
+                                            overviewData.market_data?.market_cap_change_percentage_24h || 0
+                                        )?.toFixed(2)}
                                         %
                                     </StatHelpText>
                                 </Stat>
@@ -283,16 +290,16 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">24h Low / 24h High</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data.low_24h["usd"])} {" / "}
-                                    {formatCurrency(overviewData.market_data.high_24h["usd"])}
+                                    {formatCurrency(overviewData.market_data?.low_24h?.usd || 0)} {" / "}
+                                    {formatCurrency(overviewData.market_data?.high_24h?.usd || 0)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Volume / Market Cap</p>
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(
-                                        overviewData.market_data.total_volume["usd"] /
-                                            overviewData.market_data.market_cap["usd"]
+                                        overviewData.market_data.total_volume?.usd /
+                                            overviewData.market_data?.market_cap?.usd || 0
                                     )}
                                 </p>
                             </Box>
@@ -309,13 +316,13 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Market Cap</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data.market_cap["usd"])}
+                                    {formatCurrency(overviewData.market_data?.market_cap?.usd || 0)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Fully Diluted Market Cap</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data.fully_diluted_valuation["usd"])}
+                                    {formatCurrency(overviewData?.market_data?.fully_diluted_valuation?.usd || 0)}
                                 </p>
                             </Box>
                         </li>
@@ -327,8 +334,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Low / High</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data.low_24h["usd"])} {" / "}
-                                    {formatCurrency(overviewData.market_data.high_24h["usd"])}
+                                    {formatCurrency(overviewData.market_data?.low_24h?.usd || 0)} {" / "}
+                                    {formatCurrency(overviewData.market_data?.high_24h?.usd || 0)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
@@ -338,28 +345,28 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         fontSize={"12px"}
                                         fontWeight={"600"}
                                         className={
-                                            overviewData.market_data.market_cap_change_percentage_24h > 0
+                                            overviewData.market_data?.market_cap_change_percentage_24h > 0
                                                 ? "text-up"
                                                 : "text-down"
                                         }
                                     >
                                         <StatArrow
                                             type={
-                                                overviewData.market_data.market_cap_change_percentage_24h > 0
+                                                overviewData.market_data?.market_cap_change_percentage_24h > 0
                                                     ? "increase"
                                                     : "decrease"
                                             }
                                             w={"8px"}
                                             h={"8px"}
                                         />
-                                        {overviewData.market_data.market_cap_change_percentage_24h.toFixed(2)}%
+                                        {overviewData.market_data.market_cap_change_percentage_24h?.toFixed(2)}%
                                     </StatHelpText>
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Yesterday's Volume</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data.market_cap["usd"])}
+                                    {formatCurrency(overviewData.market_data?.market_cap?.usd || 0)}
                                 </p>
                             </Box>
                         </li>
@@ -373,21 +380,21 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
-                                            {formatCurrency(overviewData.market_data.ath["usd"])}
+                                            {formatCurrency(overviewData.market_data.ath?.usd)}
                                         </p>
                                     </StatNumber>
                                     <StatHelpText
                                         fontSize={"12px"}
                                         fontWeight={"600"}
                                         className={
-                                            overviewData.market_data.ath_change_percentage["usd"] > 0
+                                            overviewData.market_data.ath_change_percentage?.usd > 0
                                                 ? "text-up"
                                                 : "text-down"
                                         }
                                     >
                                         <StatArrow
                                             type={
-                                                overviewData.market_data.ath_change_percentage["usd"] > 0
+                                                overviewData.market_data.ath_change_percentage?.usd > 0
                                                     ? "increase"
                                                     : "decrease"
                                             }
@@ -395,7 +402,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                             h={"8px"}
                                         />
                                         {formatQuoteCurrency(
-                                            overviewData.market_data.ath_change_percentage["usd"].toFixed(2)
+                                            overviewData.market_data.ath_change_percentage?.usd?.toFixed(2)
                                         )}
                                         %
                                     </StatHelpText>
@@ -406,21 +413,21 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
-                                            {formatCurrency(overviewData.market_data.atl["usd"])}
+                                            {formatCurrency(overviewData.market_data.atl?.usd)}
                                         </p>
                                     </StatNumber>
                                     <StatHelpText
                                         fontSize={"12px"}
                                         fontWeight={"600"}
                                         className={
-                                            overviewData.market_data.atl_change_percentage["usd"] > 0
+                                            overviewData.market_data.atl_change_percentage?.usd > 0
                                                 ? "text-up"
                                                 : "text-down"
                                         }
                                     >
                                         <StatArrow
                                             type={
-                                                overviewData.market_data.atl_change_percentage["usd"] > 0
+                                                overviewData.market_data.atl_change_percentage?.usd > 0
                                                     ? "increase"
                                                     : "decrease"
                                             }
@@ -428,7 +435,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                             h={"8px"}
                                         />
                                         {formatQuoteCurrency(
-                                            overviewData.market_data.atl_change_percentage["usd"].toFixed(2)
+                                            overviewData.market_data.atl_change_percentage?.usd?.toFixed(2)
                                         )}
                                         %
                                     </StatHelpText>
@@ -454,19 +461,19 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Circulating Supply</p>
                                 <p className="font-semibold text-sm">
-                                    {formatQuoteCurrency(overviewData.market_data.circulating_supply)}
+                                    {formatQuoteCurrency(overviewData.market_data.circulating_supply || 0)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Total Supply</p>
                                 <p className="font-semibold text-sm">
-                                    {formatQuoteCurrency(overviewData.market_data.total_supply)}
+                                    {formatQuoteCurrency(overviewData.market_data.total_supply || 0)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">Max Supply</p>
                                 <p className="font-semibold text-sm">
-                                    {formatQuoteCurrency(overviewData.market_data.max_supply)}
+                                    {formatQuoteCurrency(overviewData.market_data.max_supply || 0)}
                                 </p>
                             </Box>
                         </li>

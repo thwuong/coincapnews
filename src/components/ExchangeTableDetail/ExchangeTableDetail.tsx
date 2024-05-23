@@ -85,7 +85,7 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
         },
     });
     const [width] = UseResize();
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>

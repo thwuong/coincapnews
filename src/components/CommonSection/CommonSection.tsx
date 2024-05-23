@@ -3,13 +3,25 @@ import { TablePagination } from "../TablePagination";
 import { CommonTable } from "../CommonTable";
 import useFetchAPI from "@/api/baseAPI";
 
-function CommonSection({ totalPage, url, perPage }: { totalPage: number; perPage: number; url: string }) {
+function CommonSection({
+    totalPage,
+    url,
+    perPage,
+    category,
+}: {
+    totalPage: number;
+    category: string;
+    perPage: number;
+    url: string;
+}) {
     const [page, setPage] = React.useState<number>(1);
 
     const handlePageClick = (selectedItem: any) => {
         setPage(selectedItem.selected + 1);
     };
-    const { data: dataAPI, isLoading } = useFetchAPI(`/api/coins/markets?page=${page}&per_page=${perPage}`);
+    const { data: dataAPI, isLoading } = useFetchAPI(
+        `/api/coins/details?categories=${category}&page=${page}&per_page=${perPage}`
+    );
     return (
         <section className="w-full flex flex-col items-center">
             <CommonTable data={dataAPI} isLoading={isLoading} />

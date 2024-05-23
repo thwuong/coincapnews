@@ -1,36 +1,58 @@
 "use client";
-import { CoinType } from "@/app/types";
+import { useTranslation } from "@/app/i18n/client";
+import { CoinType, ExchangeType } from "@/app/types";
 import UseScroll from "@/hooks/UseScroll";
 import { Box, Button, Input, InputGroup, InputLeftElement, useDisclosure } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { useId, useState } from "react";
 import { Container } from "../Container";
 import { MenuMobile } from "../MenuMobile";
 import { Navigation } from "../Navigation";
 import { Topbar } from "../Topbar";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { setCurrentLang } from "@/lib/features/lang/langSlice";
-import { useTranslation } from "@/app/i18n/client";
+import useFetchAPI from "@/api/baseAPI";
+import fetchAPI from "@/api/fetchAPI";
+import { SpinnerLoading } from "../Loading";
 type HeaderProps = {
     lang: string;
 };
 function Header({ lang }: HeaderProps) {
     const [keyword, setKeyword] = useState<string>();
-    const [searchList, setSearchList] = useState<CoinType[]>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const timer = React.useRef<any>(null);
+    const [coinList, setCoinList] = useState<CoinType[]>();
+    const [exchangeList, setExchangeList] = useState<ExchangeType[]>();
     const [scrollingUp] = UseScroll();
-    const handlerSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
-    };
-
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const langStore = useAppSelector((state) => state.langStore);
-    const dispatch = useAppDispatch();
-    if (!langStore.currentLanguage) {
-        dispatch(setCurrentLang(lang));
-    }
     const { t } = useTranslation(lang, "home");
+    const handleSearch = async (searchTerms: string) => {
+        const coins = await fetchAPI(`/api/coins/markets?search=${searchTerms}`);
+        const exchanges = await fetchAPI(`/api/exchanges?search=${searchTerms}`);
+
+        const [data1, data2] = await Promise.all([coins, exchanges]);
+
+        setCoinList(data1);
+        setExchangeList(data2);
+    };
+    const resetSearch = () => {
+        setCoinList([]);
+        setExchangeList([]);
+        setKeyword("");
+    };
+    React.useEffect(() => {
+        if (!keyword) return;
+        if (timer.current) clearTimeout(timer.current);
+
+        timer.current = setTimeout(() => {
+            handleSearch(keyword);
+            setLoading(false);
+        }, 600);
+    }, [keyword]);
+    React.useEffect(() => {
+        resetSearch();
+    }, []);
+
     return (
         <header className="flex items-center justify-center flex-col">
             <Container className="px-12">
@@ -57,7 +79,10 @@ function Header({ lang }: HeaderProps) {
                                 </InputLeftElement>
 
                                 <Input
-                                    onChange={handlerSearch}
+                                    onChange={(e) => {
+                                        setLoading(true);
+                                        setKeyword(e.target.value);
+                                    }}
                                     borderRadius={"99px"}
                                     height={"min-content"}
                                     bg={"btn"}
@@ -68,12 +93,99 @@ function Header({ lang }: HeaderProps) {
                                     border={"none"}
                                     className="placeholder:text-13"
                                 />
-                                {searchList && searchList?.length > 0 && (
+                                {!loading && coinList && coinList?.length > 0 && (
                                     <Box
                                         position={"absolute"}
-                                        zIndex={999999999}
-                                        className="w-full h-[300px] shadow rounded-md bg-white top-[calc(100%+8px)]"
-                                    ></Box>
+                                        zIndex={30}
+                                        className="min-w-[335px] flex flex-col gap-5 h-[400px] overflow-y-auto p-5 shadow rounded-md bg-white top-[calc(100%+8px)]"
+                                    >
+                                        <div className="flex flex-col gap-2">
+                                            <h3 className="font-semibold text-12 text-typo-4/80">Coins</h3>
+                                            <div className="flex flex-col gap-4">
+                                                {coinList.map((coin, index) => {
+                                                    const key = coin.id + index;
+                                                    return (
+                                                        <Link
+                                                            href={`/currency/${coin.id}`}
+                                                            key={key}
+                                                            className="flex items-center justify-between"
+                                                        >
+                                                            <div className="flex items-center gap-1">
+                                                                <Image
+                                                                    height={24}
+                                                                    width={24}
+                                                                    src={coin.image}
+                                                                    alt={coin.name}
+                                                                />
+                                                                <p className="uppercase font-semibold whitespace-nowrap text-sm">
+                                                                    {coin.name}
+                                                                    <span className="text-12 text-gray-bg ml-1">
+                                                                        {coin.symbol}
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                            {/* <p
+                                                                className={clsx(
+                                                                    "capitalize whitespace-nowrap text-sm leading-4 change24 font-semibold font-inter",
+                                                                    coin.price_change_percentage_24h_in_currency > 0
+                                                                        ? "text-up"
+                                                                        : "text-down"
+                                                                )}
+                                                            >
+                                                                {coin.price_change_percentage_24h_in_currency?.toFixed(
+                                                                    2
+                                                                )}
+                                                                %
+                                                            </p> */}
+                                                            <p className="capitalize whitespace-nowrap text-sm leading-4 text-gray-bg font-inter">
+                                                                #{coin.market_cap_rank}
+                                                            </p>
+                                                        </Link>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            <h3 className="font-semibold text-12 text-typo-4/80">Exchanges</h3>
+                                            <div className="flex flex-col gap-4">
+                                                {exchangeList &&
+                                                    exchangeList?.length > 0 &&
+                                                    exchangeList.map((exchange, index) => {
+                                                        const key = exchange._source.id + index;
+                                                        return (
+                                                            <Link
+                                                                href={`/exchanges/${exchange._source.id}`}
+                                                                key={key}
+                                                                className="flex items-center justify-between"
+                                                            >
+                                                                <div className="flex items-center gap-1">
+                                                                    <Image
+                                                                        height={24}
+                                                                        width={24}
+                                                                        src={exchange._source.image}
+                                                                        alt={exchange._source.name}
+                                                                    />
+                                                                    <p className="uppercase font-semibold whitespace-nowrap text-sm">
+                                                                        {exchange._source.name}
+                                                                    </p>
+                                                                </div>
+                                                            </Link>
+                                                        );
+                                                    })}
+                                            </div>
+                                        </div>
+                                    </Box>
+                                )}
+                                {loading && (
+                                    <Box
+                                        position={"absolute"}
+                                        zIndex={30}
+                                        className="min-w-[335px] h-[400px] overflow-y-auto p-2 shadow rounded-md bg-white top-[calc(100%+8px)]"
+                                    >
+                                        <div className="flex items-center justify-center">
+                                            <SpinnerLoading />
+                                        </div>
+                                    </Box>
                                 )}
                             </InputGroup>
                             <Box

@@ -84,7 +84,7 @@ export default function Page({ params }: PageProps) {
                                 height={"fit-content"}
                                 py={"8px"}
                                 bg={
-                                    getNewData(stream?.change24, coin.market_data.market_cap_change_percentage_24h) > 0
+                                    getNewData(stream?.change24, coin.market_data?.market_cap_change_percentage_24h) > 0
                                         ? "#16C784"
                                         : "#ea3943"
                                 }
@@ -92,7 +92,7 @@ export default function Page({ params }: PageProps) {
                                     bg:
                                         getNewData(
                                             stream?.change24,
-                                            coin.market_data.market_cap_change_percentage_24h
+                                            coin.market_data?.market_cap_change_percentage_24h
                                         ) > 0
                                             ? "rgba(22, 199, 132,0.8)"
                                             : "rgba(234, 57, 67,0.8)",
@@ -103,7 +103,7 @@ export default function Page({ params }: PageProps) {
                                         className={clsx(
                                             getNewData(
                                                 stream?.change24,
-                                                coin.market_data.market_cap_change_percentage_24h
+                                                coin.market_data?.market_cap_change_percentage_24h
                                             ) < 0 && "rotate-180"
                                         )}
                                         alt="left"
@@ -115,8 +115,8 @@ export default function Page({ params }: PageProps) {
                                 <span className="text-white font-semibold text-sm">
                                     {getNewData(
                                         stream?.change24,
-                                        coin.market_data.market_cap_change_percentage_24h
-                                    ).toFixed(2)}
+                                        coin.market_data.market_cap_change_percentage_24h || 0
+                                    )?.toFixed(2)}
                                     %
                                 </span>
                             </Button>
@@ -127,8 +127,8 @@ export default function Page({ params }: PageProps) {
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">24h Low / 24h High</p>
                             <p className="text-sm font-bold">
-                                {formatCurrency(coin.market_data.low_24h["usd"])} /{" "}
-                                {formatCurrency(coin.market_data.high_24h["usd"])}
+                                {formatCurrency(coin.market_data?.low_24h?.usd || 0)} /{" "}
+                                {formatCurrency(coin.market_data?.high_24h?.usd || 0)}
                             </p>
                         </div>
                         <div className="flex items-center justify-between text-typo-1 w-full">
@@ -197,7 +197,7 @@ export default function Page({ params }: PageProps) {
                     <div className="flex flex-col gap-4">
                         <h5 className="text-sm font-bold text-typo-1/80">Links</h5>
                         <div className="flex gap-2 flex-wrap">
-                            {coin.links.blockchain_site.length > 0 && (
+                            {coin.links.blockchain_site?.length > 0 && (
                                 <Button
                                     as={Link}
                                     href={coin.links.blockchain_site[0]}
@@ -220,7 +220,7 @@ export default function Page({ params }: PageProps) {
                                     </span>
                                 </Button>
                             )}
-                            {coin.links.homepage.length > 0 && (
+                            {coin.links.homepage?.length > 0 && (
                                 <Button
                                     as={Link}
                                     href={coin.links.homepage[0]}

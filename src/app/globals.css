@@ -84,6 +84,12 @@ body {
   background: rgb(56,97,251);
   color: white;
 }
+.pagination li.disabled {
+  opacity: 0.5;
+}
+.pagination li.disabled a{
+  cursor: not-allowed;
+}
 #description a{
   color: rgba(33,33,33,0.9);
 }

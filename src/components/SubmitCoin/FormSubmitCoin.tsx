@@ -68,7 +68,7 @@ type FormType = {
     file: string;
 };
 function FormSubmitCoin() {
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     const {
         handleSubmit,

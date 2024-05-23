@@ -1,3 +1,5 @@
+import { formatCurrency } from "@/app/utils/formatCurrency";
+import { useAppSelector } from "@/lib/hooks";
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 type DataChartType = {
@@ -6,8 +8,23 @@ type DataChartType = {
 };
 type LineChartOverviewProps = {
     data: DataChartType[];
+    isUp?: boolean;
 };
-function LineChartOverview({ data }: LineChartOverviewProps) {
+function formatNumberWithSuffix(number: string) {
+    const suffixes = ["", "K", "M", "B", "T"];
+    const exponent = Math.floor(Math.log(Math.abs(Number(number))) / Math.log(1000));
+    const adjustedNumber = Number(number) / Math.pow(1000, exponent);
+    let formattedNumber = adjustedNumber.toFixed(1); // Adjust as needed for decimal places
+
+    // Handle edge cases for very small numbers
+    if (adjustedNumber < 1) {
+        formattedNumber = adjustedNumber.toString();
+    }
+
+    return formattedNumber + suffixes[exponent];
+}
+function LineChartOverview({ data, isUp = false }: LineChartOverviewProps) {
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const options: ApexOptions = {
         chart: {
             toolbar: {
@@ -31,12 +48,18 @@ function LineChartOverview({ data }: LineChartOverviewProps) {
             // },
         },
         yaxis: {
-            // labels: {
-            //     show: false,
-            // },
             // crosshairs: {
             //     show: false,
             // },
+            labels: {
+                formatter(val, opts) {
+                    return formatCurrency(val, "USD", currentLanguage, {
+                        maximumFractionDigits: 1,
+                        minimumIntegerDigits: 1,
+                        notation: "compact",
+                    });
+                },
+            },
         },
         dataLabels: {
             enabled: false,
@@ -57,7 +80,7 @@ function LineChartOverview({ data }: LineChartOverviewProps) {
             options={{
                 ...options,
 
-                // colors: isUp ? ["#16C784", "#16C784", "#16C784"] : ["#EA3943", "#EA3943", "#EA3943"],
+                colors: isUp ? ["#16C784", "#16C784", "#16C784"] : ["#EA3943", "#EA3943", "#EA3943"],
             }}
             series={[
                 {
