@@ -125,7 +125,7 @@ function TableSection() {
                     <span className="text-12 font-bold max-lg:hidden">{t("watchlist")}</span>
                 </Box>
                 <InputGroup position={"relative"} w={"min-content"}>
-                    <InputLeftElement pointerEvents="none">
+                    <InputLeftElement pointerEvents="none" height={"36px"}>
                         <Image src={"/assets/icons/search.svg"} alt="dropdown" width={20} height={20} />
                     </InputLeftElement>
 
@@ -136,7 +136,7 @@ function TableSection() {
                         py={"6px"}
                         w={200}
                         type="text"
-                        bg={"gray.50"}
+                        bg={"gray.100"}
                         border={"none"}
                         placeholder={t("search coin")}
                         className="placeholder:text-13"
