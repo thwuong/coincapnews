@@ -31,7 +31,7 @@ function Topbar({ lang }: TopbarProps) {
     const [currentCurrency, setCurrentCurrency] = useState(currenciesData[0]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { data, isLoading }: { data: MarketData[]; isLoading: boolean } = useFetchAPI(`/api/global?centralized=true`);
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <section className="w-full flex items-center justify-between text-12 min-h-[48px] max-lg:overflow-x-auto">
@@ -70,7 +70,7 @@ function Topbar({ lang }: TopbarProps) {
             )}
 
             <div className="flex items-center gap-2 max-lg:hidden">
-                <LanguageMenu lang={lang} />
+                <LanguageMenu />
                 <Button
                     onClick={() => onOpen()}
                     bg={"transparent"}

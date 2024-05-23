@@ -12,9 +12,10 @@ type ShareModalProps = {
     onClose: () => void;
     newData: NewDataType | any;
     oldData: number;
+    image: string;
     symbol?: string;
 };
-function ShareModal({ isOpen, onClose, newData, oldData, symbol }: ShareModalProps) {
+function ShareModal({ isOpen, onClose, newData, oldData, symbol, image }: ShareModalProps) {
     const [currentUrl, setCurrentUrl] = useState("");
     const toast = useToast();
     useEffect(() => {
@@ -46,7 +47,7 @@ function ShareModal({ isOpen, onClose, newData, oldData, symbol }: ShareModalPro
                 <ModalCloseButton />
                 <ModalBody>
                     <div className="flex flex-col items-center justify-center gap-6 pt-16 pb-4">
-                        <Image src={"/assets/images/bitcoin.webp"} alt="bitcoin" width={80} height={80} />
+                        <Image src={image} alt={symbol || "coin"} width={80} height={80} />
                         <div className="flex flex-col gap-4 text-center">
                             <h2 className="text-2xl font-bold text-typo-4">Share it with your friends</h2>
                             <p className="text-typo-1">

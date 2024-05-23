@@ -16,7 +16,7 @@ function MainLayout({ children, params: { lang } }: LayoutProps) {
     const pathName = usePathname();
 
     return (
-        <Providers>
+        <Providers lang={lang}>
             {pathName !== `/${lang}/account` && <Header lang={lang} />}
             {children}
             {pathName !== `/${lang}/account` && <Footer />}

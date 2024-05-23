@@ -18,11 +18,14 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { LanguageMenu } from "../LanguageMenu";
 import { CurrencyModal } from "../Modal";
 import { currenciesData, navigationHeaderData } from "@/fakedata/fakedata";
+import { useAppSelector } from "@/lib/hooks";
+import { useTranslation } from "@/app/i18n/client";
+import clsx from "clsx";
 type MenuMobileProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -31,10 +34,13 @@ type MenuMobileProps = {
 type NavItemType = {
     label?: string;
     href?: string;
+    key?: string;
     icon?: string;
     children?: NavItemType[];
 };
 function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => void }) {
+    const pathName = usePathname();
+
     const [showDropdown, setShowDropdown] = useState(false);
     const router = useRouter();
     const nextPage = (href: string = "/") => {
@@ -43,6 +49,16 @@ function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => vo
         });
         onClose();
     };
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const { t } = useTranslation(currentLanguage);
+    let activePathCurrent = false;
+    if (navItem.children && navItem.children?.length > 0) {
+        activePathCurrent = navItem.children.some((child) => {
+            return pathName.includes(child.href || "/");
+        });
+    } else {
+        activePathCurrent = pathName.includes(navItem.href || "/");
+    }
     return (
         <Box position={"relative"}>
             <Button
@@ -63,8 +79,13 @@ function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => vo
                         setShowDropdown(!showDropdown);
                     }}
                 >
-                    <span className="text-base leading-[1.5] group font-bold text-typo-4 hover:text-typo-1 duration-300">
-                        {navItem.label}
+                    <span
+                        className={clsx(
+                            "text-base leading-[1.5] group font-bold  hover:text-typo-1 duration-300",
+                            activePathCurrent ? "text-primary-1" : "text-typo-4"
+                        )}
+                    >
+                        {t(`header.${navItem.key}`)}
                     </span>
                     {navItem.children && navItem.children.length > 0 && (
                         <Image
@@ -104,8 +125,12 @@ function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => vo
                             p={"16px"}
                             leftIcon={<Image src={item.icon || ""} alt="icon" width={24} height={24} />}
                         >
-                            <span className="text-base whitespace-nowrap leading-[1.5] font-bold text-typo-4 group-hover:text-primary-1 duration-300">
-                                {item.label}
+                            <span
+                                className={clsx(
+                                    "text-base whitespace-nowrap leading-[1.5] font-bold text-typo-4 group-hover:text-primary-1 duration-300"
+                                )}
+                            >
+                                {t(`header.${item.key}`)}
                             </span>
                         </Button>
                     ))}
@@ -182,7 +207,7 @@ function MenuMobile({ onClose, isOpen, lang }: MenuMobileProps) {
                             })}
                         </nav>
                         <div className="flex items-center justify-between">
-                            <LanguageMenu lang={lang} />
+                            <LanguageMenu />
                             <Button
                                 onClick={() => onOpenCurrency()}
                                 bg={"transparent"}

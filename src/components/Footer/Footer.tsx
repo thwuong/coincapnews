@@ -18,7 +18,7 @@ type NavItemType = {
 };
 function NavItem({ navItem }: { navItem: NavItemType }) {
     const [showDropdown, setShowDropdown] = useState(false);
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const router = useRouter();
     const { t } = useTranslation(currentLanguage);
     return (
@@ -40,7 +40,13 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     (showDropdown ? (
                         <Image src={"/assets/icons/dash.svg"} alt="dash" width={16} height={16} />
                     ) : (
-                        <Image src={"/assets/icons/plus.svg"} alt="plus" width={16} height={16} className="opacity-50" />
+                        <Image
+                            src={"/assets/icons/plus.svg"}
+                            alt="plus"
+                            width={16}
+                            height={16}
+                            className="opacity-50"
+                        />
                     ))}
             </div>
             {navItem.children && navItem.children.length > 0 && (

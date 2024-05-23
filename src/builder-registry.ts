@@ -13,6 +13,7 @@ import { Paragraph } from "./components/Paragraph";
 import { CommonSection } from "./components/CommonSection";
 import { SumbitCoin } from "./components/SubmitCoin";
 import { NewCrypto } from "./components/NewCrypto";
+import { GainersAndLosers } from "./components/GainersAndLosers";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
@@ -139,6 +140,12 @@ Builder.registerComponent(withChildren(CommonSection), {
             defaultValue: 10,
             required: true,
         },
+        {
+            name: "category",
+            type: "string",
+            required: true,
+            defaultValue: "Binance Smart Chain Ecosystem",
+        },
     ],
 });
 Builder.registerComponent(withChildren(NewCrypto), {
@@ -154,4 +161,21 @@ Builder.registerComponent(withChildren(NewCrypto), {
 });
 Builder.registerComponent(withChildren(SumbitCoin), {
     name: "SumbitCoin",
+});
+Builder.registerComponent(withChildren(GainersAndLosers), {
+    name: "GainersAndLosers",
+    inputs: [
+        {
+            name: "totalPage",
+            type: "number",
+            defaultValue: 100,
+            required: true,
+        },
+        {
+            name: "perPage",
+            type: "number",
+            defaultValue: 10,
+            required: true,
+        },
+    ],
 });

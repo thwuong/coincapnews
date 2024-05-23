@@ -53,7 +53,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
 
     React.useEffect(() => {
         if (!data) return;
-        const url = data.map((i) => `${i._source.symbol}usdt@ticker/`).join("");
+        const url = data.map((i) => `${i.symbol}usdt@ticker/`).join("");
         const socket = connectSocket(url);
         function onConnect(this: WebSocket) {}
 
@@ -149,10 +149,10 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                 <Tbody ref={ref}>
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
-                              let convertId = `${row.original._source.symbol}USDT`.toLocaleUpperCase();
+                              let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
 
                               return (
-                                  <Tr key={row.original._source.name} data-symbol={convertId}>
+                                  <Tr key={row.original.name} data-symbol={convertId}>
                                       <Td
                                           p={"4px"}
                                           minW={"104px"}
@@ -172,28 +172,28 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
 
                                               <Link
                                                   className="flex items-center gap-2 cursor-pointer"
-                                                  href={`/currency/${row.original._source.id}`}
+                                                  href={`/currency/${row.original.id}`}
                                               >
                                                   <Image
                                                       className="cursor-pointer"
-                                                      src={row.original._source.image}
-                                                      alt={row.original._source.name}
+                                                      src={row.original.image}
+                                                      alt={row.original.name}
                                                       width={24}
                                                       height={24}
                                                   />
                                                   <Box flexDirection={"column"}>
                                                       <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
-                                                          {row.original._source.name}
+                                                          {row.original.name}
                                                       </p>
                                                       <Box display={"flex"} alignItems={"center"} gap={"4px"}>
                                                           <Badge
                                                               p={"4px"}
                                                               className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
                                                           >
-                                                              {row.original._source.market_cap_rank}
+                                                              {row.original.market_cap_rank}
                                                           </Badge>
                                                           <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
-                                                              {row.original._source.symbol}
+                                                              {row.original.symbol}
                                                           </span>
                                                       </Box>
                                                   </Box>
@@ -202,54 +202,54 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize price text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original._source.current_price)}
+                                              {formatCurrency(row.original.current_price)}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm leading-4 change24 font-semibold font-inter",
-                                                  row.original._source.price_change_percentage_24h_in_currency > 0
+                                                  row.original.price_change_percentage_24h_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original._source.price_change_percentage_24h_in_currency.toFixed(2)}%
+                                              {row.original.price_change_percentage_24h_in_currency.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm leading-4 font-semibold font-inter",
-                                                  row.original._source.price_change_percentage_7d_in_currency > 0
+                                                  row.original.price_change_percentage_7d_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original._source.price_change_percentage_7d_in_currency.toFixed(2)}%
+                                              {row.original.price_change_percentage_7d_in_currency.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"138px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original._source.market_cap)}
+                                              {formatQuoteCurrency(row.original.market_cap)}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"118px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original._source.total_volume)}
+                                              {formatQuoteCurrency(row.original.total_volume)}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"182px"}>
                                           <div className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter flex gap-1 justify-end">
-                                              <p>{formatQuoteCurrency(row.original._source.total_supply)}</p>
-                                              <p className="uppercase">{row.original._source.symbol}</p>
+                                              <p>{formatQuoteCurrency(row.original.total_supply)}</p>
+                                              <p className="uppercase">{row.original.symbol}</p>
                                           </div>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"180px"}>
                                           <Box display={"flex"} justifyContent={"end"}>
                                               <LineChartLastDays
-                                                  isUp={row.original._source.price_change_percentage_7d_in_currency > 0}
-                                                  data={row.original._source.sparkline_in_7d.price}
+                                                  isUp={row.original.price_change_percentage_7d_in_currency > 0}
+                                                  data={row.original.sparkline_in_7d.price}
                                               />
                                           </Box>
                                       </Td>

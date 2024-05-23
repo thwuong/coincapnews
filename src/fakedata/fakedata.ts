@@ -57,7 +57,7 @@ export const navigationHeaderData: NavItemType[] = [
                 icon: "/assets/icons/polka.svg",
                 label: "Polkadot Eco",
                 key: "polkadot_eco",
-                href: "/polkadot-eco",
+                href: "/polkadot",
             },
             {
                 icon: "/assets/icons/change.svg",
@@ -122,7 +122,7 @@ export const navDataOfCompany: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
         label: "Privacy",
-        href: "/privacy-policy",
+        href: "/privacy-and-cookie-policy",
         key: "privacy",
     },
     {
@@ -136,7 +136,7 @@ export const navDataOfSupport: NavItemType[] = [
     {
         icon: "/assets/images/bnb.webp",
         label: "FAQ",
-        href: "/faq",
+        href: "/faq-frequently-asked-questions",
         key: "faq",
     },
     {

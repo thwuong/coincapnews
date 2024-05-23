@@ -18,66 +18,66 @@ const columns = [
     columnHelper.group({
         header: "# Name",
         columns: [
-            columnHelper.accessor("_source.name", {
+            columnHelper.accessor("name", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.id", {
+            columnHelper.accessor("id", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.image", {
+            columnHelper.accessor("image", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.market_cap_rank", {
+            columnHelper.accessor("market_cap_rank", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.id", {
+            columnHelper.accessor("id", {
                 cell: (info) => info.getValue(),
             }),
         ],
     }),
-    columnHelper.accessor("_source.current_price", {
+    columnHelper.accessor("current_price", {
         cell: (info) => info.getValue(),
         header: "Price",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.price_change_percentage_24h", {
+    columnHelper.accessor("price_change_percentage_24h", {
         cell: (info) => info.getValue(),
         header: "24H %",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.price_change_percentage_7d_in_currency", {
+    columnHelper.accessor("price_change_percentage_7d_in_currency", {
         cell: (info) => info.getValue(),
         header: "7D %",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.market_cap", {
+    columnHelper.accessor("market_cap", {
         cell: (info) => info.getValue(),
         header: "Market Cap",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.total_volume", {
+    columnHelper.accessor("total_volume", {
         cell: (info) => info.getValue(),
         header: "Volume (24H)",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.total_supply", {
+    columnHelper.accessor("total_supply", {
         cell: (info) => info.getValue(),
         header: "Circulating Supply",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.sparkline_in_7d.price", {
+    columnHelper.accessor("sparkline_in_7d.price", {
         cell: (info) => info.getValue(),
         header: "Last 7 Days",
         meta: {
@@ -102,7 +102,7 @@ function TableSection() {
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/markets?page=${page}&per_page=${process.env.NEXT_PUBLIC_PER_PAGE}`
     );
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage, "home");
     return (
         <section className="flex flex-col items-center gap-8 py-6 pb-32 w-full">

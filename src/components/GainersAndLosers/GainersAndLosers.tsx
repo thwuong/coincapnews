@@ -1,105 +1,81 @@
-"use client";
 import useFetchAPI from "@/api/baseAPI";
+import { useTranslation } from "@/app/i18n/client";
+import { CoinTopType, CoinType } from "@/app/types";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import getNewData from "@/app/utils/getNewData";
 import UseResize from "@/hooks/UseResize";
+import { useAppSelector } from "@/lib/hooks";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
-    ColumnDef,
     SortingState,
     createColumnHelper,
-    flexRender,
     getCoreRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import Image from "next/image";
-import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import TablePagination from "../TablePagination/TablePagination";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { TablePagination } from "../TablePagination";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
-type Exchange = {
-    _source: {
-        id: string;
-        name: string;
-        chart: {
-            data: number[];
-        };
-        open_interest_btc: number;
-        trade_volume_24h_btc: number;
-        number_of_perpetual_pairs: number;
-        number_of_futures_pairs: number;
-        image: string;
-        trust_score: number;
-        trade_volume_24h_btc_normalized: number;
-        symbol: string;
-    };
-};
-export type ExchangeTableProps = {
-    data: Exchange[];
-    isLoading: boolean;
-};
-const columnHelper = createColumnHelper<Exchange>();
 
-const columns: ColumnDef<Exchange, any>[] = [
+const columnHelper = createColumnHelper<CoinTopType>();
+
+const columns = [
     columnHelper.group({
         header: "#",
         columns: [
-            columnHelper.accessor("_source.image", {
+            columnHelper.accessor("id", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.symbol", {
+            columnHelper.accessor("image", {
+                cell: (info) => info.getValue(),
+            }),
+            columnHelper.accessor("symbol", {
+                cell: (info) => info.getValue(),
+            }),
+            columnHelper.accessor("id", {
                 cell: (info) => info.getValue(),
             }),
         ],
     }),
-    columnHelper.accessor("_source.name", {
+    columnHelper.accessor("name", {
         cell: (info) => info.getValue(),
         header: "Name",
     }),
-    columnHelper.accessor("_source.id", {
+    columnHelper.accessor("usd", {
         cell: (info) => info.getValue(),
-        header: "Trust Code",
-        meta: {
-            center: true,
-        },
-    }),
-    columnHelper.accessor("_source.open_interest_btc", {
-        cell: (info) => info.getValue(),
-        header: "Trade Volume 24h(Normalized)",
+        header: "Price",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.trade_volume_24h_btc", {
+    columnHelper.accessor("usd_24h_change", {
         cell: (info) => info.getValue(),
-        header: "Trade Volume 24h",
+        header: "24H",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.number_of_perpetual_pairs", {
+    columnHelper.accessor("usd_24h_vol", {
         cell: (info) => info.getValue(),
-        header: "Volume (7d)",
+        header: "Volume",
         meta: {
-            center: true,
+            isNumeric: true,
         },
     }),
 ];
 
-function DifferentExchangesTable({
-    data,
-    isLoading,
-    currentIndex = 0,
-}: {
-    data: Exchange[];
+export type DataTableProps = {
+    data: CoinTopType[];
     isLoading: boolean;
     currentIndex?: number;
-}) {
+};
+function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
+
     const table = useReactTable({
         columns,
         data,
@@ -111,6 +87,10 @@ function DifferentExchangesTable({
         },
     });
     const [width] = UseResize();
+    const router = useRouter();
+    const nextPage = (href: string) => {
+        router.push(`/currency/${href}`);
+    };
     const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
@@ -127,11 +107,11 @@ function DifferentExchangesTable({
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        bg={"#F8FAFD"}
+                                        className="bg-secondary"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
-                                        px={"8px"}
+                                        px={0}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
                                         isNumeric={meta?.isNumeric}
@@ -139,7 +119,7 @@ function DifferentExchangesTable({
                                         <Box
                                             display={"flex"}
                                             alignItems={"center"}
-                                            justifyContent={(meta?.isNumeric || meta?.center) && "center"}
+                                            justifyContent={meta?.isNumeric && "end"}
                                             flexDirection={"row"}
                                         >
                                             <p
@@ -178,96 +158,95 @@ function DifferentExchangesTable({
                 <Tbody>
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
+                              let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
+
                               return (
-                                  <Tr key={row.index}>
-                                      <Td
-                                          px={"8px"}
-                                          position={width <= 768 ? "sticky" : undefined}
-                                          left={0}
-                                          className="bg-secondary text-[13px] font-medium"
-                                      >
-                                          {row.index + 1 + currentIndex}
+                                  <Tr key={row.original.name}>
+                                      <Td px={"4px"} position={width <= 768 ? "sticky" : undefined} left={0}>
+                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                              {row.index + 1 + currentIndex}
+                                          </p>
                                       </Td>
                                       <Td
-                                          px={"4px"}
+                                          p={"4px"}
                                           minW={"104px"}
+                                          height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
                                           className="bg-secondary"
                                       >
-                                          <Link
-                                              href={`/exchanges/${row.original._source.id}`}
-                                              className="flex items-center gap-3"
-                                          >
-                                              <Image
-                                                  src={row.original._source.image}
-                                                  alt={row.original._source.name}
-                                                  width={24}
-                                                  height={24}
-                                              />
-                                              <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
-                                                  {row.original._source.name}
-                                              </p>
-                                          </Link>
+                                          <Box display={"flex"} alignItems={"center"} gap={"8px"}>
+                                              <div
+                                                  className="flex items-center gap-2 cursor-pointer"
+                                                  onClick={() => {
+                                                      nextPage(row.original.id);
+                                                  }}
+                                              >
+                                                  <Image
+                                                      className="cursor-pointer"
+                                                      src={row.original.image}
+                                                      alt={row.original.name}
+                                                      width={24}
+                                                      height={24}
+                                                  />
+                                                  <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
+                                                      {row.original.name}
+                                                  </p>
+                                              </div>
+                                          </Box>
                                       </Td>
-                                      <Td px={"4px"}>
-                                          <p className="uppercase text-center text-sm leading-4 font-medium ">
-                                              {row.original._source.trust_score}/10
+                                      <Td isNumeric={true} px={"4px"}>
+                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                              {formatCurrency(row.original.usd, "USD", currentLanguage)}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
-                                          <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatQuoteCurrency(
-                                                  row.original._source.trade_volume_24h_btc_normalized
+                                      <Td isNumeric={true} px={"4px"}>
+                                          <p
+                                              className={clsx(
+                                                  "capitalize text-sm leading-4 font-semibold font-inter",
+                                                  row.original.usd_24h_change > 0 ? "text-up" : "text-down"
                                               )}
-                                              <span className="uppercase"> BTC</span>
+                                          >
+                                              {row.original.usd_24h_change?.toFixed(2)}%
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
-                                          <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatQuoteCurrency(row.original._source.trade_volume_24h_btc)}
-                                              <span className="uppercase"> BTC</span>
+
+                                      <Td isNumeric={true} px={"4px"} minW={"118px"}>
+                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                              {formatCurrency(row.original.usd_24h_vol, "USD", currentLanguage)}
                                           </p>
-                                      </Td>
-                                      <Td px={"4px"} height={"80px"} display={"flex"} justifyContent={"center"}>
-                                          {row.original._source.chart && (
-                                              <LineChartLastDays data={row.original._source.chart.data} isUp={true} />
-                                          )}
                                       </Td>
                                   </Tr>
                               );
                           })
-                        : Array(8)
+                        : Array()
                               .fill(0)
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
+                                          <Td isNumeric={true} px={"4px"}>
+                                              <Skeleton height="14px" w={"40px"} />
+                                          </Td>
                                           <Td
+                                              height={"100px"}
                                               p={"4px"}
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
-                                              bg={"#fff"}
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
-                                                  <Skeleton height="10px" width={"50%"} />
+                                                  <Skeleton height="14px" width={"50%"} />
                                               </div>
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="15px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="15px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="15px" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <Skeleton height="15px" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <Skeleton height="15px" />
+                                              <Skeleton height="14px" />
                                           </Td>
                                       </Tr>
                                   );
@@ -277,31 +256,30 @@ function DifferentExchangesTable({
         </TableContainer>
     );
 }
-type DifferentExchangesProps = {
-    perPage?: number;
-    title?: string;
-    url?: string;
-};
-function DifferentExchanges({ perPage = 10, title, url }: DifferentExchangesProps) {
-    const [page, setPage] = useState(1);
-    const { data, isLoading, error } = useFetchAPI(`${url}?per_page=${perPage}&page=${page}&centralized=true`);
-    if (error) return `Error ${error}`;
-    const handlePageClick = ({ selected }: { selected: number }) => {
-        setPage(selected + 1);
-    };
-    return (
-        <div className="flex flex-col items-center justify-center gap-8 w-full">
-            {title && (
-                <h1 className="text-[28px] leading-9 text-center py-8 max-lg:py-6 font-bold text-typo-4/80">{title}</h1>
-            )}
 
-            {/* Table */}
-            <DifferentExchangesTable data={data} isLoading={isLoading} currentIndex={(page - 1) * perPage} />
-            <div className="w-full py-4 flex justify-center">
-                <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
+function GainersAndLosers({ totalPage, perPage }: { totalPage: number; perPage: number }) {
+    const [page, setPage] = React.useState<number>(1);
+
+    const handlePageClick = (selectedItem: any) => {
+        setPage(selectedItem.selected + 1);
+    };
+    const { data: dataAPI, isLoading } = useFetchAPI(
+        `/api/coins/top_gainers_losers?vs_currency=usd&page=${page}&per_page=${perPage}`
+    );
+    return (
+        <section className="w-full flex flex-col items-center">
+            <div className="flex gap-10 w-full max-lg:flex-col">
+                <div className="flex flex-col items-center w-full">
+                    <h2 className="text-[28px] leading-9 font-bold text-typo-4/80 py-8 max-lg:px-6">Top Gainers</h2>
+                    <GainersAndLosersTable data={dataAPI?.top_gainers} isLoading={isLoading} />
+                </div>
+                <div className="flex flex-col items-center w-full">
+                    <h2 className="text-[28px] leading-9 font-bold text-typo-4/80 py-8 max-lg:px-6">Top Losers</h2>
+                    <GainersAndLosersTable data={dataAPI?.top_losers} isLoading={isLoading} />
+                </div>
             </div>
-        </div>
+        </section>
     );
 }
 
-export default DifferentExchanges;
+export default GainersAndLosers;

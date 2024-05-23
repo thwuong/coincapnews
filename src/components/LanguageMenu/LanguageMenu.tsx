@@ -1,10 +1,11 @@
 "use client";
 import { setCurrentLang } from "@/lib/features/lang/langSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 type LangType = {
     label: string;
     code: string;
@@ -22,21 +23,21 @@ const langData: LangType[] = [
         icon: "/assets/icons/en.jpg",
     },
 ];
-type LanguageMenuProps = {
-    lang: string;
-};
-function LanguageMenu({ lang }: LanguageMenuProps) {
-    const [currLang, setCurrLang] = useState(langData.find((l) => l.code === lang) || langData[0]);
+
+function LanguageMenu() {
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const router = useRouter();
     const path = usePathname();
-    const dispatch = useAppDispatch();
 
     const selectedLang = (item: LangType) => {
-        const currentHref = path.replace(currLang.code, item.code);
-        setCurrLang(item);
-        dispatch(setCurrentLang(item.code));
+        const currentHref = path.replace(currentLanguage, item.code);
         router.push(currentHref);
     };
+    const currLang = React.useMemo(
+        () => langData.find((item) => item.code === currentLanguage) || langData[0],
+        [currentLanguage]
+    );
+
     return (
         <Menu>
             <MenuButton
@@ -53,7 +54,7 @@ function LanguageMenu({ lang }: LanguageMenuProps) {
             >
                 <span className="text-12 font-semibold">{currLang.label}</span>
             </MenuButton>
-            <MenuList p={2} zIndex={11}>
+            <MenuList p={2} zIndex={21}>
                 {langData
                     .filter((item) => item.code !== currLang.code)
                     .map((item) => (

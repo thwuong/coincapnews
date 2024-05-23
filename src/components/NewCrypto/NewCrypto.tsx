@@ -19,20 +19,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAppSelector } from "@/lib/hooks";
 import { useTranslation } from "@/app/i18n/client";
+import moment from "moment";
 type NewCryptoType = {
-    _source: {
-        id: string;
-        image: string;
-        name: string;
-        current_price: number;
-        price_change_percentage_1h_in_currency: number;
-        price_change_percentage_24h_in_currency: number;
-        market_cap: number;
-        volume_24h: number;
-        blockchain: string;
-        added: string;
-        atl_date: string;
-    };
+    id: string;
+    image: string;
+    name: string;
+    current_price: number;
+    price_change_percentage_1h_in_currency: number;
+    price_change_percentage_24h_in_currency: number;
+    market_cap: number;
+    volume_24h: number;
+    blockchain: string;
+    added: string;
+    atl_date: string;
 };
 export type ExchangeTableProps = {
     data: NewCryptoType[];
@@ -44,7 +43,7 @@ const columns: ColumnDef<NewCryptoType, any>[] = [
     columnHelper.group({
         header: "#",
         columns: [
-            columnHelper.accessor("_source.image", {
+            columnHelper.accessor("image", {
                 cell: (info) => info.getValue(),
             }),
         ],
@@ -52,53 +51,53 @@ const columns: ColumnDef<NewCryptoType, any>[] = [
             position: "center",
         },
     }),
-    columnHelper.accessor("_source.name", {
+    columnHelper.accessor("name", {
         cell: (info) => info.getValue(),
         header: "Name",
     }),
-    columnHelper.accessor("_source.current_price", {
+    columnHelper.accessor("current_price", {
         cell: (info) => info.getValue(),
         header: "Price",
         meta: {
             position: "center",
         },
     }),
-    columnHelper.accessor("_source.price_change_percentage_1h_in_currency", {
+    columnHelper.accessor("price_change_percentage_1h_in_currency", {
         cell: (info) => info.getValue(),
         header: "1H",
         meta: {
             position: "center",
         },
     }),
-    columnHelper.accessor("_source.price_change_percentage_24h_in_currency", {
+    columnHelper.accessor("price_change_percentage_24h_in_currency", {
         cell: (info) => info.getValue(),
         header: "24H",
         meta: {
             position: "center",
         },
     }),
-    columnHelper.accessor("_source.market_cap", {
+    columnHelper.accessor("market_cap", {
         cell: (info) => info.getValue(),
         header: "Market Cap",
         meta: {
             position: "center",
         },
     }),
-    columnHelper.accessor("_source.volume_24h", {
+    columnHelper.accessor("volume_24h", {
         cell: (info) => info.getValue(),
         header: "Volume 24H",
         meta: {
             position: "center",
         },
     }),
-    columnHelper.accessor("_source.blockchain", {
+    columnHelper.accessor("blockchain", {
         cell: (info) => info.getValue(),
         header: "Blockchain",
         meta: {
             position: "center",
         },
     }),
-    columnHelper.accessor("_source.added", {
+    columnHelper.accessor("added", {
         cell: (info) => info.getValue(),
         header: "Added",
         meta: {
@@ -128,7 +127,7 @@ function NewCryptoTable({
         },
     });
     const [width] = UseResize();
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -215,69 +214,70 @@ function NewCryptoTable({
                                           bg={"#fff"}
                                       >
                                           <Link
-                                              href={`/currency/${row.original._source.id}`}
+                                              href={`/currency/${row.original.id}`}
                                               className="flex items-center gap-3"
                                           >
                                               <Image
-                                                  src={row.original._source.image}
-                                                  alt={row.original._source.name}
+                                                  src={row.original.image}
+                                                  alt={row.original.name}
                                                   width={24}
                                                   height={24}
                                               />
                                               <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
-                                                  {row.original._source.name}
+                                                  {row.original.name}
                                               </p>
                                           </Link>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="text-center text-sm leading-4 font-medium text-typo-4 ">
-                                              {formatCurrency(row.original._source.current_price)}
+                                              {formatCurrency(row.original.current_price, "USD", currentLanguage, {
+                                                  maximumFractionDigits: 7,
+                                              })}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm text-center leading-4 change24 font-medium ",
-                                                  row.original._source.price_change_percentage_1h_in_currency > 0
+                                                  row.original.price_change_percentage_1h_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original._source.price_change_percentage_1h_in_currency?.toFixed(2)}%
+                                              {row.original.price_change_percentage_1h_in_currency?.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm text-center leading-4 change24 font-medium ",
-                                                  row.original._source.price_change_percentage_24h_in_currency > 0
+                                                  row.original.price_change_percentage_24h_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original._source.price_change_percentage_24h_in_currency?.toFixed(2)}
-                                              %
+                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original._source.market_cap)}
+                                              {formatCurrency(row.original.market_cap)}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original._source.volume_24h)}
+                                              {formatCurrency(row.original.volume_24h || 0)}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {/* {row.original._source.blockchain} */}
+                                              {/* {row.original.blockchain} */}
                                               Blockchanin
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {new Date(row.original._source.atl_date).getTime()}
+                                              {moment(row.original.atl_date).fromNow()}
                                           </p>
                                       </Td>
                                   </Tr>
@@ -335,7 +335,7 @@ type NewCryptoProps = {
 function NewCrypto({ perPage = 10 }: NewCryptoProps) {
     const [page, setPage] = useState(1);
 
-    const { data, isLoading } = useFetchAPI(`/api/coins/markets?page=${page}&per_page=${perPage}&centralized=true`);
+    const { data, isLoading } = useFetchAPI(`/api/coins/list/new?page=${page}&per_page=${perPage}&centralized=true`);
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
