@@ -24,7 +24,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
     return (
         <Box position={"relative"}>
             <div
-                className="flex items-center gap-4 pb-2 cursor-pointer"
+                className="flex items-center justify-between gap-4 pb-2 cursor-pointer"
                 onClick={() => {
                     setShowDropdown(!showDropdown);
                     if (!navItem.children) {
@@ -32,15 +32,15 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     }
                 }}
             >
-                <span className="text-base max-lg:text-13 leading-[1.5] group font-bold text-white hover:text-typo-1 duration-300">
+                <span className="text-base max-lg:text-13 leading-[1.5] group font-normal text-white duration-300 opacity-50 hover:opacity-100">
                     {t(`footer.${navItem.key}`)}
                 </span>
                 {navItem.children &&
                     navItem.children.length > 0 &&
                     (showDropdown ? (
-                        <Image src={"/assets/icons/dash.svg"} alt="dash" width={20} height={20} />
+                        <Image src={"/assets/icons/dash.svg"} alt="dash" width={16} height={16} />
                     ) : (
-                        <Image src={"/assets/icons/plus.svg"} alt="plus" width={20} height={20} />
+                        <Image src={"/assets/icons/plus.svg"} alt="plus" width={16} height={16} className="opacity-50" />
                     ))}
             </div>
             {navItem.children && navItem.children.length > 0 && (
@@ -57,7 +57,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                 >
                     {navItem.children.map((item: NavItemType, index: number) => (
                         <Link href={item.href || "/"} key={item.label}>
-                            <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-bold text-white hover:text-typo-1 duration-300">
+                            <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-normal text-white hover:text-typo-1 duration-300">
                                 {t(`footer.${item.key}`)}
                             </span>
                         </Link>
@@ -70,7 +70,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
 
 function Footer() {
     return (
-        <footer className="w-full flex justify-center items-center bg-[#00043F]">
+        <footer className="w-full flex justify-center items-center bg-[#00043F] relative z-10">
             <Container className="px-12 relative pt-32 flex-col gap-10">
                 <div className="max-lg:hidden w-[calc(100%-96px)] absolute top-0 translate-y-[-50%] flex justify-between py-10 px-8 bg-white rounded-lg shadow-xl">
                     <div className="flex items-center gap-8">
