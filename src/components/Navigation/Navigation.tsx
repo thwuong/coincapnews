@@ -16,9 +16,11 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
 
     let activePathCurrent = false;
     if (navItem.children && navItem.children?.length > 0) {
-        activePathCurrent = navItem.children.some((child) => child.href == pathName);
+        activePathCurrent = navItem.children.some((child) => {
+            return pathName.includes(child.href || "/");
+        });
     } else {
-        activePathCurrent = navItem.href == pathName;
+        activePathCurrent = pathName.includes(navItem.href || "/");
     }
     return (
         <Box position={"relative"} className="group">
