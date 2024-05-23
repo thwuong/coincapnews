@@ -212,7 +212,7 @@ function DifferentExchangesTable({
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="uppercase text-center text-sm leading-4 font-medium ">
-                                              {row.original._source.trust_score}
+                                              {row.original._source.trust_score}/10
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>

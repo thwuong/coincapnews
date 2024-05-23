@@ -38,7 +38,7 @@ function Header({ lang }: HeaderProps) {
             </Container>
             <div
                 className={clsx(
-                    "border-gray-bg-2/30 border-t shadow z-10 w-full h-[100px] max-lg:h-20 flex items-center justify-center duration-300",
+                    "border-gray-bg-2/30 border-t shadow z-20 w-full h-[100px] max-lg:h-20 flex items-center justify-center duration-300",
                     scrollingUp && "fixed top-0 left-0 bg-white/70 "
                 )}
             >
@@ -52,8 +52,8 @@ function Header({ lang }: HeaderProps) {
                         </div>
                         <div className="flex items-center gap-6 max-lg:hidden">
                             <InputGroup position={"relative"} w={"min-content"}>
-                                <InputLeftElement pointerEvents="none">
-                                    <Image src={"/assets/icons/search.svg"} alt="dropdown" width={16} height={16} />
+                                <InputLeftElement pointerEvents="none" height={"36px"}>
+                                    <Image src={"/assets/icons/search.svg"} alt="dropdown" width={20} height={20} />
                                 </InputLeftElement>
 
                                 <Input
@@ -65,6 +65,8 @@ function Header({ lang }: HeaderProps) {
                                     py={"6px"}
                                     type="text"
                                     placeholder={t("search coin")}
+                                    border={"none"}
+                                    className="placeholder:text-13"
                                 />
                                 {searchList && searchList?.length > 0 && (
                                     <Box
