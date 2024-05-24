@@ -11,16 +11,14 @@ import { useAppSelector } from "@/lib/hooks";
 import { useTranslation } from "@/app/i18n/client";
 
 type MarketData = {
-    _source: {
-        data: {
-            active_cryptocurrencies: string;
-            market_cap_change_percentage_24h_usd: number;
-            total_market_cap: any;
-            total_volume: any;
-            market_cap_percentage: {
-                btc: number;
-                eth: number;
-            };
+    data: {
+        active_cryptocurrencies: string;
+        market_cap_change_percentage_24h_usd: number;
+        total_market_cap: any;
+        total_volume: any;
+        market_cap_percentage: {
+            btc: number;
+            eth: number;
         };
     };
 };
@@ -30,7 +28,8 @@ type TopbarProps = {
 function Topbar({ lang }: TopbarProps) {
     const [currentCurrency, setCurrentCurrency] = useState(currenciesData[0]);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { data, isLoading }: { data: MarketData[]; isLoading: boolean } = useFetchAPI(`/api/global?centralized=true`);
+    const { data: dataGlobal, isLoading }: { data: MarketData; isLoading: boolean } =
+        useFetchAPI(`/api/global?centralized=true`);
     const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
@@ -40,28 +39,28 @@ function Topbar({ lang }: TopbarProps) {
                     <div className="flex items-center gap-1">
                         <span className="font-medium text-typo-1 whitespace-nowrap">{t(`topbar.cryptos`)}:</span>
                         <span className="text-primary-1 whitespace-nowrap">
-                            {formatQuoteCurrency(Number(data[2]._source.data.active_cryptocurrencies))}
+                            {formatQuoteCurrency(Number(dataGlobal.data.active_cryptocurrencies))}
                         </span>
                     </div>
                     <div className="flex items-center gap-1">
                         <span className="font-medium text-typo-1 whitespace-nowrap">{t(`topbar.market`)}:</span>
                         <span className="text-primary-1 whitespace-nowrap">
-                            {formatCurrencyHasUnit(Number(data[2]._source.data.total_market_cap["usd"]))}
+                            {formatCurrencyHasUnit(Number(dataGlobal.data.total_market_cap["usd"]))}
                         </span>
                     </div>
                     <div className="flex items-center gap-1">
                         <span className="font-medium text-typo-1 whitespace-nowrap">{t(`topbar.24h_vol`)}:</span>
                         <span className="text-primary-1 whitespace-nowrap">
-                            {Number(data[2]._source.data.market_cap_change_percentage_24h_usd).toFixed(2)}%
+                            {Number(dataGlobal.data.market_cap_change_percentage_24h_usd).toFixed(2)}%
                         </span>
                     </div>
                     <div className="flex items-center gap-1">
                         <span className="font-medium text-typo-1 whitespace-nowrap">{t(`topbar.dominance`)}:</span>
                         <span className="text-primary-1 whitespace-nowrap">
-                            BTC {data[2]._source.data.market_cap_percentage.btc.toFixed(2)}%
+                            BTC {dataGlobal.data.market_cap_percentage.btc.toFixed(2)}%
                         </span>
                         <span className="text-primary-1 whitespace-nowrap">
-                            ETH {data[2]._source.data.market_cap_percentage.eth.toFixed(2)}%
+                            ETH {dataGlobal.data.market_cap_percentage.eth.toFixed(2)}%
                         </span>
                     </div>
                 </div>

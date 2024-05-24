@@ -13,6 +13,7 @@ import { Button } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 interface PageProps {
     params: {
@@ -49,7 +50,7 @@ export default function Page({ params }: PageProps) {
             <Container className="px-12 flex-col gap-4">
                 <div className="grid grid-cols-3 w-full items-center gap-8 max-lg:grid-cols-1">
                     <div className="flex flex-col gap-4 items-center ">
-                        <Image src={coin.image.small} alt="bitcoin" width={88} height={88} />
+                        <Image src={coin.image?.small} alt="bitcoin" width={88} height={88} />
                         <div className="flex items-center gap-2">
                             <h4 className="text-2xl leading-[38px] text-typo-4 font-bold capitalize">{coin.id}</h4>
                             <span className="text-base leading-9 text-typo-1 uppercase">{coin.symbol}</span>
@@ -197,7 +198,7 @@ export default function Page({ params }: PageProps) {
                     <div className="flex flex-col gap-4">
                         <h5 className="text-sm font-bold text-typo-1/80">Links</h5>
                         <div className="flex gap-2 flex-wrap">
-                            {coin.links.blockchain_site?.length > 0 && (
+                            {coin.links?.blockchain_site?.length > 0 && (
                                 <Button
                                     as={Link}
                                     href={coin.links.blockchain_site[0]}
@@ -220,7 +221,7 @@ export default function Page({ params }: PageProps) {
                                     </span>
                                 </Button>
                             )}
-                            {coin.links.homepage?.length > 0 && (
+                            {coin.links?.homepage?.length > 0 && (
                                 <Button
                                     as={Link}
                                     href={coin.links.homepage[0]}
@@ -243,7 +244,7 @@ export default function Page({ params }: PageProps) {
                                     </span>
                                 </Button>
                             )}
-                            {coin.links.repos_url?.github.length > 0 && (
+                            {coin.links?.repos_url?.github.length > 0 && (
                                 <Button
                                     as={Link}
                                     href={coin.links.repos_url.github[0]}
@@ -266,7 +267,7 @@ export default function Page({ params }: PageProps) {
                                     </span>
                                 </Button>
                             )}
-                            {coin.links.subreddit_url && (
+                            {coin.links?.subreddit_url && (
                                 <Button
                                     as={Link}
                                     href={coin.links.subreddit_url}
@@ -289,7 +290,7 @@ export default function Page({ params }: PageProps) {
                                     </span>
                                 </Button>
                             )}
-                            {coin.links.twitter_screen_name && (
+                            {coin.links?.twitter_screen_name && (
                                 <Button
                                     as={Link}
                                     href={`https://twitter.com/${coin.links.twitter_screen_name}`}
@@ -312,7 +313,7 @@ export default function Page({ params }: PageProps) {
                                     </span>
                                 </Button>
                             )}
-                            {coin.links.facebook_username && (
+                            {coin.links?.facebook_username && (
                                 <Button
                                     as={Link}
                                     href={`https://www.facebook.com/${coin.links.facebook_username}`}

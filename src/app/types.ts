@@ -146,16 +146,14 @@ export type CoinTopType = {
     usd_24h_vol: number;
 };
 export type ExchangeType = {
-    _source: {
-        id: string;
-        name: string;
-        chart: {
-            data: number[];
-        };
-        open_interest_btc: number;
-        trade_volume_24h_btc: number;
-        number_of_perpetual_pairs: number;
-        number_of_futures_pairs: number;
-        image: string;
+    id: string;
+    name: string;
+    chart: {
+        data: number[];
     };
+    open_interest_btc: number;
+    trade_volume_24h_btc: number;
+    number_of_perpetual_pairs: number;
+    number_of_futures_pairs: number;
+    image: string;
 };

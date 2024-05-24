@@ -32,6 +32,7 @@ function LanguageMenu() {
     const selectedLang = (item: LangType) => {
         const currentHref = path.replace(currentLanguage, item.code);
         router.push(currentHref);
+        router.refresh();
     };
     const currLang = React.useMemo(
         () => langData.find((item) => item.code === currentLanguage) || langData[0],

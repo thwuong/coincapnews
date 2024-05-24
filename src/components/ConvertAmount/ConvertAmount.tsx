@@ -1,19 +1,65 @@
+"use client";
+import useFetchAPI from "@/api/baseAPI";
 import { Box, NumberInput, NumberInputField, Select } from "@chakra-ui/react";
-import React from "react";
-
+import React, { SelectHTMLAttributes, useState } from "react";
+import { SpinnerLoading } from "../Loading";
+import debounce from "@/hooks/UseDebounce";
+import { formatCurrency } from "@/app/utils/formatCurrency";
+import { useAppSelector } from "@/lib/hooks";
+type ConvertType = {
+    name: string;
+    unit: string;
+    value: number;
+    type: string;
+};
 function ConvertAmount() {
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+
+    const { data, isLoading } = useFetchAPI(`/api/exchange_rates`);
+    const [from, setFrom] = useState<string>("btc");
+    const [to, setTo] = useState<string>("usd");
+    const [amount, setAmount] = useState<number | undefined>();
+    const keysFiat = React.useMemo(() => {
+        if (!data) return null;
+        const objectToArray = Object.keys(data.rates).map((key) => [key, data.rates[key]]);
+
+        return objectToArray.filter((value) => value[1].type === "fiat");
+    }, [data]);
+    const keysCrypto = React.useMemo(() => {
+        if (!data) return null;
+        const objectToArray = Object.keys(data.rates).map((key) => [key, data.rates[key]]);
+
+        return objectToArray.filter((value) => value[1].type === "crypto");
+    }, [data]);
+
+    const result = React.useMemo(() => {
+        if (!amount || !data.rates) return;
+
+        return (Number(data.rates[to].value) * amount) / Number(data.rates[from].value);
+    }, [amount, from, to]);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAmount(Number(e.target.value));
+    };
+
+    if (isLoading) return <SpinnerLoading />;
     return (
         <div className="rounded-lg shadow-xl bg-white">
             <Box className="py-5 px-4 flex items-center justify-between gap-4">
                 <Select
-                    placeholder="BTC"
                     className="font-semibold text-sm text-black uppercase "
                     border={"none"}
+                    value={from}
                     w={"fit-content"}
+                    onChange={(e) => setFrom(e.target.value)}
                 >
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
+                    {keysCrypto &&
+                        keysCrypto.map((item: any[]) => {
+                            return (
+                                <option key={item[0]} value={item[0]}>
+                                    {item[0]}
+                                </option>
+                            );
+                        })}
                 </Select>
                 <NumberInput>
                     <NumberInputField
@@ -27,21 +73,37 @@ function ConvertAmount() {
                         className="font-bold"
                         fontSize={"18px"}
                         placeholder="Enter Amount to Convert"
+                        onChange={debounce(handleChange, 500)}
                     />
                 </NumberInput>
             </Box>
             <Box className="py-5 px-4 flex items-center justify-between gap-4">
                 <Select
-                    placeholder="BTC"
                     className="font-semibold text-sm text-black uppercase"
                     border={"none"}
                     w={"fit-content"}
+                    value={to}
+                    onChange={(e) => {
+                        setTo(e.target.value);
+                    }}
                 >
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
+                    {keysFiat &&
+                        keysFiat.map((item: any[]) => {
+                            return (
+                                <option key={item[0]} value={item[0]}>
+                                    {item[0]}
+                                </option>
+                            );
+                        })}
                 </Select>
-                <p className="font-bold text-lg">{"423"}</p>
+                <p className="font-bold text-lg">
+                    {result
+                        ? formatCurrency(result, "USD", currentLanguage, {
+                              maximumFractionDigits: 2,
+                              minimumIntegerDigits: 4,
+                          })
+                        : ""}
+                </p>
             </Box>
         </div>
     );

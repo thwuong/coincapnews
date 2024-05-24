@@ -14,6 +14,7 @@ import { CommonSection } from "./components/CommonSection";
 import { SumbitCoin } from "./components/SubmitCoin";
 import { NewCrypto } from "./components/NewCrypto";
 import { GainersAndLosers } from "./components/GainersAndLosers";
+import { Markdown } from "./components/Markdown";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
@@ -155,6 +156,17 @@ Builder.registerComponent(withChildren(NewCrypto), {
             name: "perPage",
             type: "number",
             defaultValue: 10,
+            required: true,
+        },
+    ],
+});
+Builder.registerComponent(withChildren(Markdown), {
+    name: "Markdown",
+    inputs: [
+        {
+            name: "url",
+            type: "string",
+            helperText: "start with: /",
             required: true,
         },
     ],

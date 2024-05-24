@@ -179,9 +179,9 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                 return (
                                     <Th
                                         className="bg-secondary"
-                                        position={index === 0 && width <= 768 ? "sticky" : "unset"}
-                                        zIndex={index === 0 && width <= 768 ? 2 : 0}
-                                        left={0}
+                                        position={index <= 1 && width <= 768 ? "sticky" : "unset"}
+                                        zIndex={index <= 1 && width <= 768 ? 2 : 0}
+                                        left={index === 1 ? 6 : 0}
                                         px={0}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
