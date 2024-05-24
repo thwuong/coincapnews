@@ -22,21 +22,19 @@ import { useAppSelector } from "@/lib/hooks";
 import { useTranslation } from "@/app/i18n/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 type Exchange = {
-    _source: {
-        id: string;
-        name: string;
-        chart: {
-            data: number[];
-        };
-        open_interest_btc: number;
-        trade_volume_24h_btc: number;
-        number_of_perpetual_pairs: number;
-        number_of_futures_pairs: number;
-        image: string;
-        trust_score: number;
-        trade_volume_24h_btc_normalized: number;
-        symbol: string;
+    id: string;
+    name: string;
+    chart: {
+        data: number[];
     };
+    open_interest_btc: number;
+    trade_volume_24h_btc: number;
+    number_of_perpetual_pairs: number;
+    number_of_futures_pairs: number;
+    image: string;
+    trust_score: number;
+    trade_volume_24h_btc_normalized: number;
+    symbol: string;
 };
 export type ExchangeTableProps = {
     data: Exchange[];
@@ -48,40 +46,40 @@ const columns: ColumnDef<Exchange, any>[] = [
     columnHelper.group({
         header: "#",
         columns: [
-            columnHelper.accessor("_source.image", {
+            columnHelper.accessor("image", {
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor("_source.symbol", {
+            columnHelper.accessor("symbol", {
                 cell: (info) => info.getValue(),
             }),
         ],
     }),
-    columnHelper.accessor("_source.name", {
+    columnHelper.accessor("name", {
         cell: (info) => info.getValue(),
         header: "Name",
     }),
-    columnHelper.accessor("_source.id", {
+    columnHelper.accessor("id", {
         cell: (info) => info.getValue(),
         header: "Trust Code",
         meta: {
             center: true,
         },
     }),
-    columnHelper.accessor("_source.open_interest_btc", {
+    columnHelper.accessor("open_interest_btc", {
         cell: (info) => info.getValue(),
         header: "Trade Volume 24h(Normalized)",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.trade_volume_24h_btc", {
+    columnHelper.accessor("trade_volume_24h_btc", {
         cell: (info) => info.getValue(),
         header: "Trade Volume 24h",
         meta: {
             isNumeric: true,
         },
     }),
-    columnHelper.accessor("_source.number_of_perpetual_pairs", {
+    columnHelper.accessor("number_of_perpetual_pairs", {
         cell: (info) => info.getValue(),
         header: "Volume (7d)",
         meta: {
@@ -196,42 +194,40 @@ function DifferentExchangesTable({
                                           className="bg-secondary"
                                       >
                                           <Link
-                                              href={`/exchanges/${row.original._source.id}`}
+                                              href={`/exchanges/${row.original.id}`}
                                               className="flex items-center gap-3"
                                           >
                                               <Image
-                                                  src={row.original._source.image}
-                                                  alt={row.original._source.name}
+                                                  src={row.original.image}
+                                                  alt={row.original.name}
                                                   width={24}
                                                   height={24}
                                               />
                                               <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
-                                                  {row.original._source.name}
+                                                  {row.original.name}
                                               </p>
                                           </Link>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="uppercase text-center text-sm leading-4 font-medium ">
-                                              {row.original._source.trust_score}/10
+                                              {row.original.trust_score}/10
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatQuoteCurrency(
-                                                  row.original._source.trade_volume_24h_btc_normalized
-                                              )}
+                                              {formatQuoteCurrency(row.original.trade_volume_24h_btc_normalized)}
                                               <span className="uppercase"> BTC</span>
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatQuoteCurrency(row.original._source.trade_volume_24h_btc)}
+                                              {formatQuoteCurrency(row.original.trade_volume_24h_btc)}
                                               <span className="uppercase"> BTC</span>
                                           </p>
                                       </Td>
                                       <Td px={"4px"} height={"80px"} display={"flex"} justifyContent={"center"}>
-                                          {row.original._source.chart && (
-                                              <LineChartLastDays data={row.original._source.chart.data} isUp={true} />
+                                          {row.original.chart && (
+                                              <LineChartLastDays data={row.original.chart.data} isUp={true} />
                                           )}
                                       </Td>
                                   </Tr>

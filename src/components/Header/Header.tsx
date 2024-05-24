@@ -1,4 +1,5 @@
 "use client";
+import fetchAPI from "@/api/fetchAPI";
 import { useTranslation } from "@/app/i18n/client";
 import { CoinType, ExchangeType } from "@/app/types";
 import UseScroll from "@/hooks/UseScroll";
@@ -6,39 +7,62 @@ import { Box, Button, Input, InputGroup, InputLeftElement, useDisclosure } from 
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useId, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useDetectClickOutside } from "react-detect-click-outside";
 import { Container } from "../Container";
+import { SpinnerLoading } from "../Loading";
 import { MenuMobile } from "../MenuMobile";
 import { Navigation } from "../Navigation";
 import { Topbar } from "../Topbar";
-import useFetchAPI from "@/api/baseAPI";
-import fetchAPI from "@/api/fetchAPI";
-import { SpinnerLoading } from "../Loading";
 type HeaderProps = {
     lang: string;
 };
+type ResultItemsType = {
+    id: string;
+    name: string;
+    api_symbol: string;
+    symbol: string;
+    market_cap_rank: number;
+    thumb: string;
+    large: string;
+    market_type: string;
+};
+type SearchResultType = {
+    coins: ResultItemsType[];
+    exchanges: ResultItemsType[];
+};
 function Header({ lang }: HeaderProps) {
-    const [keyword, setKeyword] = useState<string>();
+    const [keyword, setKeyword] = useState<string>("");
+    const [show, setShow] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const timer = React.useRef<any>(null);
-    const [coinList, setCoinList] = useState<CoinType[]>();
-    const [exchangeList, setExchangeList] = useState<ExchangeType[]>();
+    const [searchList, setSearchList] = useState<SearchResultType | undefined>();
     const [scrollingUp] = UseScroll();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { t } = useTranslation(lang, "home");
+    const router = useRouter();
+    const ref = useDetectClickOutside({
+        onTriggered: () => {
+            setShow(false);
+        },
+    });
     const handleSearch = async (searchTerms: string) => {
-        const coins = await fetchAPI(`/api/coins/markets?search=${searchTerms}`);
-        const exchanges = await fetchAPI(`/api/exchanges?search=${searchTerms}`);
+        setShow(true);
+        setLoading(true);
+        const result = await fetchAPI(`/api/search?query=${searchTerms}`);
 
-        const [data1, data2] = await Promise.all([coins, exchanges]);
-
-        setCoinList(data1);
-        setExchangeList(data2);
+        setSearchList(result);
+        setLoading(false);
     };
     const resetSearch = () => {
-        setCoinList([]);
-        setExchangeList([]);
+        setSearchList(undefined);
         setKeyword("");
+        setShow(false);
+    };
+    const nextPage = (href: string) => {
+        router.push(href);
+        resetSearch();
     };
     React.useEffect(() => {
         if (!keyword) return;
@@ -46,12 +70,8 @@ function Header({ lang }: HeaderProps) {
 
         timer.current = setTimeout(() => {
             handleSearch(keyword);
-            setLoading(false);
         }, 600);
     }, [keyword]);
-    React.useEffect(() => {
-        resetSearch();
-    }, []);
 
     return (
         <header className="flex items-center justify-center flex-col">
@@ -73,14 +93,13 @@ function Header({ lang }: HeaderProps) {
                             <Navigation />
                         </div>
                         <div className="flex items-center gap-6 max-lg:hidden">
-                            <InputGroup position={"relative"} w={"min-content"}>
+                            <InputGroup position={"relative"} w={"min-content"} ref={ref}>
                                 <InputLeftElement pointerEvents="none" height={"36px"}>
                                     <Image src={"/assets/icons/search.svg"} alt="dropdown" width={20} height={20} />
                                 </InputLeftElement>
 
                                 <Input
                                     onChange={(e) => {
-                                        setLoading(true);
                                         setKeyword(e.target.value);
                                     }}
                                     borderRadius={"99px"}
@@ -89,11 +108,12 @@ function Header({ lang }: HeaderProps) {
                                     width={200}
                                     py={"6px"}
                                     type="text"
+                                    value={keyword}
                                     placeholder={t("search coin")}
                                     border={"none"}
                                     className="placeholder:text-13"
                                 />
-                                {!loading && coinList && coinList?.length > 0 && (
+                                {!loading && searchList && show && (
                                     <Box
                                         position={"absolute"}
                                         zIndex={30}
@@ -101,82 +121,82 @@ function Header({ lang }: HeaderProps) {
                                     >
                                         <div className="flex flex-col gap-2">
                                             <h3 className="font-semibold text-12 text-typo-4/80">Coins</h3>
-                                            <div className="flex flex-col gap-4">
-                                                {coinList.map((coin, index) => {
-                                                    const key = coin.id + index;
-                                                    return (
-                                                        <Link
-                                                            href={`/currency/${coin.id}`}
-                                                            key={key}
-                                                            className="flex items-center justify-between"
-                                                        >
-                                                            <div className="flex items-center gap-1">
-                                                                <Image
-                                                                    height={24}
-                                                                    width={24}
-                                                                    src={coin.image}
-                                                                    alt={coin.name}
-                                                                />
-                                                                <p className="uppercase font-semibold whitespace-nowrap text-sm">
-                                                                    {coin.name}
-                                                                    <span className="text-12 text-gray-bg ml-1">
-                                                                        {coin.symbol}
-                                                                    </span>
-                                                                </p>
-                                                            </div>
-                                                            {/* <p
-                                                                className={clsx(
-                                                                    "capitalize whitespace-nowrap text-sm leading-4 change24 font-semibold font-inter",
-                                                                    coin.price_change_percentage_24h_in_currency > 0
-                                                                        ? "text-up"
-                                                                        : "text-down"
-                                                                )}
-                                                            >
-                                                                {coin.price_change_percentage_24h_in_currency?.toFixed(
-                                                                    2
-                                                                )}
-                                                                %
-                                                            </p> */}
-                                                            <p className="capitalize whitespace-nowrap text-sm leading-4 text-gray-bg font-inter">
-                                                                #{coin.market_cap_rank}
-                                                            </p>
-                                                        </Link>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                            <h3 className="font-semibold text-12 text-typo-4/80">Exchanges</h3>
-                                            <div className="flex flex-col gap-4">
-                                                {exchangeList &&
-                                                    exchangeList?.length > 0 &&
-                                                    exchangeList.map((exchange, index) => {
-                                                        const key = exchange._source.id + index;
+                                            <div className="flex flex-col gap-4 pl-2">
+                                                {searchList.coins.length > 0 ? (
+                                                    searchList.coins.map((coin, index) => {
+                                                        const key = coin.id + index;
                                                         return (
-                                                            <Link
-                                                                href={`/exchanges/${exchange._source.id}`}
+                                                            <div
+                                                                onClick={() => nextPage(`/currency/${coin.id}`)}
                                                                 key={key}
-                                                                className="flex items-center justify-between"
+                                                                className="flex cursor-pointer items-center justify-between"
                                                             >
                                                                 <div className="flex items-center gap-1">
                                                                     <Image
                                                                         height={24}
                                                                         width={24}
-                                                                        src={exchange._source.image}
-                                                                        alt={exchange._source.name}
+                                                                        src={coin.thumb}
+                                                                        alt={coin.name}
                                                                     />
                                                                     <p className="uppercase font-semibold whitespace-nowrap text-sm">
-                                                                        {exchange._source.name}
+                                                                        {coin.name}
+                                                                        <span className="text-12 text-gray-bg ml-1">
+                                                                            {coin.symbol}
+                                                                        </span>
                                                                     </p>
                                                                 </div>
-                                                            </Link>
+                                                                <p className="capitalize whitespace-nowrap text-sm leading-4 text-gray-bg font-inter">
+                                                                    #{coin.market_cap_rank}
+                                                                </p>
+                                                            </div>
                                                         );
-                                                    })}
+                                                    })
+                                                ) : (
+                                                    <p className="capitalize whitespace-nowrap  text-12 leading-4 text-gray-bg font-inter">
+                                                        Items not found
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            <h3 className="font-semibold text-12 text-typo-4/80">Exchanges</h3>
+                                            <div className="flex flex-col gap-4 pl-2">
+                                                {searchList.exchanges.length > 0 ? (
+                                                    searchList.exchanges.map((exchange, index) => {
+                                                        const key = exchange.id + index;
+                                                        return (
+                                                            <div
+                                                                onClick={() => nextPage(`/exchanges/${exchange.id}`)}
+                                                                key={key}
+                                                                className="flex items-center cursor-pointer justify-between"
+                                                            >
+                                                                <div className="flex items-center gap-1">
+                                                                    <Image
+                                                                        height={24}
+                                                                        width={24}
+                                                                        src={exchange.thumb}
+                                                                        alt={exchange.name}
+                                                                    />
+                                                                    <p className="uppercase font-semibold whitespace-nowrap text-sm">
+                                                                        {exchange.name}
+                                                                        <span className="text-12 text-gray-bg ml-1">
+                                                                            {exchange.market_type}
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })
+                                                ) : (
+                                                    <p className="capitalize whitespace-nowrap text-12  leading-4 text-gray-bg font-inter">
+                                                        Items not found
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                     </Box>
                                 )}
-                                {loading && (
+                                {loading && show && (
                                     <Box
                                         position={"absolute"}
                                         zIndex={30}

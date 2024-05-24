@@ -4,12 +4,12 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import useFetchAPI from "@/api/baseAPI";
+import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
+import { useAppSelector } from "@/lib/hooks";
 import { createColumnHelper } from "@tanstack/react-table";
 import dynamic from "next/dynamic";
 import { TablePagination } from "../TablePagination";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
 const CoinTable = dynamic(() => import("../CoinTable").then((mod) => mod.CoinTable));
 
 const columnHelper = createColumnHelper<CoinType>();
@@ -86,24 +86,36 @@ const columns = [
     }),
 ];
 function TableSection() {
-    const [keyword, setKeyword] = useState<string>();
-    const [searchList, setSearchList] = useState<CoinType[]>();
+    const [keyword, setKeyword] = useState<string>("");
+    const [searchTerms, setSearchTerms] = useState<string>("");
+    const timer = React.useRef<any>(null);
+
     const [page, setPage] = useState<number>(1);
     const [pageCount, setPageCount] = useState<number>(() =>
         Math.ceil(Number(process.env.NEXT_PUBLIC_TOTAL) / Number(process.env.NEXT_PUBLIC_PER_PAGE))
     );
 
     const handlerSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("e.target.value", e.target.value);
+
         setKeyword(e.target.value);
     };
     const handlePageClick = (selectedItem: any) => {
         setPage(selectedItem.selected + 1);
     };
     const { data: dataAPI, isLoading } = useFetchAPI(
-        `/api/coins/markets?page=${page}&per_page=${process.env.NEXT_PUBLIC_PER_PAGE}`
+        `/api/coins/markets?page=${page}&per_page=${process.env.NEXT_PUBLIC_PER_PAGE}&search=${searchTerms}`
     );
     const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const { t } = useTranslation(currentLanguage, "home");
+    React.useEffect(() => {
+        if (!keyword) return;
+        if (timer.current) clearTimeout(timer.current);
+
+        timer.current = setTimeout(() => {
+            setSearchTerms(keyword);
+        }, 600);
+    }, [keyword]);
     return (
         <section className="flex flex-col items-center gap-8 py-6 pb-32 w-full">
             <section className="flex items-center justify-between w-full">
@@ -135,6 +147,7 @@ function TableSection() {
                         height={"min-content"}
                         py={"6px"}
                         w={200}
+                        value={keyword}
                         type="text"
                         bg={"gray.100"}
                         border={"none"}

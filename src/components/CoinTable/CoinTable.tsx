@@ -60,12 +60,14 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
         function onDisconnect() {}
         function getMessage(this: WebSocket, ev: MessageEvent<any>) {
             const streamData = JSON.parse(ev.data);
-            document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`)!.innerHTML = formatCurrency(
-                parseFloat(streamData.data.c)
-            );
-            document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)!.innerHTML = `${parseFloat(
-                streamData.data.P
-            ).toFixed(2)}%`;
+            const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
+            const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
+            if (priceEL) {
+                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c));
+            }
+            if (change24) {
+                change24.innerHTML = `${parseFloat(streamData.data.P)?.toFixed(2)}%`;
+            }
             document
                 .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
                 ?.classList.remove(streamData.data.P < 0 ? "text-up" : "text-down");
@@ -152,7 +154,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                               let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
 
                               return (
-                                  <Tr key={row.original.name} data-symbol={convertId}>
+                                  <Tr key={row.index} data-symbol={convertId}>
                                       <Td
                                           p={"4px"}
                                           minW={"104px"}
@@ -214,7 +216,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original.price_change_percentage_24h_in_currency.toFixed(2)}%
+                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
@@ -226,7 +228,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original.price_change_percentage_7d_in_currency.toFixed(2)}%
+                                              {row.original.price_change_percentage_7d_in_currency?.toFixed(2)}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"138px"}>

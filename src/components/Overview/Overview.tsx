@@ -9,7 +9,7 @@ import {
     StatHelpText,
     StatNumber,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { NewDataType } from "@/app/types";
@@ -48,12 +48,19 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
     const [tabActive, setTabActive] = useState("price");
     const [datetime, setDatetime] = useState("1");
     const [isMore, setIsMore] = useState(false);
+    const [amount, setAmount] = useState<number>();
     const [readMore, setReadMore] = useState(false);
     const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
 
     const { data, isLoading } = useFetchAPI(
         `/api/coins/market_chart/${overviewData.id}?vs_currency=usd&days=${datetime}`
     );
+    const result = React.useMemo(() => {
+        if (!amount || !overviewData.market_data) return;
+
+        return Number(overviewData.market_data?.current_price?.usd) * amount;
+    }, [amount, overviewData]);
+    console.log(result);
 
     return (
         <section className="grid grid-cols-12 gap-5 w-full max-lg:grid-cols-1">
@@ -212,12 +219,13 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 textAlign={"right"}
                                 className="font-bold"
                                 fontSize={"18px"}
+                                onChange={(e) => setAmount(Number(e.target.value))}
                             />
                         </NumberInput>
                     </Box>
                     <Box className="py-5 px-4 flex items-center justify-between gap-4" bg={"#F8FAFD"}>
                         <p className="font-semibold text-sm text-black uppercase">USD</p>
-                        <p className="font-bold text-lg">{"423"}</p>
+                        <p className="font-bold text-lg">{result ? formatCurrency(result) : ""}</p>
                     </Box>
                 </div>
                 {/* Price Status */}
