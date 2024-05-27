@@ -39,13 +39,15 @@ export default function ExchangesContent({ params }: { params: { id: string } })
                         <li className="text-base leading-[26px] text-[rgb(119,119,119)]">
                             <p>
                                 Facebook:
-                                <Link
-                                    href={exchange.facebook_url}
-                                    target="_blank"
-                                    className="hover:text-primary-1 duration-300"
-                                >
-                                    {exchange.facebook_url}
-                                </Link>
+                                {exchange?.facebook_url && (
+                                    <Link
+                                        href={exchange.facebook_url}
+                                        target="_blank"
+                                        className="hover:text-primary-1 duration-300"
+                                    >
+                                        {exchange.facebook_url}
+                                    </Link>
+                                )}
                             </p>
                         </li>
                         <li className="text-base leading-[26px] text-[rgb(119,119,119)]">

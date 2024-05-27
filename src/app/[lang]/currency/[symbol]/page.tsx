@@ -9,12 +9,11 @@ import { DetailTabs } from "@/components/DetailTabs";
 import { SpinnerLoading } from "@/components/Loading";
 import { NewsFeed } from "@/components/NewsFeed";
 import { socketDetail } from "@/socket/client";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 interface PageProps {
     params: {
         symbol: string;
@@ -22,11 +21,21 @@ interface PageProps {
     };
 }
 export default function Page({ params }: PageProps) {
+    const toast = useToast();
     const [stream, setStream] = useState<NewDataType | any>();
     const { data: coin, isLoading }: { data: DetailCoinType; isLoading: boolean } = useFetchAPI(
         `/api/coins/details/${params.symbol}`
     );
-
+    const copy = (contract: string) => {
+        navigator.clipboard.writeText(contract);
+        toast({
+            title: "Copied",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            position: "top",
+        });
+    };
     useEffect(() => {
         if (!coin) return;
 
@@ -44,9 +53,17 @@ export default function Page({ params }: PageProps) {
             socket.close();
         };
     }, [coin]);
+
+    const platforms = useMemo(() => {
+        if (!coin?.platforms) return;
+
+        const objectToArray = Object.keys(coin.platforms).map((key) => [key, coin.platforms[key]]);
+        return objectToArray;
+    }, [coin]);
+
     if (isLoading) return <SpinnerLoading />;
     return (
-        <main className="pt-10 pb-20 w-full bg-[#ffffff] flex items-center justify-center">
+        <main className="pt-10 pb-20 w-full bg-secondary flex items-center justify-center">
             <Container className="px-12 flex-col gap-4">
                 <div className="grid grid-cols-3 w-full items-center gap-8 max-lg:grid-cols-1">
                     <div className="flex flex-col gap-4 items-center ">
@@ -339,29 +356,107 @@ export default function Page({ params }: PageProps) {
                         </div>
                     </div>
                     {/* Contacts detail */}
-                    <div className="flex flex-col gap-4">
-                        <h5 className="text-sm font-bold text-typo-1/80">Contracts</h5>
-                        <div className="flex items-center justify-between gap-4 max-lg:justify-start">
-                            <div className="w-fit relative">
+                    {platforms && (
+                        <div className="flex flex-col gap-4">
+                            <h5 className="text-sm font-bold text-typo-1/80">Contracts</h5>
+                            <div className="flex items-center justify-between gap-4 max-lg:justify-start">
+                                <div className="w-fit relative">
+                                    {platforms.map((item) => (
+                                        <Button
+                                            key={item[1]}
+                                            height={"fit-content"}
+                                            py={"8px"}
+                                            pl={"12px"}
+                                            pr={"16px"}
+                                            bg={"rgba(0, 0, 0, 0.04)"}
+                                            className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
+                                            leftIcon={
+                                                <Image
+                                                    src={"/assets/images/bitcoin.webp"}
+                                                    className="fill-white text-white hover:fill-primary-1"
+                                                    alt="left"
+                                                    width={24}
+                                                    height={24}
+                                                />
+                                            }
+                                            rightIcon={
+                                                <Image
+                                                    onClick={() => {
+                                                        copy(item[1]);
+                                                    }}
+                                                    src={"/assets/icons/copy.svg"}
+                                                    className="fill-white text-white hover:fill-primary-1"
+                                                    alt="left"
+                                                    width={16}
+                                                    height={16}
+                                                />
+                                            }
+                                        >
+                                            <div className="flex flex-col items-start gap-1">
+                                                <span className="text-12 font-medium text-typo-1 capitalize">
+                                                    {item[0]}
+                                                </span>
+                                                <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
+                                                    {item[1]}
+                                                </p>
+                                            </div>
+                                        </Button>
+                                    ))}
+                                    {platforms.slice(1).map((item) => (
+                                        <div className="absolute rounded-md w-full bg-white top-[calc(100%+8px)] p-2 shadow-xl z-[2]">
+                                            <Button
+                                                height={"fit-content"}
+                                                py={"8px"}
+                                                pl={"12px"}
+                                                pr={"16px"}
+                                                bg={"transparent"}
+                                                _hover={{
+                                                    bg: "rgba(0, 0, 0, 0.04)",
+                                                }}
+                                                className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
+                                                leftIcon={
+                                                    <Image
+                                                        src={"/assets/images/bitcoin.webp"}
+                                                        className="fill-white text-white hover:fill-primary-1"
+                                                        alt="left"
+                                                        width={24}
+                                                        height={24}
+                                                    />
+                                                }
+                                                rightIcon={
+                                                    <Image
+                                                        src={"/assets/icons/copy.svg"}
+                                                        className="fill-white text-white hover:fill-primary-1"
+                                                        alt="left"
+                                                        width={16}
+                                                        height={16}
+                                                    />
+                                                }
+                                            >
+                                                <div className="flex flex-col items-start gap-1">
+                                                    <span className="text-12 font-medium text-typo-1 capitalize">
+                                                        {item[0]}
+                                                    </span>
+                                                    <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
+                                                        {item[1]}
+                                                    </p>
+                                                </div>
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
                                 <Button
-                                    height={"fit-content"}
-                                    py={"8px"}
-                                    pl={"12px"}
-                                    pr={"16px"}
-                                    bg={"rgba(0, 0, 0, 0.04)"}
+                                    size={"md"}
+                                    bg={"transparent"}
+                                    _hover={{
+                                        bg: "transparent",
+                                        color: "rgb(56,97,251)",
+                                    }}
+                                    p={"0"}
                                     className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
-                                    leftIcon={
-                                        <Image
-                                            src={"/assets/images/bitcoin.webp"}
-                                            className="fill-white text-white hover:fill-primary-1"
-                                            alt="left"
-                                            width={24}
-                                            height={24}
-                                        />
-                                    }
                                     rightIcon={
                                         <Image
-                                            src={"/assets/icons/copy.svg"}
+                                            src={"/assets/icons/dropdown.svg"}
                                             className="fill-white text-white hover:fill-primary-1"
                                             alt="left"
                                             width={16}
@@ -369,77 +464,14 @@ export default function Page({ params }: PageProps) {
                                         />
                                     }
                                 >
-                                    <div className="flex flex-col items-start gap-1">
-                                        <span className="text-12 font-medium text-typo-1">Ethereum</span>
-                                        <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
-                                            0xdac17f958d2ee523a2206206994597c13d831ec7
-                                        </p>
-                                    </div>
+                                    <span className="text-sm leading-6 font-medium text-typo-1 hover:text-primary-1">
+                                        More
+                                    </span>
                                 </Button>
-                                <div className="absolute rounded-md w-full bg-white top-[calc(100%+8px)] p-2 shadow-xl z-[2]">
-                                    <Button
-                                        height={"fit-content"}
-                                        py={"8px"}
-                                        pl={"12px"}
-                                        pr={"16px"}
-                                        bg={"transparent"}
-                                        _hover={{
-                                            bg: "rgba(0, 0, 0, 0.04)",
-                                        }}
-                                        className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
-                                        leftIcon={
-                                            <Image
-                                                src={"/assets/images/bitcoin.webp"}
-                                                className="fill-white text-white hover:fill-primary-1"
-                                                alt="left"
-                                                width={24}
-                                                height={24}
-                                            />
-                                        }
-                                        rightIcon={
-                                            <Image
-                                                src={"/assets/icons/copy.svg"}
-                                                className="fill-white text-white hover:fill-primary-1"
-                                                alt="left"
-                                                width={16}
-                                                height={16}
-                                            />
-                                        }
-                                    >
-                                        <div className="flex flex-col items-start gap-1">
-                                            <span className="text-12 font-medium text-typo-1">Ethereum</span>
-                                            <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
-                                                0xdac17f958d2ee523a2206206994597c13d831ec7
-                                            </p>
-                                        </div>
-                                    </Button>
-                                </div>
                             </div>
-                            <Button
-                                size={"md"}
-                                bg={"transparent"}
-                                _hover={{
-                                    bg: "transparent",
-                                    color: "rgb(56,97,251)",
-                                }}
-                                p={"0"}
-                                className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
-                                rightIcon={
-                                    <Image
-                                        src={"/assets/icons/dropdown.svg"}
-                                        className="fill-white text-white hover:fill-primary-1"
-                                        alt="left"
-                                        width={16}
-                                        height={16}
-                                    />
-                                }
-                            >
-                                <span className="text-sm leading-6 font-medium text-typo-1 hover:text-primary-1">
-                                    More
-                                </span>
-                            </Button>
                         </div>
-                    </div>
+                    )}
+
                     {/* Tags */}
                     <div className="flex flex-col gap-4">
                         <h5 className="text-sm font-bold text-typo-1/80">Tags</h5>

@@ -281,10 +281,13 @@ type DifferentExchangesProps = {
     perPage?: number;
     title?: string;
     url?: string;
+    centralized: boolean;
 };
-function DifferentExchanges({ perPage = 10, title, url }: DifferentExchangesProps) {
+function DifferentExchanges({ perPage = 10, title, url, centralized = true }: DifferentExchangesProps) {
     const [page, setPage] = useState(1);
-    const { data, isLoading, error } = useFetchAPI(`${url}?per_page=${perPage}&page=${page}&centralized=true`);
+    const { data, isLoading, error } = useFetchAPI(
+        `${url}?per_page=${perPage}&page=${page}&centralized=${centralized}&exclude=tickers,status_updates`
+    );
     if (error) return `Error ${error}`;
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);

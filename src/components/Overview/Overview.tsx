@@ -1,4 +1,9 @@
 "use client";
+import useFetchAPI from "@/api/baseAPI";
+import { NewDataType } from "@/app/types";
+import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import getNewData from "@/app/utils/getNewData";
+import { useAppSelector } from "@/lib/hooks";
 import {
     Box,
     Button,
@@ -9,14 +14,9 @@ import {
     StatHelpText,
     StatNumber,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
 import clsx from "clsx";
-import { NewDataType } from "@/app/types";
-import getNewData from "@/app/utils/getNewData";
-import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
-import { useAppSelector } from "@/lib/hooks";
-import useFetchAPI from "@/api/baseAPI";
+import dynamic from "next/dynamic";
+import React, { useRef, useState } from "react";
 import { SpinnerLoading } from "../Loading";
 const LineChartOverview = dynamic(() => import("../Charts/").then((mod) => mod.LineChartOverview));
 type OverviewProps = {
@@ -50,6 +50,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
     const [isMore, setIsMore] = useState(false);
     const [amount, setAmount] = useState<number>();
     const [readMore, setReadMore] = useState(false);
+    const descHeight = useRef<any>();
+
     const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
 
     const { data, isLoading } = useFetchAPI(
@@ -173,9 +175,11 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                     <div className="py-6 flex flex-col gap-5">
                         <h2 className="text-[25px] font-bold text-typo-4">About {overviewData.name}</h2>(
                         <div
+                            ref={descHeight}
                             className={clsx(
                                 "text-base text-typo-1 leading-[26px] overflow-hidden relative",
-                                readMore ? "h-auto" : "h-[300px]"
+                                descHeight?.current?.clientHeight >= 300 ? "h-[300px]" : "h-auto",
+                                readMore && "h-auto"
                             )}
                         >
                             <div
@@ -184,21 +188,23 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 }}
                                 id="description"
                             ></div>
-                            {!readMore && (
+                            {descHeight?.current?.clientHeight >= 300 && !readMore && (
                                 <div className="absolute bottom-0 h-1/3 w-full bg-gradient-to-b from-white/0 to-white"></div>
                             )}
                         </div>
                         )
-                        <Button
-                            onClick={() => setReadMore(!readMore)}
-                            width={"min-content"}
-                            height={"fit-content"}
-                            py={"8px"}
-                        >
-                            <span className="font-semibold text-sm text-primary-1 duration-300">
-                                {readMore ? "Read Less" : "Read More"}
-                            </span>
-                        </Button>
+                        {descHeight?.current?.clientHeight >= 300 && (
+                            <Button
+                                onClick={() => setReadMore(!readMore)}
+                                width={"min-content"}
+                                height={"fit-content"}
+                                py={"8px"}
+                            >
+                                <span className="font-semibold text-sm text-primary-1 duration-300">
+                                    {readMore ? "Read Less" : "Read More"}
+                                </span>
+                            </Button>
+                        )}
                     </div>
                 )}
             </div>

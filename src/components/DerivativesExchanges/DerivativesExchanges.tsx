@@ -299,7 +299,7 @@ type DerivativesExchangesProps = {
 function DerivativesExchanges({ perPage = 10 }: DerivativesExchangesProps) {
     const [page, setPage] = useState(1);
 
-    const { data, isLoading } = useFetchAPI(`/api/derivatives?per_page=${perPage}&centralized=true`);
+    const { data, isLoading } = useFetchAPI(`/api/derivatives?per_page=${perPage}&centralized=true&exclude=tickers`);
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
