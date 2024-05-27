@@ -1,25 +1,24 @@
 "use client";
 import useFetchAPI from "@/api/baseAPI";
-import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import { useTranslation } from "@/app/i18n/client";
+import { formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
+import { useAppSelector } from "@/lib/hooks";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
     ColumnDef,
     SortingState,
     createColumnHelper,
-    flexRender,
     getCoreRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import Image from "next/image";
-import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
+import React, { useState } from "react";
 import TablePagination from "../TablePagination/TablePagination";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 type Exchange = {
     id: string;
@@ -53,6 +52,9 @@ const columns: ColumnDef<Exchange, any>[] = [
                 cell: (info) => info.getValue(),
             }),
         ],
+        meta: {
+            center: true,
+        },
     }),
     columnHelper.accessor("name", {
         cell: (info) => info.getValue(),
@@ -129,7 +131,7 @@ function DifferentExchangesTable({
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
-                                        px={"8px"}
+                                        px={"4px"}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
                                         isNumeric={meta?.isNumeric}
@@ -182,7 +184,8 @@ function DifferentExchangesTable({
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary text-[13px] font-medium"
+                                          textAlign={"center"}
+                                          className="bg-secondary text-[13px] font-medium "
                                       >
                                           {row.index + 1 + currentIndex}
                                       </Td>
@@ -238,14 +241,17 @@ function DifferentExchangesTable({
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
+                                          <Td isNumeric={true} px={"8px"}>
+                                              <Skeleton height="15px" />
+                                          </Td>
                                           <Td
+                                              height={"80px"}
                                               p={"4px"}
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
-                                              bg={"#fff"}
                                           >
-                                              <div className="flex items-center gap-4">
+                                              <div className="flex items-center gap-1">
                                                   <SkeletonCircle size="5" />
                                                   <Skeleton height="10px" width={"50%"} />
                                               </div>
@@ -256,9 +262,7 @@ function DifferentExchangesTable({
                                           <Td isNumeric={true} px={"4px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="15px" />
-                                          </Td>
+
                                           <Td isNumeric={true} px={"4px"} minW={"138px"}>
                                               <Skeleton height="15px" />
                                           </Td>

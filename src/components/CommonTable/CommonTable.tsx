@@ -1,25 +1,13 @@
+import { useTranslation } from "@/app/i18n/client";
+import { CoinType } from "@/app/types";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import getNewData from "@/app/utils/getNewData";
 import UseResize from "@/hooks/UseResize";
-import { connectSocket } from "@/socket/client";
+import { useAppSelector } from "@/lib/hooks";
+import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
-    Badge,
-    Box,
-    Skeleton,
-    SkeletonCircle,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
-} from "@chakra-ui/react";
-import {
-    ColumnDef,
     SortingState,
     createColumnHelper,
-    flexRender,
     getCoreRowModel,
     getSortedRowModel,
     useReactTable,
@@ -29,9 +17,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { CoinType } from "@/app/types";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 
 const columnHelper = createColumnHelper<CoinType>();

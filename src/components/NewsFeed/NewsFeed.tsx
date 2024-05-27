@@ -1,10 +1,12 @@
 "use client";
 import useNewsAPI from "@/api/useNewAPI";
+import { useTranslation } from "@/app/i18n/client";
 import { FeedType } from "@/app/types";
+import { useAppSelector } from "@/lib/hooks";
 import { Avatar, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 
 function NewsFeedItem(props: FeedType) {
     const { id, post_title, post_thumbnail, post_excerpt, post_date, author, post_permalink } = props;
@@ -38,13 +40,13 @@ function NewsFeedItem(props: FeedType) {
     );
 }
 function NewsFeed() {
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const [limit, setLimit] = useState(Number(process.env.NEXT_PUBLIC_NEWS_PER_PAGE));
-    const { data, error, isLoading }: { data: FeedType[]; error: any; isLoading: boolean } = useNewsAPI(
-        `?limit=${limit}`
-    );
+    const { data, isLoading }: { data: FeedType[]; error: any; isLoading: boolean } = useNewsAPI(`?limit=${limit}`);
+    const { t } = useTranslation(currentLanguage);
     return (
         <div className="flex flex-col gap-6 w-full">
-            <h2 className="text-2xl font-bold text-typo-4">NewsFeed</h2>
+            <h2 className="text-2xl font-bold text-typo-4">{t("newsfeed")}</h2>
             <ul className="flex flex-col gap-8 w-full">
                 {!isLoading &&
                     data.map((item: FeedType, index: number) => {
@@ -61,7 +63,9 @@ function NewsFeed() {
                     bg: "transparent",
                 }}
             >
-                <span className="text-lg font-bold text-typo-4 hover:text-primary-1 duration-300">Load more</span>
+                <span className="text-lg font-bold text-typo-4 hover:text-primary-1 duration-300">
+                    {t("load_more")}
+                </span>
             </Button>
         </div>
     );

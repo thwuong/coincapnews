@@ -39,6 +39,13 @@ const config: Config = {
             fontFamily: {
                 inter: '"Inter", sans-serif',
             },
+            spacing: {
+                main: "1440px",
+                "5xl": "1920px",
+            },
+            screens: {
+                "5xl": "1920px",
+            },
         },
     },
     plugins: [require("tailwindcss-animated")],

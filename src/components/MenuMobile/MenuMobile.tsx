@@ -1,5 +1,8 @@
 "use client";
 
+import { useTranslation } from "@/app/i18n/client";
+import { currenciesData, navigationHeaderData } from "@/fakedata/fakedata";
+import { useAppSelector } from "@/lib/hooks";
 import {
     Avatar,
     Box,
@@ -17,15 +20,12 @@ import {
     InputLeftElement,
     useDisclosure,
 } from "@chakra-ui/react";
+import clsx from "clsx";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { LanguageMenu } from "../LanguageMenu";
 import { CurrencyModal } from "../Modal";
-import { currenciesData, navigationHeaderData } from "@/fakedata/fakedata";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
-import clsx from "clsx";
 type MenuMobileProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -77,6 +77,9 @@ function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => vo
                     className="flex items-center gap-4 justify-between w-full"
                     onClick={() => {
                         setShowDropdown(!showDropdown);
+                        if (!navItem.children) {
+                            nextPage(navItem.href);
+                        }
                     }}
                 >
                     <span

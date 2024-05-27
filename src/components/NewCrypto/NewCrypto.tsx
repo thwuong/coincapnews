@@ -1,25 +1,24 @@
 "use client";
-import React, { useState } from "react";
-import { TablePagination } from "../TablePagination";
 import useFetchAPI from "@/api/baseAPI";
+import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
+import { useAppSelector } from "@/lib/hooks";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
     ColumnDef,
     SortingState,
     createColumnHelper,
-    flexRender,
     getCoreRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
-import moment from "moment";
+import React, { useState } from "react";
+import { TablePagination } from "../TablePagination";
 type NewCryptoType = {
     id: string;
     image: string;
@@ -143,7 +142,7 @@ function NewCryptoTable({
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        bg={"#fff"}
+                                        className="bg-secondary"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -200,7 +199,7 @@ function NewCryptoTable({
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          bg={"#fff"}
+                                          className="bg-secondary"
                                           textAlign={"center"}
                                           fontWeight={"500"}
                                       >
@@ -211,7 +210,7 @@ function NewCryptoTable({
                                           minW={"104px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
-                                          bg={"#fff"}
+                                          className="bg-secondary"
                                       >
                                           <Link
                                               href={`/currency/${row.original.id}`}
@@ -293,7 +292,7 @@ function NewCryptoTable({
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
-                                              bg={"#fff"}
+                                              className="bg-secondary"
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
