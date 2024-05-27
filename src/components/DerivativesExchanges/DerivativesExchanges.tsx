@@ -1,25 +1,24 @@
 "use client";
 import useFetchAPI from "@/api/baseAPI";
+import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
+import { useAppSelector } from "@/lib/hooks";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
     ColumnDef,
     SortingState,
     createColumnHelper,
-    flexRender,
     getCoreRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import Image from "next/image";
-import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
+import React, { useState } from "react";
 import { TablePagination } from "../TablePagination";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 type Exchange = {
     id: string;
@@ -133,7 +132,6 @@ function DerivativesExchangesTable({
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        bg={"#fff"}
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -141,6 +139,7 @@ function DerivativesExchangesTable({
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
                                         isNumeric={meta?.isNumeric}
+                                        className="bg-secondary"
                                     >
                                         <Box
                                             display={"flex"}
@@ -190,7 +189,7 @@ function DerivativesExchangesTable({
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          bg={"#fff"}
+                                          className="bg-secondary"
                                       >
                                           {row.index + 1 + currentIndex}
                                       </Td>
@@ -199,7 +198,7 @@ function DerivativesExchangesTable({
                                           minW={"104px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
-                                          bg={"#fff"}
+                                          className="bg-secondary"
                                       >
                                           <Link
                                               href={`/exchanges/${row.original.id}`}
@@ -254,10 +253,11 @@ function DerivativesExchangesTable({
                                       <Tr key={index}>
                                           <Td
                                               p={"4px"}
+                                              height={"80px"}
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
-                                              bg={"#fff"}
+                                              className="bg-secondary"
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
@@ -299,7 +299,7 @@ type DerivativesExchangesProps = {
 function DerivativesExchanges({ perPage = 10 }: DerivativesExchangesProps) {
     const [page, setPage] = useState(1);
 
-    const { data, isLoading } = useFetchAPI(`/api/derivatives?per_page=${perPage}&centralized=true`);
+    const { data, isLoading } = useFetchAPI(`/api/derivatives?per_page=${perPage}&centralized=true&exclude=tickers`);
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };

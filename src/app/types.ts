@@ -49,6 +49,7 @@ export type DetailCoinType = {
             target: string;
         }
     ];
+    platforms: any;
 };
 export type FeedType = {
     id: string;

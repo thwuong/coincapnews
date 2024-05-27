@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
+import { SideBar } from "../SideBar";
 interface LayoutProps {
     params: {
         lang: string;
@@ -18,7 +19,11 @@ function MainLayout({ children, params: { lang } }: LayoutProps) {
     return (
         <Providers lang={lang}>
             {pathName !== `/${lang}/account` && <Header lang={lang} />}
-            {children}
+            <section className="flex w-full justify-center bg-secondary">
+                <SideBar />
+                <div className="w-main max-lg:w-full">{children}</div>
+                <SideBar />
+            </section>
             {pathName !== `/${lang}/account` && <Footer />}
             <ToastContainer />
         </Providers>

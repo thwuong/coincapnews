@@ -1,7 +1,7 @@
 "use client";
 import fetchAPI from "@/api/fetchAPI";
 import { useTranslation } from "@/app/i18n/client";
-import { CoinType, ExchangeType } from "@/app/types";
+import { checkFormatImage } from "@/app/utils/checkFormatImage";
 import UseScroll from "@/hooks/UseScroll";
 import { Box, Button, Input, InputGroup, InputLeftElement, useDisclosure } from "@chakra-ui/react";
 import clsx from "clsx";
@@ -48,8 +48,6 @@ function Header({ lang }: HeaderProps) {
         },
     });
     const handleSearch = async (searchTerms: string) => {
-        setShow(true);
-        setLoading(true);
         const result = await fetchAPI(`/api/search?query=${searchTerms}`);
 
         setSearchList(result);
@@ -100,6 +98,8 @@ function Header({ lang }: HeaderProps) {
 
                                 <Input
                                     onChange={(e) => {
+                                        setShow(true);
+                                        setLoading(true);
                                         setKeyword(e.target.value);
                                     }}
                                     borderRadius={"99px"}
@@ -132,12 +132,15 @@ function Header({ lang }: HeaderProps) {
                                                                 className="flex cursor-pointer items-center justify-between"
                                                             >
                                                                 <div className="flex items-center gap-1">
-                                                                    <Image
-                                                                        height={24}
-                                                                        width={24}
-                                                                        src={coin.thumb}
-                                                                        alt={coin.name}
-                                                                    />
+                                                                    {checkFormatImage(coin.thumb) && (
+                                                                        <Image
+                                                                            height={24}
+                                                                            width={24}
+                                                                            src={coin.thumb}
+                                                                            alt={coin.name}
+                                                                        />
+                                                                    )}
+
                                                                     <p className="uppercase font-semibold whitespace-nowrap text-sm">
                                                                         {coin.name}
                                                                         <span className="text-12 text-gray-bg ml-1">
@@ -171,12 +174,14 @@ function Header({ lang }: HeaderProps) {
                                                                 className="flex items-center cursor-pointer justify-between"
                                                             >
                                                                 <div className="flex items-center gap-1">
-                                                                    <Image
-                                                                        height={24}
-                                                                        width={24}
-                                                                        src={exchange.thumb}
-                                                                        alt={exchange.name}
-                                                                    />
+                                                                    {checkFormatImage(exchange.thumb) && (
+                                                                        <Image
+                                                                            height={24}
+                                                                            width={24}
+                                                                            src={exchange.thumb}
+                                                                            alt={exchange.name}
+                                                                        />
+                                                                    )}
                                                                     <p className="uppercase font-semibold whitespace-nowrap text-sm">
                                                                         {exchange.name}
                                                                         <span className="text-12 text-gray-bg ml-1">

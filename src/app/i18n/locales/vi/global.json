@@ -97,5 +97,8 @@
       "Perpetuals": "Vĩnh Viễn",
       "Futures": "Tương lai",
       "Volume (7Days)": "Khối lượng (7 ngày)"
-    }
+    },
+    "load_more" : "Tải thêm",
+    "subscribe" : "Đăng ký",
+    "newsfeed" : "Tin tức"
 }

@@ -1,20 +1,20 @@
 "use client";
 import { builder, Builder, withChildren } from "@builder.io/react";
-import { Container } from "./components/Container";
+import { Auth } from "./components/Auth";
 import { BannerSlide } from "./components/BannerSlide";
-import { NewsFeed } from "./components/NewsFeed";
+import { CommonSection } from "./components/CommonSection";
+import { Container } from "./components/Container";
+import { ConvertAmount } from "./components/ConvertAmount";
 import { DerivativesExchanges } from "./components/DerivativesExchanges";
 import { DifferentExchanges } from "./components/DifferentExchanges";
-import { Heading } from "./components/Heading";
-import { Auth } from "./components/Auth";
-import { TableSection } from "./components/TableSection";
-import { ConvertAmount } from "./components/ConvertAmount";
-import { Paragraph } from "./components/Paragraph";
-import { CommonSection } from "./components/CommonSection";
-import { SumbitCoin } from "./components/SubmitCoin";
-import { NewCrypto } from "./components/NewCrypto";
 import { GainersAndLosers } from "./components/GainersAndLosers";
+import { Heading } from "./components/Heading";
 import { Markdown } from "./components/Markdown";
+import { NewCrypto } from "./components/NewCrypto";
+import { NewsFeed } from "./components/NewsFeed";
+import { Paragraph } from "./components/Paragraph";
+import { SumbitCoin } from "./components/SubmitCoin";
+import { TableSection } from "./components/TableSection";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
@@ -59,6 +59,12 @@ Builder.registerComponent(withChildren(DifferentExchanges), {
         {
             name: "url",
             type: "string",
+        },
+        {
+            name: "centralized",
+            type: "boolean",
+            defaultValue: true,
+            required: true,
         },
     ],
 });

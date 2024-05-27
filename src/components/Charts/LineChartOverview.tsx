@@ -65,7 +65,9 @@ function LineChartOverview({ data, isUp = false }: LineChartOverviewProps) {
             enabled: false,
         },
         tooltip: {
-            enabled: false,
+            x: {
+                format: "dd MMM yyyy",
+            },
         },
         grid: {
             show: false,
