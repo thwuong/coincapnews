@@ -33,7 +33,7 @@ const SideBar: React.FC = () => {
 
     return (
         <aside className="5xl:flex box-border hidden relative flex-col shrink-0 w-full max-w-[190px] max-md:hidden">
-            <div className="box-border flex fixed top-1/2 -translate-y-1/2 flex-col shrink-0 w-full max-w-[190px]">
+            <div className="box-border flex sticky bottom-4 top-1/2 -translate-y-1/2 flex-col shrink-0 w-full max-w-[190px]">
                 {images.map((image, index) => (
                     <ImageComponent key={index} src={image.src} alt={image.alt} />
                 ))}
