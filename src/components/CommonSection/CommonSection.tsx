@@ -1,7 +1,7 @@
-import React from "react";
-import { TablePagination } from "../TablePagination";
-import { CommonTable } from "../CommonTable";
 import useFetchAPI from "@/api/baseAPI";
+import React from "react";
+import { CommonTable } from "../CommonTable";
+import { TablePagination } from "../TablePagination";
 
 function CommonSection({
     totalPage,

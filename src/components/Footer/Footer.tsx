@@ -1,13 +1,13 @@
 "use client";
+import { useTranslation } from "@/app/i18n/client";
+import { navDataOfCompany, navDataOfSupport, navigationHeaderData } from "@/fakedata/fakedata";
+import { useAppSelector } from "@/lib/hooks";
 import { Box, Button, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import { Container } from "../Container";
-import { navDataOfCompany, navDataOfSupport, navigationHeaderData } from "@/fakedata/fakedata";
-import { useTranslation } from "@/app/i18n/client";
-import { useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Container } from "../Container";
 
 type NavItemType = {
     label?: string;
@@ -119,17 +119,17 @@ function Footer() {
                             </p>
                         </div>
                         <div className="flex items-center gap-4">
-                            <Link href={"/"}>
+                            <Link href={"https://www.facebook.com/coincapnews/"} target="_blank">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
                                     <Image src={"/assets/icons/fb.svg"} alt="fb" width={20} height={20} />
                                 </div>
                             </Link>
-                            <Link href={"/"}>
+                            <Link href={"https://x.com/Coincapnewscom"} target="_blank">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
-                                    <Image src={"/assets/icons/instagram.svg"} alt="insta" width={20} height={20} />
+                                    <Image src={"/assets/icons/x-white.svg"} alt="insta" width={20} height={20} />
                                 </div>
                             </Link>
-                            <Link href={"/"}>
+                            <Link href={"https://t.me/coincapnewsofficial"} target="_blank">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
                                     <Image src={"/assets/icons/telegram.svg"} alt="tele" width={20} height={20} />
                                 </div>
@@ -141,10 +141,10 @@ function Footer() {
                             </Link>
                         </div>
                         <div className="flex gap-4">
-                            <Link href={"/"}>
+                            <Link href={"https://www.apple.com/app-store/"} target="_blank">
                                 <Image src={"/assets/icons/ios-app.svg"} alt="fb" width={136} height={45} />
                             </Link>
-                            <Link href={"/"}>
+                            <Link href={"https://play.google.com/store/games?device=windows&pli=1"} target="_blank">
                                 <Image src={"/assets/icons/google-app.svg"} alt="fb" width={136} height={45} />
                             </Link>
                         </div>

@@ -139,7 +139,7 @@ function DerivativesExchangesTable({
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
                                         isNumeric={meta?.isNumeric}
-                                        className="bg-secondary"
+                                        className="bg-secondary cursor-pointer"
                                     >
                                         <Box
                                             display={"flex"}
@@ -160,15 +160,15 @@ function DerivativesExchangesTable({
                                                     <Image
                                                         src={"/assets/icons/sort-down.svg"}
                                                         alt="sort-down"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 ) : (
                                                     <Image
                                                         src={"/assets/icons/sort-up.svg"}
                                                         alt="sort-up"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 )
                                             ) : null}

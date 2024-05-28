@@ -3,12 +3,12 @@ import { CoinType } from "@/app/types";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
-import { connectSocket } from "@/socket/client";
 import {
     Badge,
     Box,
     Skeleton,
     SkeletonCircle,
+    SkeletonText,
     Table,
     TableContainer,
     Tbody,
@@ -17,14 +17,7 @@ import {
     Thead,
     Tr,
 } from "@chakra-ui/react";
-import {
-    ColumnDef,
-    SortingState,
-    flexRender,
-    getCoreRowModel,
-    getSortedRowModel,
-    useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef, SortingState, getCoreRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -51,40 +44,40 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
     });
     const [width] = UseResize();
 
-    React.useEffect(() => {
-        if (!data) return;
-        const url = data.map((i) => `${i.symbol}usdt@ticker/`).join("");
-        const socket = connectSocket(url);
-        function onConnect(this: WebSocket) {}
+    // React.useEffect(() => {
+    //     if (!data) return;
+    //     const url = data.map((i) => `${i.symbol}usdt@ticker/`).join("");
+    //     const socket = connectSocket(url);
+    //     function onConnect(this: WebSocket) {}
 
-        function onDisconnect() {}
-        function getMessage(this: WebSocket, ev: MessageEvent<any>) {
-            const streamData = JSON.parse(ev.data);
-            const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
-            const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
-            if (priceEL) {
-                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c));
-            }
-            if (change24) {
-                change24.innerHTML = `${parseFloat(streamData.data.P)?.toFixed(2)}%`;
-            }
-            document
-                .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
-                ?.classList.remove(streamData.data.P < 0 ? "text-up" : "text-down");
-            document
-                .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
-                ?.classList.add(streamData.data.P > 0 ? "text-up" : "text-down");
-        }
+    //     function onDisconnect() {}
+    //     function getMessage(this: WebSocket, ev: MessageEvent<any>) {
+    //         const streamData = JSON.parse(ev.data);
+    //         const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
+    //         const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
+    //         if (priceEL) {
+    //             priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c));
+    //         }
+    //         if (change24) {
+    //             change24.innerHTML = `${parseFloat(streamData.data.P)?.toFixed(2)}%`;
+    //         }
+    //         document
+    //             .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
+    //             ?.classList.remove(streamData.data.P < 0 ? "text-up" : "text-down");
+    //         document
+    //             .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
+    //             ?.classList.add(streamData.data.P > 0 ? "text-up" : "text-down");
+    //     }
 
-        socket.onopen = onConnect;
-        socket.onmessage = getMessage;
+    //     socket.onopen = onConnect;
+    //     socket.onmessage = getMessage;
 
-        return () => {
-            socket.onclose = onConnect;
-            socket.onclose = onDisconnect;
-            socket.close();
-        };
-    }, [data]);
+    //     return () => {
+    //         socket.onclose = onConnect;
+    //         socket.onclose = onDisconnect;
+    //         socket.close();
+    //     };
+    // }, [data]);
     const { currentLanguage } = useAppSelector((state) => state.langStore);
     const { t } = useTranslation(currentLanguage);
     return (
@@ -100,11 +93,11 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        className="bg-secondary"
+                                        className="bg-secondary cursor-pointer"
                                         position={index === 0 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index === 0 && width <= 768 ? 2 : 0}
                                         left={0}
-                                        px={0}
+                                        px={"4px"}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
                                         isNumeric={meta?.isNumeric}
@@ -128,15 +121,15 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                     <Image
                                                         src={"/assets/icons/sort-down.svg"}
                                                         alt="sort-down"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 ) : (
                                                     <Image
                                                         src={"/assets/icons/sort-up.svg"}
                                                         alt="sort-up"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 )
                                             ) : null}
@@ -266,35 +259,37 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                           <Td
                                               height={"120px"}
                                               p={"4px"}
-                                              minW={"104px"}
+                                              minW={"200px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
-                                                  <Skeleton height="10px" width={"50%"} />
+                                                  <div className="flex flex-col w-1/3">
+                                                      <SkeletonText noOfLines={2} spacing="2" skeletonHeight="2" />
+                                                  </div>
                                               </div>
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="20px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <Skeleton height="20px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                              <Skeleton height="20px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                              <Skeleton height="20px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"180px"}>
-                                              <Skeleton height="20px" />
+                                          <Td isNumeric={true} px={"4px"} minW={"128px"}>
+                                              <Skeleton height={"30px"} />
                                           </Td>
                                       </Tr>
                                   );

@@ -1,14 +1,14 @@
 "use client";
 import useFetchAPI from "@/api/baseAPI";
+import { useTranslation } from "@/app/i18n/client";
 import { formatCurrencyHasUnit, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import { currenciesData } from "@/fakedata/fakedata";
+import { useAppSelector } from "@/lib/hooks";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
 import LanguageMenu from "../LanguageMenu/LanguageMenu";
 import CurrencyModal from "../Modal/CurrencyModal";
-import { useAppSelector } from "@/lib/hooks";
-import { useTranslation } from "@/app/i18n/client";
 
 type MarketData = {
     data: {

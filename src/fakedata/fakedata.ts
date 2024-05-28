@@ -146,3 +146,19 @@ export const navDataOfSupport: NavItemType[] = [
         key: "submit_coin",
     },
 ];
+export const pageList = [
+    "",
+    "converter",
+    "news",
+    "derivatives",
+    "spot",
+    "dex",
+    "submit-coin",
+    "terms-of-use",
+    "nft",
+    "bsc",
+    "defi",
+    "recently-added",
+    "polkadot",
+    "gainers-and-losers",
+];

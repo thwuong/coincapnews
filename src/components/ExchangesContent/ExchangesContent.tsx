@@ -68,53 +68,56 @@ export default function ExchangesContent({ params }: { params: { id: string } })
                             </p>
                         </li>
                     </ul>
-                    <div className="flex flex-col">
-                        <h2 className="text-[28px] leading-9 font-bold text-typo-4/80">Active Markets</h2>
-                        <div className="flex w-full justify-between py-5">
-                            <Input
-                                placeholder="Search"
-                                border={"none"}
-                                bg={"rgb(0,0,0,0.04)"}
-                                w={"200px"}
-                                borderRadius={"99px"}
-                                fontSize={"14px"}
-                                className="font-semibold text-typo-4"
-                            />
-                            <Select
-                                defaultValue={perPage}
-                                w={"fit-content"}
-                                bg={"rgb(0,0,0,0.04)"}
-                                border={"none"}
-                                borderRadius={"8px"}
-                                fontSize={"14px"}
-                                className="font-semibold text-typo-4"
-                                onChange={(event) => {
-                                    setPerPage(Number(event.target.value));
-                                    setPage(1);
-                                }}
-                            >
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </Select>
-                        </div>
-                        <ExchangeTableDetail
-                            data={exchange.tickers.slice((page - 1) * perPage, perPage * page)}
-                            isLoading={isLoading}
-                            currentIndex={(page - 1) * perPage}
-                        />
-                        {exchange.tickers.length / perPage > 1 && (
-                            <div className="w-full py-4 flex justify-center">
-                                <TablePagination
-                                    disbledPre
-                                    disbledNext
-                                    pageCount={exchange.tickers.length / perPage}
-                                    handlePageClick={handlePageClick}
+                    {exchange?.tickers && (
+                        <div className="flex flex-col">
+                            <h2 className="text-[28px] leading-9 font-bold text-typo-4/80">Active Markets</h2>
+                            <div className="flex w-full justify-between py-5">
+                                <Input
+                                    placeholder="Search"
+                                    border={"none"}
+                                    bg={"rgb(0,0,0,0.04)"}
+                                    w={"200px"}
+                                    borderRadius={"99px"}
+                                    fontSize={"14px"}
+                                    className="font-semibold text-typo-4"
                                 />
+                                <Select
+                                    defaultValue={perPage}
+                                    w={"fit-content"}
+                                    bg={"rgb(0,0,0,0.04)"}
+                                    border={"none"}
+                                    borderRadius={"8px"}
+                                    fontSize={"14px"}
+                                    className="font-semibold text-typo-4"
+                                    onChange={(event) => {
+                                        setPerPage(Number(event.target.value));
+                                        setPage(1);
+                                    }}
+                                >
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </Select>
                             </div>
-                        )}
-                    </div>
+                            <ExchangeTableDetail
+                                data={exchange.tickers.slice((page - 1) * perPage, perPage * page)}
+                                isLoading={isLoading}
+                                currentIndex={(page - 1) * perPage}
+                            />
+
+                            {exchange?.tickers?.length / perPage > 1 && (
+                                <div className="w-full py-4 flex justify-center">
+                                    <TablePagination
+                                        disbledPre
+                                        disbledNext
+                                        pageCount={exchange.tickers.length / perPage}
+                                        handlePageClick={handlePageClick}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </Container>
         </main>
