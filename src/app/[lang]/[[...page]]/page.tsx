@@ -1,6 +1,6 @@
 import { builder } from "@builder.io/sdk";
-import { RenderBuilderContent } from "../../../components/builder";
 import { Metadata } from "next";
+import { RenderBuilderContent } from "../../../components/builder";
 
 // Builder Public API Key set in .env file
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
@@ -12,7 +12,22 @@ interface PageProps {
     };
 }
 export function generateStaticParams() {
-    return ["", "converter", "news", "derivatives", "spot", "dex","submit-coin","terms-of-use"];
+    return [
+        "",
+        "converter",
+        "news",
+        "derivatives",
+        "spot",
+        "dex",
+        "submit-coin",
+        "terms-of-use",
+        "nft",
+        "bsc",
+        "defi",
+        "recently-added",
+        "polkadot",
+        "gainers-and-losers",
+    ];
 }
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
     // fetch data

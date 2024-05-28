@@ -96,8 +96,6 @@ function TableSection() {
     );
 
     const handlerSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("e.target.value", e.target.value);
-
         setKeyword(e.target.value);
     };
     const handlePageClick = (selectedItem: any) => {
@@ -116,6 +114,7 @@ function TableSection() {
             setSearchTerms(keyword);
         }, 600);
     }, [keyword]);
+
     return (
         <section className="flex flex-col items-center gap-8 py-6 pb-32 w-full">
             <section className="flex items-center justify-between w-full">

@@ -62,7 +62,6 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
 
         return Number(overviewData.market_data?.current_price?.usd) * amount;
     }, [amount, overviewData]);
-    console.log(result);
 
     return (
         <section className="grid grid-cols-12 gap-5 w-full max-lg:grid-cols-1">

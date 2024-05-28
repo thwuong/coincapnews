@@ -1,8 +1,7 @@
 import useFetchAPI from "@/api/baseAPI";
 import { useTranslation } from "@/app/i18n/client";
-import { CoinTopType, CoinType } from "@/app/types";
-import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
-import getNewData from "@/app/utils/getNewData";
+import { CoinTopType } from "@/app/types";
+import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
@@ -18,7 +17,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { TablePagination } from "../TablePagination";
 const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
 
 const columnHelper = createColumnHelper<CoinTopType>();
@@ -107,7 +105,7 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        className="bg-secondary"
+                                        className="bg-secondary cursor-pointer"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -135,15 +133,15 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                                     <Image
                                                         src={"/assets/icons/sort-down.svg"}
                                                         alt="sort-down"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 ) : (
                                                     <Image
                                                         src={"/assets/icons/sort-up.svg"}
                                                         alt="sort-up"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 )
                                             ) : null}
@@ -158,8 +156,6 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                 <Tbody>
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
-                              let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
-
                               return (
                                   <Tr key={row.original.name}>
                                       <Td px={"4px"} position={width <= 768 ? "sticky" : undefined} left={0}>

@@ -127,7 +127,7 @@ function DifferentExchangesTable({
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        bg={"#F8FAFD"}
+                                        className="bg-secondary cursor-pointer"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -155,15 +155,15 @@ function DifferentExchangesTable({
                                                     <Image
                                                         src={"/assets/icons/sort-down.svg"}
                                                         alt="sort-down"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 ) : (
                                                     <Image
                                                         src={"/assets/icons/sort-up.svg"}
                                                         alt="sort-up"
-                                                        width={14}
-                                                        height={14}
+                                                        width={12}
+                                                        height={12}
                                                     />
                                                 )
                                             ) : null}

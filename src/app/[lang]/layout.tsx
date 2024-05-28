@@ -8,7 +8,7 @@ const meta = {
     title: "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",
     description:
         "Top cryptocurrency prices and charts, listed by market capitalization. Free access to current and historic data for Bitcoin and thousands of altcoins.",
-    image: `${WEBSITE_HOST_URL}assets/images/logo.png`,
+    image: `${WEBSITE_HOST_URL}/assets/images/logo.png`,
 };
 export const metadata: Metadata = {
     title: {

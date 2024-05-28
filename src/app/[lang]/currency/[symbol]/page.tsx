@@ -8,12 +8,11 @@ import { Container } from "@/components/Container";
 import { DetailTabs } from "@/components/DetailTabs";
 import { SpinnerLoading } from "@/components/Loading";
 import { NewsFeed } from "@/components/NewsFeed";
-import { socketDetail } from "@/socket/client";
 import { Button, useToast } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 interface PageProps {
     params: {
         symbol: string;
@@ -36,23 +35,23 @@ export default function Page({ params }: PageProps) {
             position: "top",
         });
     };
-    useEffect(() => {
-        if (!coin) return;
+    // useEffect(() => {
+    //     if (!coin) return;
 
-        const socket = socketDetail(coin.symbol);
-        function getMessage(this: WebSocket, ev: MessageEvent<any>) {
-            const streamData = JSON.parse(ev.data);
+    //     const socket = socketDetail(coin.symbol);
+    //     function getMessage(this: WebSocket, ev: MessageEvent<any>) {
+    //         const streamData = JSON.parse(ev.data);
 
-            setStream({
-                price: parseFloat(streamData.data.c),
-                change24: parseFloat(streamData.data.P),
-            });
-        }
-        socket.onmessage = getMessage;
-        () => {
-            socket.close();
-        };
-    }, [coin]);
+    //         setStream({
+    //             price: parseFloat(streamData.data.c),
+    //             change24: parseFloat(streamData.data.P),
+    //         });
+    //     }
+    //     socket.onmessage = getMessage;
+    //     () => {
+    //         socket.close();
+    //     };
+    // }, [coin]);
 
     const platforms = useMemo(() => {
         if (!coin?.platforms) return;

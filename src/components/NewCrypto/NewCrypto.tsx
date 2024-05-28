@@ -4,7 +4,19 @@ import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
-import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+    Box,
+    Skeleton,
+    SkeletonCircle,
+    SkeletonText,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+} from "@chakra-ui/react";
 import {
     ColumnDef,
     SortingState,
@@ -142,7 +154,7 @@ function NewCryptoTable({
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        className="bg-secondary"
+                                        className="bg-secondary cursor-pointer"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
@@ -287,38 +299,42 @@ function NewCryptoTable({
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
+                                          <Td isNumeric={true} px={"8px"}>
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                          </Td>
                                           <Td
                                               p={"4px"}
+                                              height={"50px"}
                                               minW={"104px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                               className="bg-secondary"
                                           >
-                                              <div className="flex items-center gap-4">
+                                              <div className="flex items-center gap-4 w-72">
                                                   <SkeletonCircle size="5" />
-                                                  <Skeleton height="10px" width={"50%"} />
+                                                  <Skeleton height={"8px"} w={`${Math.floor(Math.random() + 60)}%`} />
                                               </div>
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="15px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="15px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="15px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <Skeleton height="15px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                              <Skeleton height="15px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                              <Skeleton height="15px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"180px"}>
-                                              <Skeleton height="15px" />
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                       </Tr>
                                   );
