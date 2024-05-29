@@ -123,7 +123,7 @@ function Header({ lang }: HeaderProps) {
                                             <h3 className="font-semibold text-12 text-typo-4/80">Coins</h3>
                                             <div className="flex flex-col gap-4 pl-2">
                                                 {searchList.coins.length > 0 ? (
-                                                    searchList.coins.map((coin, index) => {
+                                                    searchList.coins.slice(0, 5).map((coin, index) => {
                                                         const key = coin.id + index;
                                                         return (
                                                             <div
@@ -165,7 +165,7 @@ function Header({ lang }: HeaderProps) {
                                             <h3 className="font-semibold text-12 text-typo-4/80">Exchanges</h3>
                                             <div className="flex flex-col gap-4 pl-2">
                                                 {searchList.exchanges.length > 0 ? (
-                                                    searchList.exchanges.map((exchange, index) => {
+                                                    searchList.exchanges.slice(0, 5).map((exchange, index) => {
                                                         const key = exchange.id + index;
                                                         return (
                                                             <div

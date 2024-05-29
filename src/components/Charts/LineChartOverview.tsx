@@ -54,7 +54,7 @@ function LineChartOverview({ data, isUp = false }: LineChartOverviewProps) {
             labels: {
                 formatter(val, opts) {
                     return formatCurrency(val, "USD", currentLanguage, {
-                        maximumFractionDigits: 1,
+                        maximumFractionDigits: 6,
                         minimumIntegerDigits: 1,
                         notation: "compact",
                     });

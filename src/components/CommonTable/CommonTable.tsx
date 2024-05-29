@@ -254,7 +254,12 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
                                               {formatCurrency(
-                                                  getNewData(stream[convertId]?.price, row.original.current_price)
+                                                  getNewData(stream[convertId]?.price, row.original.current_price),
+                                                  "USD",
+                                                  currentLanguage,
+                                                  {
+                                                      maximumFractionDigits: 8,
+                                                  }
                                               )}
                                           </p>
                                       </Td>

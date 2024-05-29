@@ -19,7 +19,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import TablePagination from "../TablePagination/TablePagination";
-const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
+const LineHighChart = dynamic(() => import("../Charts").then((mod) => mod.LineHighChart));
 type Exchange = {
     id: string;
     name: string;
@@ -230,7 +230,10 @@ function DifferentExchangesTable({
                                       </Td>
                                       <Td px={"4px"} height={"80px"} display={"flex"} justifyContent={"center"}>
                                           {row.original.chart && (
-                                              <LineChartLastDays data={row.original.chart.data} isUp={true} />
+                                              <LineHighChart
+                                                  data={row.original.chart.data.map((item) => Number(item))}
+                                                  isUp={true}
+                                              />
                                           )}
                                       </Td>
                                   </Tr>

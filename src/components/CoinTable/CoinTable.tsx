@@ -1,5 +1,6 @@
 import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
+import { checkFormatImage } from "@/app/utils/checkFormatImage";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
@@ -57,7 +58,9 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
             const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
             if (priceEL) {
-                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c));
+                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c), "USD", currentLanguage, {
+                    maximumFractionDigits: 8,
+                });
             }
             if (change24) {
                 change24.innerHTML = `${parseFloat(streamData.data.P)?.toFixed(2)}%`;
@@ -170,24 +173,30 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                   className="flex items-center gap-2 cursor-pointer"
                                                   href={`/currency/${row.original.id}`}
                                               >
-                                                  <Image
-                                                      className="cursor-pointer"
-                                                      src={row.original.image}
-                                                      alt={row.original.name}
-                                                      width={24}
-                                                      height={24}
-                                                  />
+                                                  {checkFormatImage(row.original.image) && (
+                                                      <Image
+                                                          className="cursor-pointer"
+                                                          src={row.original.image}
+                                                          alt={row.original.name}
+                                                          width={24}
+                                                          height={24}
+                                                      />
+                                                  )}
+
                                                   <Box flexDirection={"column"}>
                                                       <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
                                                           {row.original.name}
                                                       </p>
                                                       <Box display={"flex"} alignItems={"center"} gap={"4px"}>
-                                                          <Badge
-                                                              p={"4px"}
-                                                              className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
-                                                          >
-                                                              {row.original.market_cap_rank}
-                                                          </Badge>
+                                                          {row.original.market_cap_rank && (
+                                                              <Badge
+                                                                  p={"4px"}
+                                                                  className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
+                                                              >
+                                                                  {row.original.market_cap_rank}
+                                                              </Badge>
+                                                          )}
+
                                                           <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
                                                               {row.original.symbol}
                                                           </span>
@@ -198,7 +207,9 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize price text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original.current_price)}
+                                              {formatCurrency(row.original.current_price, "USD", currentLanguage, {
+                                                  maximumFractionDigits: 8,
+                                              })}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
@@ -210,7 +221,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2)}%
+                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2) || 0}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
@@ -222,7 +233,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original.price_change_percentage_7d_in_currency?.toFixed(2)}%
+                                              {row.original.price_change_percentage_7d_in_currency?.toFixed(2) || 0}%
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"138px"}>
