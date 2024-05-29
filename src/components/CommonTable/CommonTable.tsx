@@ -17,7 +17,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
+const LineHighChart = dynamic(() => import("../Charts").then((mod) => mod.LineHighChart));
 
 const columnHelper = createColumnHelper<CoinType>();
 
@@ -309,7 +309,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"180px"}>
                                           <Box display={"flex"} justifyContent={"end"}>
-                                              <LineChartLastDays
+                                              <LineHighChart
                                                   isUp={row.original.price_change_percentage_7d_in_currency > 0}
                                                   data={row.original.sparkline_in_7d.price}
                                               />
