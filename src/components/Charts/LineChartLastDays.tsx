@@ -1,4 +1,5 @@
 import { ApexOptions } from "apexcharts";
+import { useMemo } from "react";
 import Chart from "react-apexcharts";
 type LineChartLastDaysProps = {
     data: number[];
@@ -12,6 +13,9 @@ function LineChartLastDays({ data, isUp }: LineChartLastDaysProps) {
             },
             height: "90px",
             width: "164px",
+            animations: {
+                enabled: false,
+            },
         },
         xaxis: {
             labels: {
@@ -46,25 +50,24 @@ function LineChartLastDays({ data, isUp }: LineChartLastDaysProps) {
         stroke: {
             width: 1,
         },
+        markers: {
+            size: 0,
+        },
     };
-    return (
-        <Chart
-            id="chart-last-days"
-            options={{
+    const props = useMemo(() => {
+        return {
+            options: {
                 ...options,
-
                 colors: isUp ? ["#16C784", "#16C784", "#16C784"] : ["#EA3943", "#EA3943", "#EA3943"],
-            }}
-            series={[
+            },
+            series: [
                 {
                     data,
                 },
-            ]}
-            type="area"
-            width={"100%"}
-            height={"120"}
-        />
-    );
+            ],
+        };
+    }, [data, isUp]);
+    return <Chart id="chart-last-days" {...props} type="area" width={"100%"} height={"120"} />;
 }
 
 export default LineChartLastDays;

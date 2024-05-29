@@ -62,7 +62,6 @@ body {
 } */
 #chart-last-days {
  max-width: 164px;
- pointer-events: none;
  margin-block: -34px;
 }
 .pagination li a{
@@ -150,4 +149,13 @@ body {
 #content p{
   font-size: 16px;
   line-height: 1.5;
+}
+
+#highchart-line .highcharts-axis-title,
+#highchart-line .highcharts-title,
+.highcharts-credits {
+  display: none;
+}
+#highchart-line {
+  margin: -20px 0;
 }

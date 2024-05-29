@@ -3,6 +3,7 @@ import { CoinType } from "@/app/types";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
+import { connectSocket } from "@/socket/client";
 import {
     Badge,
     Box,
@@ -23,7 +24,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-const LineChartLastDays = dynamic(() => import("../Charts").then((mod) => mod.LineChartLastDays));
+const LineHighChart = dynamic(() => import("../Charts").then((mod) => mod.LineHighChart));
 export type DataTableProps = {
     data: CoinType[];
     columns: ColumnDef<CoinType, any>[];
@@ -44,40 +45,40 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
     });
     const [width] = UseResize();
 
-    // React.useEffect(() => {
-    //     if (!data) return;
-    //     const url = data.map((i) => `${i.symbol}usdt@ticker/`).join("");
-    //     const socket = connectSocket(url);
-    //     function onConnect(this: WebSocket) {}
+    React.useEffect(() => {
+        if (!data) return;
+        const url = data.map((i) => `${i.symbol}usdt@ticker/`).join("");
+        const socket = connectSocket(url);
+        function onConnect(this: WebSocket) {}
 
-    //     function onDisconnect() {}
-    //     function getMessage(this: WebSocket, ev: MessageEvent<any>) {
-    //         const streamData = JSON.parse(ev.data);
-    //         const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
-    //         const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
-    //         if (priceEL) {
-    //             priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c));
-    //         }
-    //         if (change24) {
-    //             change24.innerHTML = `${parseFloat(streamData.data.P)?.toFixed(2)}%`;
-    //         }
-    //         document
-    //             .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
-    //             ?.classList.remove(streamData.data.P < 0 ? "text-up" : "text-down");
-    //         document
-    //             .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
-    //             ?.classList.add(streamData.data.P > 0 ? "text-up" : "text-down");
-    //     }
+        function onDisconnect() {}
+        function getMessage(this: WebSocket, ev: MessageEvent<any>) {
+            const streamData = JSON.parse(ev.data);
+            const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
+            const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
+            if (priceEL) {
+                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c));
+            }
+            if (change24) {
+                change24.innerHTML = `${parseFloat(streamData.data.P)?.toFixed(2)}%`;
+            }
+            document
+                .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
+                ?.classList.remove(streamData.data.P < 0 ? "text-up" : "text-down");
+            document
+                .querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`)
+                ?.classList.add(streamData.data.P > 0 ? "text-up" : "text-down");
+        }
 
-    //     socket.onopen = onConnect;
-    //     socket.onmessage = getMessage;
+        socket.onopen = onConnect;
+        socket.onmessage = getMessage;
 
-    //     return () => {
-    //         socket.onclose = onConnect;
-    //         socket.onclose = onDisconnect;
-    //         socket.close();
-    //     };
-    // }, [data]);
+        return () => {
+            socket.onclose = onConnect;
+            socket.onclose = onDisconnect;
+            socket.close();
+        };
+    }, [data]);
     const { currentLanguage } = useAppSelector((state) => state.langStore);
     const { t } = useTranslation(currentLanguage);
     return (
@@ -242,7 +243,11 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"180px"}>
                                           <Box display={"flex"} justifyContent={"end"}>
-                                              <LineChartLastDays
+                                              {/* <LineChartLastDays
+                                                  isUp={row.original.price_change_percentage_7d_in_currency > 0}
+                                                  data={row.original.sparkline_in_7d.price}
+                                              /> */}
+                                              <LineHighChart
                                                   isUp={row.original.price_change_percentage_7d_in_currency > 0}
                                                   data={row.original.sparkline_in_7d.price}
                                               />
