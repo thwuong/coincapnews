@@ -193,7 +193,9 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original.usd, "USD", currentLanguage)}
+                                              {formatCurrency(row.original.usd, "USD", currentLanguage, {
+                                                  maximumFractionDigits: 9,
+                                              })}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>

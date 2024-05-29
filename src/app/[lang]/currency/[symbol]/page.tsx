@@ -14,6 +14,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useDetectClickOutside } from "react-detect-click-outside";
 interface PageProps {
     params: {
         symbol: string;
@@ -23,6 +24,7 @@ interface PageProps {
 export default function Page({ params }: PageProps) {
     const toast = useToast();
     const [stream, setStream] = useState<NewDataType | any>();
+    const [moreContract, setMoreContract] = useState<boolean>(false);
     const { data: coin, isLoading }: { data: DetailCoinType; isLoading: boolean } = useFetchAPI(
         `/api/coins/details/${params.symbol}`
     );
@@ -36,6 +38,11 @@ export default function Page({ params }: PageProps) {
             position: "top",
         });
     };
+    const ref = useDetectClickOutside({
+        onTriggered: () => {
+            setMoreContract(false);
+        },
+    });
     useEffect(() => {
         if (!coin) return;
 
@@ -67,7 +74,12 @@ export default function Page({ params }: PageProps) {
             <Container className="px-12 flex-col gap-4">
                 <div className="grid grid-cols-3 w-full items-center gap-8 max-lg:grid-cols-1">
                     <div className="flex flex-col gap-4 items-center ">
-                        <Image src={coin.image?.small} alt="bitcoin" width={88} height={88} />
+                        <Image
+                            src={coin.image?.large ? coin.image?.large : "/assets/icons/placeholder_coin.svg"}
+                            alt="coin"
+                            width={88}
+                            height={88}
+                        />
                         <div className="flex items-center gap-2">
                             <h4 className="text-2xl leading-[38px] text-typo-4 font-bold capitalize">{coin.id}</h4>
                             <span className="text-base leading-9 text-typo-1 uppercase">{coin.symbol}</span>
@@ -95,7 +107,14 @@ export default function Page({ params }: PageProps) {
                         </p>
                         <div className="flex items-center justify-between w-full">
                             <h4 className="font-bold text-[32px] leading-[41px]">
-                                {formatCurrency(getNewData(stream?.price, coin.market_data?.current_price["usd"]))}
+                                {formatCurrency(
+                                    getNewData(stream?.price, coin.market_data?.current_price["usd"]),
+                                    "USD",
+                                    params.lang,
+                                    {
+                                        maximumFractionDigits: 8,
+                                    }
+                                )}
                             </h4>
                             <Button
                                 width={"fit-content"}
@@ -361,9 +380,9 @@ export default function Page({ params }: PageProps) {
                             <h5 className="text-sm font-bold text-typo-1/80">Contracts</h5>
                             <div className="flex items-center justify-between gap-4 max-lg:justify-start">
                                 <div className="w-fit relative">
-                                    {platforms.map((item) => (
+                                    {platforms.slice(0, 1).map((item) => (
                                         <Button
-                                            key={item[1]}
+                                            key={`${item[0]}${item[1]}`}
                                             height={"fit-content"}
                                             py={"8px"}
                                             pl={"12px"}
@@ -372,7 +391,7 @@ export default function Page({ params }: PageProps) {
                                             className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
                                             leftIcon={
                                                 <Image
-                                                    src={"/assets/images/bitcoin.webp"}
+                                                    src={"/assets/icons/placeholder_coin.svg"}
                                                     className="fill-white text-white hover:fill-primary-1"
                                                     alt="left"
                                                     width={24}
@@ -402,9 +421,16 @@ export default function Page({ params }: PageProps) {
                                             </div>
                                         </Button>
                                     ))}
-                                    {platforms.slice(1).map((item) => (
-                                        <div className="absolute rounded-md w-full bg-white top-[calc(100%+8px)] p-2 shadow-xl z-[2]">
+                                    <div
+                                        ref={ref}
+                                        className={clsx(
+                                            moreContract ? "flex" : "hidden",
+                                            "absolute rounded-md flex-col gap-1 w-full bg-white top-[calc(100%+8px)] p-2 shadow-xl z-[2]"
+                                        )}
+                                    >
+                                        {platforms.slice(1).map((item) => (
                                             <Button
+                                                key={`${item[0]}${item[1]}`}
                                                 height={"fit-content"}
                                                 py={"8px"}
                                                 pl={"12px"}
@@ -416,7 +442,7 @@ export default function Page({ params }: PageProps) {
                                                 className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
                                                 leftIcon={
                                                     <Image
-                                                        src={"/assets/images/bitcoin.webp"}
+                                                        src={"/assets/icons/placeholder_coin.svg"}
                                                         className="fill-white text-white hover:fill-primary-1"
                                                         alt="left"
                                                         width={24}
@@ -430,6 +456,9 @@ export default function Page({ params }: PageProps) {
                                                         alt="left"
                                                         width={16}
                                                         height={16}
+                                                        onClick={() => {
+                                                            copy(item[1]);
+                                                        }}
                                                     />
                                                 }
                                             >
@@ -442,32 +471,35 @@ export default function Page({ params }: PageProps) {
                                                     </p>
                                                 </div>
                                             </Button>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
-                                <Button
-                                    size={"md"}
-                                    bg={"transparent"}
-                                    _hover={{
-                                        bg: "transparent",
-                                        color: "rgb(56,97,251)",
-                                    }}
-                                    p={"0"}
-                                    className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
-                                    rightIcon={
-                                        <Image
-                                            src={"/assets/icons/dropdown.svg"}
-                                            className="fill-white text-white hover:fill-primary-1"
-                                            alt="left"
-                                            width={16}
-                                            height={16}
-                                        />
-                                    }
-                                >
-                                    <span className="text-sm leading-6 font-medium text-typo-1 hover:text-primary-1">
-                                        More
-                                    </span>
-                                </Button>
+                                {platforms?.length > 1 && (
+                                    <Button
+                                        size={"md"}
+                                        bg={"transparent"}
+                                        _hover={{
+                                            bg: "transparent",
+                                            color: "rgb(56,97,251)",
+                                        }}
+                                        onClick={() => setMoreContract(!moreContract)}
+                                        p={"0"}
+                                        className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
+                                        rightIcon={
+                                            <Image
+                                                src={"/assets/icons/dropdown.svg"}
+                                                className="fill-white text-white hover:fill-primary-1"
+                                                alt="left"
+                                                width={16}
+                                                height={16}
+                                            />
+                                        }
+                                    >
+                                        <span className="text-sm leading-6 font-medium text-typo-1 hover:text-primary-1">
+                                            More
+                                        </span>
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     )}

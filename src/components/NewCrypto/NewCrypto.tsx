@@ -242,7 +242,7 @@ function NewCryptoTable({
                                       <Td px={"4px"}>
                                           <p className="text-center text-sm leading-4 font-medium text-typo-4 ">
                                               {formatCurrency(row.original.current_price, "USD", currentLanguage, {
-                                                  maximumFractionDigits: 7,
+                                                  maximumFractionDigits: 9,
                                               })}
                                           </p>
                                       </Td>
@@ -255,7 +255,7 @@ function NewCryptoTable({
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original.price_change_percentage_1h_in_currency?.toFixed(2)}%
+                                              {row.original.price_change_percentage_1h_in_currency?.toFixed(2) || 0}%
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
@@ -267,7 +267,7 @@ function NewCryptoTable({
                                                       : "text-down"
                                               )}
                                           >
-                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2)}%
+                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2) || 0}%
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>

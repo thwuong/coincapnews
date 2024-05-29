@@ -17,8 +17,10 @@ import {
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import React, { useRef, useState } from "react";
+// import TradingViewWidget from "../Charts/TradingViewWidget";
 import { SpinnerLoading } from "../Loading";
 const LineChartOverview = dynamic(() => import("../Charts/").then((mod) => mod.LineChartOverview));
+const TradingViewWidget = dynamic(() => import("../Charts/").then((mod) => mod.TradingViewWidget));
 type OverviewProps = {
     description: any;
     name: string;
@@ -93,86 +95,93 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             <span className="text-black font-semibold leading-[30px] text-13">Trading view</span>
                         </Button>
                     </div>
-                    <div className="flex items-center p-1 rounded-lg bg-primary-3 gap-2 w-fit max-md:w-full">
-                        <Button
-                            className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("1")}
-                            height={"min-content"}
-                            _hover={{
-                                bg: "white",
-                            }}
-                            bg={datetime === "1" ? "white" : ""}
-                        >
-                            <span className="text-black font-semibold leading-[30px] text-13">1D</span>
-                        </Button>
-                        <Button
-                            className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("7")}
-                            height={"min-content"}
-                            _hover={{
-                                bg: "white",
-                            }}
-                            bg={datetime === "7" ? "white" : ""}
-                        >
-                            <span className="text-black font-semibold leading-[30px] text-13">7D</span>
-                        </Button>
-                        <Button
-                            className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("30")}
-                            height={"min-content"}
-                            _hover={{
-                                bg: "white",
-                            }}
-                            bg={datetime === "30" ? "white" : ""}
-                        >
-                            <span className="text-black font-semibold leading-[30px] text-13">1M</span>
-                        </Button>
-                        <Button
-                            className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("90")}
-                            height={"min-content"}
-                            _hover={{
-                                bg: "white",
-                            }}
-                            bg={datetime === "90" ? "white" : ""}
-                        >
-                            <span className="text-black font-semibold leading-[30px] text-13">3M</span>
-                        </Button>
-                        <Button
-                            className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("180")}
-                            height={"min-content"}
-                            _hover={{
-                                bg: "white",
-                            }}
-                            bg={datetime === "180" ? "white" : ""}
-                        >
-                            <span className="text-black font-semibold leading-[30px] text-13">6M</span>
-                        </Button>
-                        <Button
-                            className="w-fit max-md:w-full"
-                            onClick={() => setDatetime("365")}
-                            height={"min-content"}
-                            _hover={{
-                                bg: "white",
-                            }}
-                            bg={datetime === "365" ? "white" : ""}
-                        >
-                            <span className="text-black font-semibold leading-[30px] text-13">1Y</span>
-                        </Button>
-                    </div>
+                    {tabActive === "price" && (
+                        <div className="flex items-center p-1 rounded-lg bg-primary-3 gap-2 w-fit max-md:w-full">
+                            <Button
+                                className="w-fit max-md:w-full"
+                                onClick={() => setDatetime("1")}
+                                height={"min-content"}
+                                _hover={{
+                                    bg: "white",
+                                }}
+                                bg={datetime === "1" ? "white" : ""}
+                            >
+                                <span className="text-black font-semibold leading-[30px] text-13">1D</span>
+                            </Button>
+                            <Button
+                                className="w-fit max-md:w-full"
+                                onClick={() => setDatetime("7")}
+                                height={"min-content"}
+                                _hover={{
+                                    bg: "white",
+                                }}
+                                bg={datetime === "7" ? "white" : ""}
+                            >
+                                <span className="text-black font-semibold leading-[30px] text-13">7D</span>
+                            </Button>
+                            <Button
+                                className="w-fit max-md:w-full"
+                                onClick={() => setDatetime("30")}
+                                height={"min-content"}
+                                _hover={{
+                                    bg: "white",
+                                }}
+                                bg={datetime === "30" ? "white" : ""}
+                            >
+                                <span className="text-black font-semibold leading-[30px] text-13">1M</span>
+                            </Button>
+                            <Button
+                                className="w-fit max-md:w-full"
+                                onClick={() => setDatetime("90")}
+                                height={"min-content"}
+                                _hover={{
+                                    bg: "white",
+                                }}
+                                bg={datetime === "90" ? "white" : ""}
+                            >
+                                <span className="text-black font-semibold leading-[30px] text-13">3M</span>
+                            </Button>
+                            <Button
+                                className="w-fit max-md:w-full"
+                                onClick={() => setDatetime("180")}
+                                height={"min-content"}
+                                _hover={{
+                                    bg: "white",
+                                }}
+                                bg={datetime === "180" ? "white" : ""}
+                            >
+                                <span className="text-black font-semibold leading-[30px] text-13">6M</span>
+                            </Button>
+                            <Button
+                                className="w-fit max-md:w-full"
+                                onClick={() => setDatetime("365")}
+                                height={"min-content"}
+                                _hover={{
+                                    bg: "white",
+                                }}
+                                bg={datetime === "365" ? "white" : ""}
+                            >
+                                <span className="text-black font-semibold leading-[30px] text-13">1Y</span>
+                            </Button>
+                        </div>
+                    )}
                 </div>
                 {isLoading && <SpinnerLoading />}
-                {data && (
+                {data && tabActive === "price" && (
                     <LineChartOverview
                         data={data?.prices}
                         isUp={overviewData.market_data?.market_cap_change_percentage_24h > 0}
                     />
                 )}
+                {tabActive === "trading" && (
+                    <section className="h-[610px] overflow-hidden">
+                        <TradingViewWidget symbol={overviewData.symbol} />
+                    </section>
+                )}
                 {/* About coin */}
                 {overviewData.description && (
                     <div className="py-6 flex flex-col gap-5">
-                        <h2 className="text-[25px] font-bold text-typo-4">About {overviewData.name}</h2>(
+                        <h2 className="text-[25px] font-bold text-typo-4">About {overviewData.name}</h2>
                         <div
                             ref={descHeight}
                             className={clsx(
@@ -191,7 +200,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 <div className="absolute bottom-0 h-1/3 w-full bg-gradient-to-b from-white/0 to-white"></div>
                             )}
                         </div>
-                        )
+
                         {descHeight?.current?.clientHeight >= 300 && (
                             <Button
                                 onClick={() => setReadMore(!readMore)}
@@ -248,7 +257,12 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 <p className="text-typo-1 text-sm whitespace-nowrap ">{overviewData.name}Price</p>
                                 <p className="font-semibold text-sm">
                                     {formatCurrency(
-                                        getNewData(newData?.price, overviewData.market_data?.current_price?.usd)
+                                        getNewData(newData?.price, overviewData.market_data?.current_price?.usd),
+                                        "USD",
+                                        currentLanguage,
+                                        {
+                                            maximumFractionDigits: 8,
+                                        }
                                     )}
                                 </p>
                             </Box>
