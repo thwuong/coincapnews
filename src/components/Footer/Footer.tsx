@@ -3,9 +3,10 @@ import { useTranslation } from "@/app/i18n/client";
 import { navDataOfCompany, navDataOfSupport, navigationHeaderData } from "@/fakedata/fakedata";
 import { useAppSelector } from "@/lib/hooks";
 import { Box, Button, Input } from "@chakra-ui/react";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Container } from "../Container";
 
@@ -18,9 +19,19 @@ type NavItemType = {
 };
 function NavItem({ navItem }: { navItem: NavItemType }) {
     const [showDropdown, setShowDropdown] = useState(false);
+    const pathName = usePathname();
     const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
     const router = useRouter();
     const { t } = useTranslation(currentLanguage);
+
+    let activePathCurrent = false;
+    if (navItem.children && navItem.children?.length > 0) {
+        activePathCurrent = navItem.children.some((child) => {
+            return pathName.includes(child.href || "/");
+        });
+    } else {
+        activePathCurrent = pathName.includes(navItem.href || "/");
+    }
     return (
         <Box position={"relative"}>
             <div
@@ -32,7 +43,12 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     }
                 }}
             >
-                <span className="text-base max-lg:text-13 leading-[1.5] group font-normal text-white duration-300 opacity-80 hover:opacity-100">
+                <span
+                    className={clsx(
+                        "text-base max-lg:text-13 leading-[1.5] group font-normal  duration-300 opacity-80 hover:opacity-100",
+                        activePathCurrent ? "text-primary-1" : "text-white"
+                    )}
+                >
                     {t(`footer.${navItem.key}`)}
                 </span>
                 {navItem.children &&

@@ -1,10 +1,12 @@
+import { useTranslation } from "@/app/i18n/client";
+import { DetailCoinType, NewDataType } from "@/app/types";
+import { useAppSelector } from "@/lib/hooks";
 import { Button, Input, Select, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useState } from "react";
 import { ShareModal } from "../Modal";
 import { Overview } from "../Overview";
-import { DetailCoinType, NewDataType } from "@/app/types";
-import { useState } from "react";
 import { TablePagination } from "../TablePagination";
 const ExchangeTable = dynamic(() => import("../ExchangeTable").then((mod) => mod.ExchangeTable));
 function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: NewDataType }) {
@@ -15,6 +17,8 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const { t } = useTranslation(currentLanguage);
     return (
         <section className="py-10 flex flex-col gap-8 w-full">
             <Tabs variant="unstyled">
@@ -29,7 +33,7 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                         className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
                         py={"4px"}
                     >
-                        <span className="text-13 ">Overview</span>
+                        <span className="text-13 ">{t("overview")}</span>
                     </Tab>
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
@@ -43,21 +47,21 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                         py={"4px"}
                         className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
                     >
-                        <span className="text-13 ">Socials</span>
+                        <span className="text-13 ">{t("socials")}</span>
                     </Tab>
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
                         py={"4px"}
                         className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
                     >
-                        <span className="text-13 ">Ratings</span>
+                        <span className="text-13 ">{t("ratings")}</span>
                     </Tab>
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
                         py={"4px"}
                         className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
                     >
-                        <span className="text-13 ">Analysis</span>
+                        <span className="text-13 ">{t("analysis")}</span>
                     </Tab>
                     <Button
                         className="max-lg:!absolute max-lg:right-0 max-lg:top-0 max-lg:translate-y-1/2"
@@ -67,7 +71,7 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                     >
                         <div className="flex items-center gap-2">
                             <Image src={"/assets/icons/share.svg"} alt="share" width={16} height={16} />
-                            <span className="text-black font-semibold text-13 max-lg:hidden">Share</span>
+                            <span className="text-black font-semibold text-13 max-lg:hidden">{t("share")}</span>
                         </div>
                     </Button>
                 </TabList>

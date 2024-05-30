@@ -181,7 +181,14 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.converted_last["usd"])}
+                                              {formatCurrency(
+                                                  row.original.converted_last["usd"],
+                                                  "USD",
+                                                  currentLanguage,
+                                                  {
+                                                      maximumFractionDigits: 6,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
