@@ -19,7 +19,7 @@ function MainLayout({ children, params: { lang } }: LayoutProps) {
     return (
         <Providers lang={lang}>
             {pathName !== `/${lang}/account` && <Header lang={lang} />}
-            <section className="flex w-full justify-center bg-secondary">
+            <section className="flex w-full justify-center bg-secondary lg:min-h-screen">
                 <SideBar />
                 <div className="w-main max-lg:w-full">{children}</div>
                 <SideBar />
