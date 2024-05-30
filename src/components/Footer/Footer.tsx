@@ -137,22 +137,22 @@ function Footer() {
                         <div className="flex items-center gap-4">
                             <Link href={"https://www.facebook.com/coincapnews/"} target="_blank">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
-                                    <Image src={"/assets/icons/fb.svg"} alt="fb" width={20} height={20} />
+                                    <Image src={"/assets/icons/fb.svg"} alt="Facebook" width={20} height={20} />
                                 </div>
                             </Link>
                             <Link href={"https://x.com/Coincapnewscom"} target="_blank">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
-                                    <Image src={"/assets/icons/x-white.svg"} alt="insta" width={20} height={20} />
+                                    <Image src={"/assets/icons/x-white.svg"} alt="Instagram" width={20} height={20} />
                                 </div>
                             </Link>
                             <Link href={"https://t.me/coincapnewsofficial"} target="_blank">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
-                                    <Image src={"/assets/icons/telegram.svg"} alt="tele" width={20} height={20} />
+                                    <Image src={"/assets/icons/telegram.svg"} alt="Telegram" width={20} height={20} />
                                 </div>
                             </Link>
-                            <Link href={"https://www.hahalolo.com/p/60cd7fd4424eb16e2778552e"}>
+                            <Link href={"https://www.hahalolo.com/p/60cd7fd4424eb16e2778552e"} target="_blank">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
-                                    <Image src={"/assets/icons/hahalolo.svg"} alt="tele" width={20} height={20} />
+                                    <Image src={"/assets/icons/hahalolo.svg"} alt="Hahalolo" width={20} height={20} />
                                 </div>
                             </Link>
                         </div>
