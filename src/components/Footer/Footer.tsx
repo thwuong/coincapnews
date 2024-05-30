@@ -32,7 +32,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                     }
                 }}
             >
-                <span className="text-base max-lg:text-13 leading-[1.5] group font-normal text-white duration-300 opacity-50 hover:opacity-100">
+                <span className="text-base max-lg:text-13 leading-[1.5] group font-normal text-white duration-300 opacity-80 hover:opacity-100">
                     {t(`footer.${navItem.key}`)}
                 </span>
                 {navItem.children &&
@@ -63,7 +63,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                 >
                     {navItem.children.map((item: NavItemType, index: number) => (
                         <Link href={item.href || "/"} key={item.label}>
-                            <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-normal text-white hover:text-typo-1 duration-300">
+                            <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-normal text-white opacity-80 hover:opacity-100 duration-300">
                                 {t(`footer.${item.key}`)}
                             </span>
                         </Link>
@@ -134,9 +134,9 @@ function Footer() {
                                     <Image src={"/assets/icons/telegram.svg"} alt="tele" width={20} height={20} />
                                 </div>
                             </Link>
-                            <Link href={"/"}>
+                            <Link href={"https://www.hahalolo.com/p/60cd7fd4424eb16e2778552e"}>
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
-                                    <Image src={"/assets/icons/telegram.svg"} alt="tele" width={20} height={20} />
+                                    <Image src={"/assets/icons/hahalolo.svg"} alt="tele" width={20} height={20} />
                                 </div>
                             </Link>
                         </div>
@@ -209,7 +209,7 @@ function Footer() {
                 {/* copy-right */}
                 <div className="w-full py-4 border-t border-typo-1/60">
                     <span className="text-[rgb(202,202,202)]/80 text-ms leading-[21px] max-lg:text-13">
-                        Coincapnews © 2024 . All rights reserved
+                        Coincapnews © 2024. All rights reserved
                     </span>
                 </div>
             </Container>

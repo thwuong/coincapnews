@@ -79,7 +79,7 @@ function Header({ lang }: HeaderProps) {
             <div
                 className={clsx(
                     "border-gray-bg-2/30 border-t shadow z-20 w-full h-[100px] max-lg:h-20 flex items-center justify-center duration-300",
-                    scrollingUp && "fixed top-0 left-0 bg-white/70 "
+                    scrollingUp && "fixed top-0 left-0 bg-white/90 max-h-20"
                 )}
             >
                 <Container className="px-12 ">

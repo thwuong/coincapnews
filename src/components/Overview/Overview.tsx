@@ -197,7 +197,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 id="description"
                             ></div>
                             {descHeight?.current?.clientHeight >= 300 && !readMore && (
-                                <div className="absolute bottom-0 h-1/3 w-full bg-gradient-to-b from-white/0 to-white"></div>
+                                <div className="absolute bottom-0 h-40 w-full bg-gradient-to-b from-white/0 to-[#f8fafd]"></div>
                             )}
                         </div>
 
@@ -219,7 +219,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
 
             {/* Info */}
             <div className="col-span-4 flex flex-col mt-12 gap-6 max-lg:col-span-1">
-                <div className="rounded-lg border border-[rgb(239,242,245)]">
+                <div className="rounded-2xl border border-[rgb(239,242,245)] overflow-hidden">
                     <Box className="py-5 px-4 flex items-center justify-between gap-4" bg={"white"}>
                         <p className="font-semibold text-sm text-black uppercase">{overviewData.symbol}</p>
                         <NumberInput>
@@ -243,7 +243,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                     </Box>
                 </div>
                 {/* Price Status */}
-                <div className="rounded-lg bg-secondary p-6 flex flex-col gap-6">
+                <div className="rounded-lg bg-[#edf2f7] p-6 flex flex-col gap-6">
                     <h2 className="text-2xl font-bold text-typo-4">
                         <span className="uppercase">{overviewData.symbol}</span> Price Status
                     </h2>
@@ -326,7 +326,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(
                                         overviewData.market_data.total_volume?.usd /
-                                            overviewData.market_data?.market_cap?.usd || 0
+                                        overviewData.market_data?.market_cap?.usd || 0
                                     )}
                                 </p>
                             </Box>
