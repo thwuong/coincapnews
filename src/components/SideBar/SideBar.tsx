@@ -19,17 +19,8 @@ const ImageComponent: React.FC<ImageProps> = ({ src, alt }) => {
     );
 };
 
-const SideBar: React.FC = () => {
-    const images = [
-        {
-            src: "https://cdn.builder.io/api/v1/image/assets%2F871afa660560495da3a1d439d70ba5ce%2F38934f904c444628a8b836246ab3ca99",
-            alt: "Description for image 1",
-        },
-        {
-            src: "https://cdn.builder.io/api/v1/image/assets%2F871afa660560495da3a1d439d70ba5ce%2F30cd3cbe3ea1488ca3912523582b946f",
-            alt: "Description for image 2",
-        },
-    ];
+const SideBar = ({ images }: { images: ImageProps[] }) => {
+
 
     return (
         <aside className="5xl:flex box-border hidden relative flex-col shrink-0 w-full max-w-[190px] max-md:hidden">
