@@ -5,6 +5,7 @@ import { formatCurrencyHasUnit, formatQuoteCurrency } from "@/app/utils/formatCu
 import { currenciesData } from "@/fakedata/fakedata";
 import { useAppSelector } from "@/lib/hooks";
 import { Button, useDisclosure } from "@chakra-ui/react";
+import clsx from "clsx";
 import Image from "next/image";
 import { useState } from "react";
 import LanguageMenu from "../LanguageMenu/LanguageMenu";
@@ -50,7 +51,14 @@ function Topbar({ lang }: TopbarProps) {
                     </div>
                     <div className="flex items-center gap-1">
                         <span className="font-medium text-typo-1 whitespace-nowrap">{t(`topbar.24h_vol`)}:</span>
-                        <span className="text-primary-1 whitespace-nowrap">
+                        <span
+                            className={clsx(
+                                "whitespace-nowrap",
+                                Number(dataGlobal.data.market_cap_change_percentage_24h_usd) > 0
+                                    ? "text-up"
+                                    : "text-down"
+                            )}
+                        >
                             {Number(dataGlobal.data.market_cap_change_percentage_24h_usd).toFixed(2)}%
                         </span>
                     </div>

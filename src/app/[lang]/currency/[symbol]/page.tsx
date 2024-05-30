@@ -1,6 +1,7 @@
 "use client";
 
 import useFetchAPI from "@/api/baseAPI";
+import { useTranslation } from "@/app/i18n/client";
 import { DetailCoinType, NewDataType } from "@/app/types";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import getNewData from "@/app/utils/getNewData";
@@ -67,7 +68,7 @@ export default function Page({ params }: PageProps) {
         const objectToArray = Object.keys(coin.platforms).map((key) => [key, coin.platforms[key]]);
         return objectToArray;
     }, [coin]);
-
+    const { t } = useTranslation(params.lang);
     if (isLoading) return <SpinnerLoading />;
     return (
         <main className="pt-10 pb-20 w-full bg-secondary flex items-center justify-center">
@@ -94,7 +95,7 @@ export default function Page({ params }: PageProps) {
                                 className="text-[11px] font-semibold"
                                 color={"white"}
                             >
-                                Rank #{coin.market_cap_rank}
+                                {`${t("rank")} ${coin.market_cap_rank}`}
                             </Button>
                             <Button size={"xs"} bg={"gray.100"} className="text-[11px] font-semibold capitalize">
                                 coin
@@ -103,7 +104,7 @@ export default function Page({ params }: PageProps) {
                     </div>
                     <div className="flex flex-col gap-2 items-start ">
                         <p className="text-[13px] font-medium leading-[21px] text-typo-1">
-                            {coin.name} Price <span className="uppercase">({coin.symbol})</span>
+                            {`${coin.name} ${t("price")}`} <span className="uppercase">({coin.symbol})</span>
                         </p>
                         <div className="flex items-center justify-between w-full">
                             <h4 className="font-bold text-[32px] leading-[41px]">
@@ -159,22 +160,22 @@ export default function Page({ params }: PageProps) {
                             </Button>
                         </div>
                         <p className="text-base font-medium leading-[26px] text-typo-1">
-                            {coin.name} Price <span className="uppercase">({coin.symbol})</span>
+                            {`${coin.name} ${t("price")}`} <span className="uppercase">({coin.symbol})</span>
                         </p>
                         <div className="flex items-center justify-between text-typo-1 w-full">
-                            <p className="text-12 font-medium">24h Low / 24h High</p>
+                            <p className="text-12 font-medium">{t("24h_low_24h_high")}</p>
                             <p className="text-sm font-bold">
                                 {formatCurrency(coin.market_data?.low_24h?.usd || 0)} /{" "}
                                 {formatCurrency(coin.market_data?.high_24h?.usd || 0)}
                             </p>
                         </div>
                         <div className="flex items-center justify-between text-typo-1 w-full">
-                            <p className="text-12 font-medium">24 Hour Trading Vol</p>
+                            <p className="text-12 font-medium">{t("24h_trading_vol")}</p>
                             <p className="text-sm font-bold">{formatCurrency(coin.market_data.total_volume["usd"])}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4 w-full">
-                        <p className="text-[14px] leading-[1] font-bold  text-typo-1">Sponsored</p>
+                        <p className="text-[14px] leading-[1] font-bold  text-typo-1">{t("sponsored")}</p>
                         <div className="w-full grid grid-cols-2 gap-2">
                             <Button
                                 size={"md"}
@@ -185,7 +186,7 @@ export default function Page({ params }: PageProps) {
                                 className="text-[14px] font-medium leading-[30px]"
                                 color={"white"}
                             >
-                                Buy
+                                {t("buy")}
                             </Button>
                             <Button
                                 size={"md"}
@@ -196,7 +197,7 @@ export default function Page({ params }: PageProps) {
                                 className="text-[14px] font-medium leading-[30px]"
                                 color={"white"}
                             >
-                                Exchange
+                                {t("exchange")}
                             </Button>
                             <Button
                                 size={"md"}
@@ -207,7 +208,7 @@ export default function Page({ params }: PageProps) {
                                 className="text-[14px] font-medium leading-[30px]"
                                 color={"white"}
                             >
-                                Gaming
+                                {t("gaming")}
                             </Button>
                             <Button
                                 size={"md"}
@@ -218,21 +219,31 @@ export default function Page({ params }: PageProps) {
                                 className="text-[14px] font-medium leading-[30px]"
                                 color={"white"}
                             >
-                                Earn Crypto
+                                {t("earn_crypto")}
                             </Button>
                         </div>
                         <div className="relative h-[154px] w-full">
-                            <Image src={"/assets/images/banner-coin.png"} alt="coin" fill className="absolute rounded-lg" />
+                            <Image
+                                src={"/assets/images/banner-coin.png"}
+                                alt="coin"
+                                fill
+                                className="absolute rounded-lg"
+                            />
                         </div>
                         <div className="relative h-[154px] w-full">
-                            <Image src={"/assets/images/banner-coin.png"} alt="coin" fill className="absolute rounded-lg" />
+                            <Image
+                                src={"/assets/images/banner-coin.png"}
+                                alt="coin"
+                                fill
+                                className="absolute rounded-lg"
+                            />
                         </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-3 w-full items-start gap-8 max-lg:grid-cols-1">
                     {/* Links detail */}
                     <div className="flex flex-col gap-4">
-                        <h5 className="text-sm font-bold text-typo-1/80">Links</h5>
+                        <h5 className="text-sm font-bold text-typo-1/80">{t("links")}</h5>
                         <div className="flex gap-2 flex-wrap">
                             {coin.links?.blockchain_site?.length > 0 && (
                                 <Button
@@ -253,7 +264,7 @@ export default function Page({ params }: PageProps) {
                                     }
                                 >
                                     <span className="text-[11px] font-semibold capitalize text-black/80  hover:text-primary-1">
-                                        Explorer
+                                        {t("explorer")}
                                     </span>
                                 </Button>
                             )}
@@ -276,7 +287,7 @@ export default function Page({ params }: PageProps) {
                                     }
                                 >
                                     <span className="text-[11px] font-semibold capitalize text-black/80 t hover:text-primary-1">
-                                        Official Website
+                                        {t("official_website")}
                                     </span>
                                 </Button>
                             )}
@@ -377,7 +388,7 @@ export default function Page({ params }: PageProps) {
                     {/* Contacts detail */}
                     {platforms && (
                         <div className="flex flex-col gap-4">
-                            <h5 className="text-sm font-bold text-typo-1/80">Contracts</h5>
+                            <h5 className="text-sm font-bold text-typo-1/80">{t("contracts")}</h5>
                             <div className="flex items-center justify-between gap-4 max-lg:justify-start">
                                 <div className="w-fit relative">
                                     {platforms.slice(0, 1).map((item) => (
@@ -496,7 +507,7 @@ export default function Page({ params }: PageProps) {
                                         }
                                     >
                                         <span className="text-sm leading-6 font-medium text-typo-1 hover:text-primary-1">
-                                            More
+                                            {t("more")}
                                         </span>
                                     </Button>
                                 )}
@@ -506,7 +517,7 @@ export default function Page({ params }: PageProps) {
 
                     {/* Tags */}
                     <div className="flex flex-col gap-4">
-                        <h5 className="text-sm font-bold text-typo-1/80">Tags</h5>
+                        <h5 className="text-sm font-bold text-typo-1/80">{t("tags")}</h5>
                         <div className="flex gap-2 flex-wrap">
                             {new Array(1).fill(4).map((_, index) => {
                                 return (
