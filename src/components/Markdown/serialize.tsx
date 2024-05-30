@@ -1,7 +1,7 @@
 import escapeHTML from "escape-html";
 import React, { Fragment } from "react";
 import { Text } from "slate";
-
+import styles from "./serialize.module.css";
 // eslint-disable-next-line no-use-before-define
 type Children = Leaf[];
 
@@ -64,11 +64,23 @@ const serialize = (children: Children): React.ReactNode[] =>
                     </h1>
                 );
             case "h2":
-                return <h2 key={i}>{serialize(node.children)}</h2>;
+                return (
+                    <h2 className="text-2xl font-semibold" key={i}>
+                        {serialize(node.children)}
+                    </h2>
+                );
             case "h3":
-                return <h3 key={i}>{serialize(node.children)}</h3>;
+                return (
+                    <h3 className="text-xl font-semibold" key={i}>
+                        {serialize(node.children)}
+                    </h3>
+                );
             case "h4":
-                return <h4 key={i}>{serialize(node.children)}</h4>;
+                return (
+                    <h4 className="text-xl font-semibold" key={i}>
+                        {serialize(node.children)}
+                    </h4>
+                );
             case "h5":
                 return <h5 key={i}>{serialize(node.children)}</h5>;
             case "h6":
@@ -76,21 +88,39 @@ const serialize = (children: Children): React.ReactNode[] =>
             case "blockquote":
                 return <blockquote key={i}>{serialize(node.children)}</blockquote>;
             case "ul":
-                return <ul key={i}>{serialize(node.children)}</ul>;
+                return (
+                    <ul className={styles.inherit} key={i}>
+                        {serialize(node.children)}
+                    </ul>
+                );
             case "ol":
-                return <ol key={i}>{serialize(node.children)}</ol>;
+                return (
+                    <ol className="text-base text-gray-bg leading-8 ml-[20px]" key={i}>
+                        {serialize(node.children)}
+                    </ol>
+                );
             case "li":
-                return <li key={i}>{serialize(node.children)}</li>;
+                return (
+                    <li className="text-base text-gray-bg leading-8 ml-[20px]" key={i}>
+                        {serialize(node.children)}
+                    </li>
+                );
             case "link":
                 return (
                     <a href={escapeHTML(node.url)} key={i}>
                         {serialize(node.children)}
                     </a>
                 );
+            case "span":
+                return (
+                    <span className="text-base text-gray-bg leading-8" key={i}>
+                        {serialize(node.children)}
+                    </span>
+                );
 
             default:
                 return (
-                    <p className="text-base leading-8" key={i}>
+                    <p className="text-base text-gray-bg leading-8" key={i}>
                         {serialize(node.children)}
                     </p>
                 );
