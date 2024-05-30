@@ -6,17 +6,17 @@ import { useAppSelector } from "@/lib/hooks";
 import { Avatar, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
-
 
 function NewsFeedItem(props: FeedType) {
     const { id, post_title, post_thumbnail, post_excerpt, post_date, author, post_permalink } = props;
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const pathName = usePathname();
 
     return (
-
         <li className="pb-8 border-b">
-
-            <div className="hidden">
+            {pathName !== `/${currentLanguage}/news` ? (
                 <Link href={`${post_permalink}`} className="flex gap-8 max-md:flex-col" target="_blank">
                     <Image
                         src={post_thumbnail}
@@ -41,29 +41,33 @@ function NewsFeedItem(props: FeedType) {
                         </div>
                     </div>
                 </Link>
-            </div>
-
-            <Link href={`${post_permalink}`} className="flex flex-col gap-4 max-md:flex-col" target="_blank">
-                <div className="flex items-center gap-4">
-                    <Avatar src={author.avatar} size={"sm"} />
-                    <div className="flex items-center gap-1">
-                        <h6 className="text-base leading-[26px] font-semibold text-typo-4">{author.name}</h6>
-                        <span>&#183;</span>
-                        <span className="text-13 leading-[17px] text-typo-2 font-medium">{post_date}</span>
+            ) : (
+                <Link href={`${post_permalink}`} className="flex flex-col gap-4 max-md:flex-col" target="_blank">
+                    <div className="flex items-center gap-4">
+                        <Avatar src={author.avatar} size={"sm"} />
+                        <div className="flex items-center gap-1">
+                            <h6 className="text-base leading-[26px] font-semibold text-typo-4">{author.name}</h6>
+                            <span>&#183;</span>
+                            <span className="text-13 leading-[17px] text-typo-2 font-medium">{post_date}</span>
+                        </div>
                     </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex flex-col">
-                        <h3 className="text-lg font-semibold text-typo-4 hover:text-primary-1">{post_title}</h3>
-                        <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
+                    <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
+                            <h3 className="text-lg font-semibold text-typo-4 hover:text-primary-1">{post_title}</h3>
+                            <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
+                        </div>
                     </div>
-                </div>
-                <Image src={post_thumbnail} alt="feed" width={327} height={200} loading="lazy" className="rounded-lg w-full"
-                />
-            </Link>
-
+                    <Image
+                        src={post_thumbnail}
+                        alt="feed"
+                        width={327}
+                        height={200}
+                        loading="lazy"
+                        className="rounded-lg w-full"
+                    />
+                </Link>
+            )}
         </li>
-
     );
 }
 function NewsFeed() {
@@ -72,7 +76,6 @@ function NewsFeed() {
     const { data, isLoading }: { data: FeedType[]; error: any; isLoading: boolean } = useNewsAPI(`?limit=${limit}`);
     const { t } = useTranslation(currentLanguage);
     return (
-
         <div className="flex flex-col gap-6 w-full">
             <h2 className="text-2xl font-bold text-typo-4">{t("newsfeed")}</h2>
             <ul className="flex flex-col gap-8 w-full">
@@ -96,7 +99,6 @@ function NewsFeed() {
                 </span>
             </Button>
         </div>
-
     );
 }
 
