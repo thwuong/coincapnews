@@ -222,10 +222,10 @@ export default function Page({ params }: PageProps) {
                             </Button>
                         </div>
                         <div className="relative h-[154px] w-full">
-                            <Image src={"/assets/images/banner-coin.png"} alt="coin" fill className="absolute" />
+                            <Image src={"/assets/images/banner-coin.png"} alt="coin" fill className="absolute rounded-lg" />
                         </div>
                         <div className="relative h-[154px] w-full">
-                            <Image src={"/assets/images/banner-coin.png"} alt="coin" fill className="absolute" />
+                            <Image src={"/assets/images/banner-coin.png"} alt="coin" fill className="absolute rounded-lg" />
                         </div>
                     </div>
                 </div>

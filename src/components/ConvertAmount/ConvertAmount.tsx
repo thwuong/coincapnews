@@ -46,7 +46,7 @@ function ConvertAmount() {
         <div className="rounded-lg shadow-xl bg-white">
             <Box className="py-5 px-4 flex items-center justify-between gap-4">
                 <Select
-                    className="font-semibold text-sm text-black uppercase "
+                    className="font-semibold text-sm text-black uppercase"
                     border={"none"}
                     value={from}
                     w={"fit-content"}
@@ -70,8 +70,8 @@ function ConvertAmount() {
                         border={"none"}
                         outline={"none"}
                         textAlign={"right"}
-                        className="font-bold"
-                        fontSize={"18px"}
+                        className="font-bold text-[#222531]"
+                        fontSize={"14px"}
                         placeholder="Enter Amount to Convert"
                         onChange={debounce(handleChange, 500)}
                     />
@@ -99,9 +99,9 @@ function ConvertAmount() {
                 <p className="font-bold text-lg">
                     {result
                         ? formatCurrency(result, "USD", currentLanguage, {
-                              maximumFractionDigits: 2,
-                              minimumIntegerDigits: 4,
-                          })
+                            maximumFractionDigits: 2,
+                            minimumIntegerDigits: 4,
+                        })
                         : ""}
                 </p>
             </Box>
