@@ -210,7 +210,14 @@
     "max_supply" : "Max Supply",
     "markets_exchanges" : "Markets / Exchanges",
     "search" : "Search",
-    "rank" : "Rank",
-    "explorer" : "Explorer"
+    "rank" : "Rank #",
+    "explorer" : "Explorer",
+    "24h_trading_vol" : "24 Hour Trading Vol",
+    "buy" : "Buy",
+    "exchange" : "Exchange",
+    "gaming" : "Gaming",
+    "earn_crypto" : "Earn Crypto",
+    "sponsored" : "Sponsored",
+    "official_website" : "Official Website"
 }
 

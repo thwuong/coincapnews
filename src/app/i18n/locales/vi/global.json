@@ -101,7 +101,7 @@
     },
     "load_more": "Tải thêm",
     "read_more": "Đọc thêm",
-    "read_less": "đọc ít hơn",
+    "read_less": "Ẩn bớt",
     "subscribe": "Đăng ký",
     "newsfeed": "Tin tức",
     "show_more": "Hiện thêm",
@@ -144,6 +144,14 @@
     "markets_exchanges": "Thị trường / Sàn giao dịch",
     "search": "Tìm kiếm",
     "rank" : "Xếp hạng",
-    "explorer" : "Trình duyệt"
+    "explorer" : "Trình duyệt",
+    "24h_trading_vol" : "Khối lượng giao dịch 24 giờ",
+    "buy": "Mua",
+  "exchange": "Trao đổi",
+  "gaming": "chơi game",
+  "earn_crypto": "Kiếm tiền điện tử",
+  "sponsored" : "Được tài trợ",
+  "official_website" : "Website chính thức"
+
 
 }
