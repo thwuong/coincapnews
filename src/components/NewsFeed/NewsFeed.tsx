@@ -6,26 +6,43 @@ import { useAppSelector } from "@/lib/hooks";
 import { Avatar, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 function NewsFeedItem(props: FeedType) {
     const { id, post_title, post_thumbnail, post_excerpt, post_date, author, post_permalink } = props;
+    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const pathName = usePathname();
+
     return (
-        <li>
-            <Link href={`${post_permalink}`} className="flex gap-8 max-md:flex-col" target="_blank">
-                <Image
-                    src={post_thumbnail}
-                    alt="feed"
-                    width={327}
-                    height={200}
-                    loading="lazy"
-                    className="rounded-lg max-md:w-full"
-                />
-                <div className="flex flex-col gap-3">
-                    <div className="flex flex-col">
-                        <h3 className="text-lg font-semibold text-typo-4">{post_title}</h3>
-                        <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
+        <li className="pb-8 border-b">
+            {pathName !== `/${currentLanguage}/news` ? (
+                <Link href={`${post_permalink}`} className="flex gap-8 max-md:flex-col" target="_blank">
+                    <Image
+                        src={post_thumbnail}
+                        alt="feed"
+                        width={327}
+                        height={200}
+                        loading="lazy"
+                        className="rounded-lg max-md:w-full"
+                    />
+                    <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
+                            <h3 className="text-lg font-semibold text-typo-4">{post_title}</h3>
+                            <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <Avatar src={author.avatar} size={"sm"} />
+                            <div className="flex items-center gap-1">
+                                <h6 className="text-base leading-[26px] font-semibold text-typo-4">{author.name}</h6>
+                                <span>&#183;</span>
+                                <span className="text-13 leading-[17px] text-typo-2 font-medium">{post_date}</span>
+                            </div>
+                        </div>
                     </div>
+                </Link>
+            ) : (
+                <Link href={`${post_permalink}`} className="flex flex-col gap-4 max-md:flex-col" target="_blank">
                     <div className="flex items-center gap-4">
                         <Avatar src={author.avatar} size={"sm"} />
                         <div className="flex items-center gap-1">
@@ -34,8 +51,22 @@ function NewsFeedItem(props: FeedType) {
                             <span className="text-13 leading-[17px] text-typo-2 font-medium">{post_date}</span>
                         </div>
                     </div>
-                </div>
-            </Link>
+                    <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
+                            <h3 className="text-lg font-semibold text-typo-4 hover:text-primary-1">{post_title}</h3>
+                            <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
+                        </div>
+                    </div>
+                    <Image
+                        src={post_thumbnail}
+                        alt="feed"
+                        width={327}
+                        height={200}
+                        loading="lazy"
+                        className="rounded-lg w-full"
+                    />
+                </Link>
+            )}
         </li>
     );
 }
