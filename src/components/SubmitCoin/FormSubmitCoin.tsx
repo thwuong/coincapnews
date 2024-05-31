@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "@/app/i18n/client";
 import { useAppSelector } from "@/lib/hooks";
 import {
@@ -68,7 +67,7 @@ type FormType = {
     file: string;
 };
 function FormSubmitCoin() {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     const {
         handleSubmit,

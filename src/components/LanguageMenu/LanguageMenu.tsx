@@ -1,11 +1,9 @@
 "use client";
-import { setCurrentLang } from "@/lib/features/lang/langSlice";
 import { useAppSelector } from "@/lib/hooks";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import { useDispatch } from "react-redux";
 type LangType = {
     label: string;
     code: string;
@@ -25,7 +23,7 @@ const langData: LangType[] = [
 ];
 
 function LanguageMenu() {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const router = useRouter();
     const path = usePathname();
 

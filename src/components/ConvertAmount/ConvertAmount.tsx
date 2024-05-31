@@ -1,11 +1,11 @@
 "use client";
 import useFetchAPI from "@/api/baseAPI";
-import { Box, NumberInput, NumberInputField, Select } from "@chakra-ui/react";
-import React, { SelectHTMLAttributes, useState } from "react";
-import { SpinnerLoading } from "../Loading";
-import debounce from "@/hooks/UseDebounce";
 import { formatCurrency } from "@/app/utils/formatCurrency";
+import debounce from "@/hooks/UseDebounce";
 import { useAppSelector } from "@/lib/hooks";
+import { Box, NumberInput, NumberInputField, Select } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { SpinnerLoading } from "../Loading";
 type ConvertType = {
     name: string;
     unit: string;
@@ -13,8 +13,7 @@ type ConvertType = {
     type: string;
 };
 function ConvertAmount() {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
-
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { data, isLoading } = useFetchAPI(`/api/exchange_rates`);
     const [from, setFrom] = useState<string>("btc");
     const [to, setTo] = useState<string>("usd");
@@ -99,9 +98,9 @@ function ConvertAmount() {
                 <p className="font-bold text-lg">
                     {result
                         ? formatCurrency(result, "USD", currentLanguage, {
-                            maximumFractionDigits: 2,
-                            minimumIntegerDigits: 4,
-                        })
+                              maximumFractionDigits: 2,
+                              minimumIntegerDigits: 4,
+                          })
                         : ""}
                 </p>
             </Box>

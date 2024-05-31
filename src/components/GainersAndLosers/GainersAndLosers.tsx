@@ -89,7 +89,7 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
     const nextPage = (href: string) => {
         router.push(`/currency/${href}`);
     };
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
