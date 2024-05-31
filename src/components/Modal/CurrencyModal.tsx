@@ -124,6 +124,7 @@ function CurrencyModal({ isOpen, onClose }: CurrencyModalProps) {
                                         )}
                                     </Button>
                                 ))}
+                            {keysCrypto?.length === 0 && <p className="text-typo-1 text-12 px-3">Items not found</p>}
                         </div>
                         {/* Fiat Currencies */}
                         <div className="grid grid-cols-2 col-span-1 gap-3">
@@ -161,6 +162,7 @@ function CurrencyModal({ isOpen, onClose }: CurrencyModalProps) {
                                         )}
                                     </Button>
                                 ))}
+                            {keysFiat?.length === 0 && <p className="text-typo-1 text-12 px-3">Items not found</p>}
                         </div>
                     </div>
                 </ModalBody>
