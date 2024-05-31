@@ -45,8 +45,8 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
             >
                 <span
                     className={clsx(
-                        "text-base max-lg:text-13 leading-[1.5] group font-normal  duration-300 opacity-80 hover:opacity-100",
-                        activePathCurrent ? "text-primary-1" : "text-white"
+                        "text-base max-lg:text-13 leading-[1.5] group font-normal duration-300 text-white hover:opacity-100",
+                        activePathCurrent ? "opacity-100" : "opacity-60"
                     )}
                 >
                     {t(`footer.${navItem.key}`)}
@@ -79,7 +79,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                 >
                     {navItem.children.map((item: NavItemType, index: number) => (
                         <Link href={item.href || "/"} key={item.label}>
-                            <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-normal text-white opacity-80 hover:opacity-100 duration-300">
+                            <span className="text-base max-lg:text-13 whitespace-nowrap leading-[1.5] font-normal text-white opacity-60 hover:opacity-100 duration-300">
                                 {t(`footer.${item.key}`)}
                             </span>
                         </Link>

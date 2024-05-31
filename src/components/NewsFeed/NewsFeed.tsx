@@ -28,7 +28,7 @@ function NewsFeedItem(props: FeedType) {
                     />
                     <div className="flex flex-col gap-3">
                         <div className="flex flex-col">
-                            <h3 className="text-lg font-semibold text-typo-4">{post_title}</h3>
+                            <h3 className="text-lg font-semibold text-typo-4 hover:text-primary-1">{post_title}</h3>
                             <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
                         </div>
                         <div className="flex items-center gap-4">

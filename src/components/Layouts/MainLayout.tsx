@@ -43,7 +43,7 @@ function MainLayout({ children, params: { lang } }: LayoutProps) {
     return (
         <Providers lang={lang}>
             {pathName !== `/${lang}/account` && <Header lang={lang} />}
-            <section className="flex w-full justify-center bg-secondary">
+            <section className={clsx("flex w-full justify-center bg-secondary", pathName === `/${lang}/news` && "w-main ml-auto mr-auto bg-transparent pl-12 pr-12")}>
                 {pathName !== `/${lang}/account` && <SideBar images={imagesLeft} />}
                 <div className={clsx("max-lg:w-full min-h-[1220px]", pathName === `/${lang}/account` ? "w-full" : "w-main")}>{children}</div>
                 {pathName !== `/${lang}/account` && <SideBar images={imagesRight} />}
