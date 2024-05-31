@@ -138,7 +138,7 @@ function NewCryptoTable({
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>

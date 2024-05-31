@@ -49,7 +49,7 @@ function NavItem({ navItem, onClose }: { navItem: NavItemType; onClose: () => vo
         });
         onClose();
     };
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     let activePathCurrent = false;
     if (navItem.children && navItem.children?.length > 0) {

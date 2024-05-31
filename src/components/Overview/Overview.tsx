@@ -55,7 +55,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
     const [readMore, setReadMore] = useState(false);
     const descHeight = useRef<any>();
 
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
 
     const { data, isLoading } = useFetchAPI(
         `/api/coins/market_chart/${overviewData.id}?vs_currency=usd&days=${datetime}`

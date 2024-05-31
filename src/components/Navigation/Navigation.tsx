@@ -11,7 +11,7 @@ import { usePathname } from "next/navigation";
 
 function NavItem({ navItem }: { navItem: NavItemType }) {
     const pathName = usePathname();
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
 
     let activePathCurrent = false;

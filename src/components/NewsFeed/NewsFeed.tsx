@@ -11,7 +11,7 @@ import { useState } from "react";
 
 function NewsFeedItem(props: FeedType) {
     const { id, post_title, post_thumbnail, post_excerpt, post_date, author, post_permalink } = props;
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const pathName = usePathname();
 
     return (
@@ -71,7 +71,7 @@ function NewsFeedItem(props: FeedType) {
     );
 }
 function NewsFeed() {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const [limit, setLimit] = useState(Number(process.env.NEXT_PUBLIC_NEWS_PER_PAGE));
     const { data, isLoading }: { data: FeedType[]; error: any; isLoading: boolean } = useNewsAPI(`?limit=${limit}`);
     const { t } = useTranslation(currentLanguage);

@@ -11,7 +11,7 @@ type FormType = {
     displayName: string;
 };
 function EditAccount() {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     const {
         handleSubmit,
