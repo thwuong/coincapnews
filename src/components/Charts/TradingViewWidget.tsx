@@ -4,7 +4,7 @@ import { memo, useEffect, useRef } from "react";
 
 function TradingViewWidget({ symbol }: { symbol: string }) {
     const container = useRef<any>();
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";

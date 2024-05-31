@@ -2,12 +2,11 @@
 import useFetchAPI from "@/api/baseAPI";
 import { useTranslation } from "@/app/i18n/client";
 import { formatCurrencyHasUnit, formatQuoteCurrency } from "@/app/utils/formatCurrency";
-import { currenciesData } from "@/fakedata/fakedata";
 import { useAppSelector } from "@/lib/hooks";
-import { Button, useDisclosure } from "@chakra-ui/react";
+import { Button, Spinner, useDisclosure } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LanguageMenu from "../LanguageMenu/LanguageMenu";
 import CurrencyModal from "../Modal/CurrencyModal";
 
@@ -27,12 +26,15 @@ type TopbarProps = {
     lang: string;
 };
 function Topbar({ lang }: TopbarProps) {
-    const [currentCurrency, setCurrentCurrency] = useState(currenciesData[0]);
+    const [currency, setCurrency] = useState<string>();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { data: dataGlobal, isLoading }: { data: MarketData; isLoading: boolean } =
         useFetchAPI(`/api/global?centralized=true`);
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
     const { t } = useTranslation(currentLanguage);
+    useEffect(() => {
+        setCurrency(currentCurrency);
+    }, [currentCurrency]);
     return (
         <section className="w-full flex items-center justify-between text-12 min-h-[48px] max-lg:overflow-x-auto">
             {!isLoading ? (
@@ -78,19 +80,23 @@ function Topbar({ lang }: TopbarProps) {
 
             <div className="flex items-center gap-2 max-lg:hidden">
                 <LanguageMenu />
-                <Button
-                    onClick={() => onOpen()}
-                    bg={"transparent"}
-                    _hover={{
-                        bg: "gray.100",
-                    }}
-                    borderRadius={6}
-                    height={7}
-                    alignItems={"center"}
-                    rightIcon={<Image src={"/assets/icons/dropdown.svg"} alt="dropdown" width={12} height={12} />}
-                >
-                    <span className="text-12 font-semibold">{currentCurrency.code}</span>
-                </Button>
+                {currency ? (
+                    <Button
+                        onClick={() => onOpen()}
+                        bg={"transparent"}
+                        _hover={{
+                            bg: "gray.100",
+                        }}
+                        borderRadius={6}
+                        height={7}
+                        alignItems={"center"}
+                        rightIcon={<Image src={"/assets/icons/dropdown.svg"} alt="dropdown" width={12} height={12} />}
+                    >
+                        <span className="text-12 font-semibold uppercase">{currency}</span>
+                    </Button>
+                ) : (
+                    <Spinner size={"sm"} />
+                )}
             </div>
             <CurrencyModal isOpen={isOpen} onClose={onClose} />
         </section>

@@ -82,7 +82,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             socket.close();
         };
     }, [data]);
-    const { currentLanguage } = useAppSelector((state) => state.langStore);
+    const { currentLanguage } = useAppSelector((state) => state.globalStore);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>

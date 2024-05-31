@@ -20,7 +20,7 @@ type NavItemType = {
 function NavItem({ navItem }: { navItem: NavItemType }) {
     const [showDropdown, setShowDropdown] = useState(false);
     const pathName = usePathname();
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const router = useRouter();
     const { t } = useTranslation(currentLanguage);
 

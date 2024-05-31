@@ -1,11 +1,11 @@
 "use client";
 
+import { setCurrentLang } from "@/lib/features/global/globalSlice";
 import { ChakraProvider } from "@chakra-ui/react";
-import AppTheme from "./theme";
-import { makeStore, AppStore } from "../lib/store";
-import { Provider } from "react-redux";
 import { useRef } from "react";
-import { setCurrentLang } from "@/lib/features/lang/langSlice";
+import { Provider } from "react-redux";
+import { AppStore, makeStore } from "../lib/store";
+import AppTheme from "./theme";
 export function Providers({ children, lang }: { children: React.ReactNode; lang: string }) {
     const storeRef = useRef<AppStore>();
     if (!storeRef.current) {

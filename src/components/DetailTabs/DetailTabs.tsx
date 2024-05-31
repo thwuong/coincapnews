@@ -17,7 +17,7 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <section className="py-10 flex flex-col gap-8 w-full">

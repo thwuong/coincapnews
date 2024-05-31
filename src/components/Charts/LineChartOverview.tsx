@@ -24,7 +24,7 @@ function formatNumberWithSuffix(number: string) {
     return formattedNumber + suffixes[exponent];
 }
 function LineChartOverview({ data, isUp = false }: LineChartOverviewProps) {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const options: ApexOptions = {
         chart: {
             toolbar: {

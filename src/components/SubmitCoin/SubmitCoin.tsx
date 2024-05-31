@@ -6,7 +6,7 @@ import { Heading } from "../Heading";
 import FormSubmitCoin from "./FormSubmitCoin";
 
 function SumbitCoin() {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
 
     return (

@@ -12,7 +12,7 @@ const getContent = async (url: string, currentLanguage: string) => {
 };
 
 function Markdown({ url }: MarkdownType) {
-    const currentLanguage = useAppSelector((state) => state.langStore.currentLanguage);
+    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { data } = useSWR(url, (url) => getContent(url, currentLanguage));
     if (!data) return "";
     return (
