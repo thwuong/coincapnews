@@ -60,7 +60,7 @@ function ConvertAmount() {
                             );
                         })}
                 </Select>
-                <NumberInput>
+                <NumberInput className="w-4/5">
                     <NumberInputField
                         px={"0px"}
                         _focusVisible={{
@@ -76,7 +76,7 @@ function ConvertAmount() {
                     />
                 </NumberInput>
             </Box>
-            <Box className="py-5 px-4 flex items-center justify-between gap-4">
+            <Box className="py-5 px-4 flex items-center justify-between gap-4 bg-[#f8fafd]">
                 <Select
                     className="font-semibold text-sm text-black uppercase"
                     border={"none"}
@@ -95,12 +95,12 @@ function ConvertAmount() {
                             );
                         })}
                 </Select>
-                <p className="font-bold text-lg">
+                <p className="font-bold text-sm">
                     {result
                         ? formatCurrency(result, "USD", currentLanguage, {
-                              maximumFractionDigits: 2,
-                              minimumIntegerDigits: 4,
-                          })
+                            maximumFractionDigits: 2,
+                            minimumIntegerDigits: 4,
+                        })
                         : ""}
                 </p>
             </Box>
