@@ -8,17 +8,27 @@ import TablePagination from "@/components/TablePagination/TablePagination";
 import { Input, Select } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 export default function ExchangesContent({ params }: { params: { id: string } }) {
     const [perPage, setPerPage] = useState(10);
+    const [keyword, setKeyword] = useState("");
+
     const [page, setPage] = useState(1);
     const { data: exchange, isLoading }: { data: DetailExchangeType; isLoading: boolean } = useFetchAPI(
         `/api/exchanges/details/${params.id}`
     );
-    if (isLoading) return <SpinnerLoading />;
+
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
+    const exchanges = useMemo(() => {
+        if (!exchange?.tickers) return null;
+        return exchange.tickers.filter((item) =>
+            item.coin_id.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
+        );
+    }, [exchange?.tickers, keyword]);
+    if (isLoading) return <SpinnerLoading />;
+
     return (
         <main className="pt-10 pb-20 w-full bg-secondary flex items-center justify-center">
             <Container className="px-12 flex-col gap-4">
@@ -80,6 +90,7 @@ export default function ExchangesContent({ params }: { params: { id: string } })
                                     borderRadius={"99px"}
                                     fontSize={"14px"}
                                     className="font-semibold text-typo-4"
+                                    onChange={(e) => setKeyword(e.target.value)}
                                 />
                                 <Select
                                     defaultValue={perPage}
@@ -100,18 +111,20 @@ export default function ExchangesContent({ params }: { params: { id: string } })
                                     <option value="100">100</option>
                                 </Select>
                             </div>
-                            <ExchangeTableDetail
-                                data={exchange.tickers.slice((page - 1) * perPage, perPage * page)}
-                                isLoading={isLoading}
-                                currentIndex={(page - 1) * perPage}
-                            />
+                            {exchanges && (
+                                <ExchangeTableDetail
+                                    data={exchanges.slice((page - 1) * perPage, perPage * page)}
+                                    isLoading={isLoading}
+                                    currentIndex={(page - 1) * perPage}
+                                />
+                            )}
 
-                            {exchange?.tickers?.length / perPage > 1 && (
+                            {exchanges && exchanges.length / perPage > 1 && (
                                 <div className="w-full py-4 flex justify-center">
                                     <TablePagination
                                         disbledPre
                                         disbledNext
-                                        pageCount={exchange.tickers.length / perPage}
+                                        pageCount={exchanges.length / perPage}
                                         handlePageClick={handlePageClick}
                                     />
                                 </div>

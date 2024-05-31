@@ -4,7 +4,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { Button, Input, Select, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ShareModal } from "../Modal";
 import { Overview } from "../Overview";
 import { TablePagination } from "../TablePagination";
@@ -13,12 +13,19 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
     const { isOpen, onClose, onOpen } = useDisclosure();
     const [selected, setSelected] = useState(10);
     const [page, setPage] = useState(1);
+    const [keyword, setKeyword] = useState("");
 
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
     const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
+    const exchanges = useMemo(() => {
+        if (!coinData.tickers) return null;
+        return coinData.tickers.filter((item) =>
+            item.market.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
+        );
+    }, [coinData.tickers, keyword]);
     return (
         <section className="py-10 flex flex-col gap-8 w-full">
             <Tabs variant="unstyled">
@@ -90,6 +97,9 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                                 borderRadius={"99px"}
                                 fontSize={"14px"}
                                 className="font-semibold text-typo-4"
+                                onChange={(e) => {
+                                    setKeyword(e.target.value);
+                                }}
                             />
                             <Select
                                 defaultValue={selected}
@@ -107,20 +117,20 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                                 <option value="100">100</option>
                             </Select>
                         </div>
-                        {coinData.tickers && (
+                        {exchanges && (
                             <ExchangeTable
-                                data={coinData.tickers?.slice((page - 1) * selected, selected * page)}
+                                data={exchanges?.slice((page - 1) * selected, selected * page)}
                                 isLoading={false}
                                 currentIndex={(page - 1) * selected}
                             />
                         )}
 
-                        {coinData.tickers?.length / selected > 1 && (
+                        {exchanges && exchanges?.length / selected > 1 && (
                             <div className="w-full py-4 flex justify-center">
                                 <TablePagination
                                     disbledPre
                                     disbledNext
-                                    pageCount={coinData.tickers?.length / selected}
+                                    pageCount={exchanges?.length / selected}
                                     handlePageClick={handlePageClick}
                                 />
                             </div>
