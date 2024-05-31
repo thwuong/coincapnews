@@ -238,12 +238,13 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 className="font-bold"
                                 fontSize={"18px"}
                                 onChange={(e) => setAmount(Number(e.target.value))}
+                                placeholder="0"
                             />
                         </NumberInput>
                     </Box>
                     <Box className="py-5 px-4 flex items-center justify-between gap-4" bg={"#F8FAFD"}>
                         <p className="font-semibold text-sm text-black uppercase">USD</p>
-                        <p className="font-bold text-lg">{result ? formatCurrency(result) : ""}</p>
+                        <p className="font-bold text-lg min-h-10">{result ? formatCurrency(result) : ""}</p>
                     </Box>
                 </div>
                 {/* Price Status */}
@@ -332,7 +333,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(
                                         overviewData.market_data.total_volume?.usd /
-                                            overviewData.market_data?.market_cap?.usd || 0
+                                        overviewData.market_data?.market_cap?.usd || 0
                                     )}
                                 </p>
                             </Box>
