@@ -163,11 +163,11 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                 const meta: any = header.column.columnDef.meta;
                                 return (
                                     <Th
-                                        className="bg-secondary"
+                                        className="bg-secondary cursor-pointer"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
                                         left={index === 1 ? 6 : 0}
-                                        px={0}
+                                        px={"4px"}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
                                         isNumeric={meta?.isNumeric}
@@ -175,7 +175,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                         <Box
                                             display={"flex"}
                                             alignItems={"center"}
-                                            justifyContent={meta?.isNumeric && "end"}
+                                            justifyContent={meta?.isNumeric && "center"}
                                             flexDirection={"row"}
                                         >
                                             <p
@@ -252,7 +252,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                           </Box>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                          <p className="capitalize text-sm leading-4 text-center font-semibold text-typo-1 font-inter">
                                               {formatCurrency(
                                                   getNewData(stream[convertId]?.price, row.original.current_price),
                                                   "USD",
@@ -266,7 +266,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
-                                                  "capitalize text-sm leading-4 font-semibold font-inter",
+                                                  "capitalize text-sm leading-4 font-semibold text-center font-inter",
                                                   getNewData(
                                                       stream[convertId]?.change24,
                                                       row.original.price_change_percentage_1h_in_currency
@@ -281,7 +281,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
-                                                  "capitalize text-sm leading-4 font-semibold font-inter",
+                                                  "capitalize text-sm leading-4 font-semibold text-center font-inter",
                                                   row.original.price_change_percentage_24h_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
@@ -293,7 +293,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       <Td isNumeric={true} px={"4px"}>
                                           <p
                                               className={clsx(
-                                                  "capitalize text-sm leading-4 font-semibold font-inter",
+                                                  "capitalize text-sm leading-4 font-semibold text-center font-inter",
                                                   row.original.price_change_percentage_7d_in_currency > 0
                                                       ? "text-up"
                                                       : "text-down"
@@ -303,17 +303,17 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                          <p className="capitalize text-sm leading-4 font-semibold text-center text-typo-1 font-inter">
                                               {formatQuoteCurrency(row.original.market_cap)}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                          <p className="capitalize text-sm leading-4 font-semibold text-center text-typo-1 font-inter">
                                               {formatQuoteCurrency(row.original.total_volume)}
                                           </p>
                                       </Td>
-                                      <Td isNumeric={true} px={"4px"} minW={"180px"}>
-                                          <Box display={"flex"} justifyContent={"end"}>
+                                      <Td isNumeric={true} px={"4px"} minW={"180px"} overflow={"hidden"}>
+                                          <Box display={"flex"} justifyContent={"center"}>
                                               <LineHighChart
                                                   isUp={row.original.price_change_percentage_7d_in_currency > 0}
                                                   data={row.original.sparkline_in_7d.price}
@@ -323,45 +323,48 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                   </Tr>
                               );
                           })
-                        : Array(8)
+                        : Array(10)
                               .fill(0)
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
                                           <Td isNumeric={true} px={"4px"}>
-                                              <Skeleton height="14px" w={"40px"} />
+                                              <Skeleton height="14px" w={"14px"} />
                                           </Td>
                                           <Td
                                               height={"100px"}
                                               p={"4px"}
-                                              minW={"104px"}
+                                              minW={"270px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
-                                                  <Skeleton height="14px" width={"50%"} />
+                                                  <Skeleton
+                                                      height="14px"
+                                                      width={`${Math.floor(Math.random() * 31) + 50}%`}
+                                                  />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"140px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"84px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"84px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"84px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"118px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"192px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"182px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"190px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"180px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"250px"}>
                                               <Skeleton height="14px" />
                                           </Td>
                                       </Tr>

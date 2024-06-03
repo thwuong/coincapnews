@@ -1,6 +1,8 @@
 "use client";
 import useFetchAPI from "@/api/baseAPI";
+import { COIN_PER_PAGE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
+import { checkFormatImage } from "@/app/utils/checkFormatImage";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
@@ -138,7 +140,7 @@ function NewCryptoTable({
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
+    const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -157,7 +159,7 @@ function NewCryptoTable({
                                         className="bg-secondary cursor-pointer"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
-                                        left={index === 1 ? 6 : 0}
+                                        left={index === 1 ? 8 : 0}
                                         px={"8px"}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
@@ -221,19 +223,22 @@ function NewCryptoTable({
                                           px={"4px"}
                                           minW={"104px"}
                                           position={width <= 768 ? "sticky" : undefined}
-                                          left={6}
+                                          left={8}
                                           className="bg-secondary"
                                       >
                                           <Link
                                               href={`/currency/${row.original.id}`}
                                               className="flex items-center gap-3"
                                           >
-                                              <Image
-                                                  src={row.original.image}
-                                                  alt={row.original.name}
-                                                  width={24}
-                                                  height={24}
-                                              />
+                                              {checkFormatImage(row.original.image) && (
+                                                  <Image
+                                                      src={row.original.image}
+                                                      alt={row.original.name}
+                                                      width={24}
+                                                      height={24}
+                                                  />
+                                              )}
+
                                               <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
                                                   {row.original.name}
                                               </p>
@@ -294,46 +299,48 @@ function NewCryptoTable({
                                   </Tr>
                               );
                           })
-                        : Array(8)
+                        : Array(10)
                               .fill(0)
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
-                                          <Td isNumeric={true} px={"8px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                          <Td isNumeric={true} px={"8px"} py={"16px"} minW={"48px"}>
+                                              <SkeletonText noOfLines={1} spacing="4" skeletonHeight="2" />
                                           </Td>
                                           <Td
                                               p={"4px"}
-                                              height={"50px"}
-                                              minW={"104px"}
+                                              height={"57px"}
+                                              minW={"350px"}
                                               position={width <= 768 ? "sticky" : undefined}
-                                              left={0}
                                               className="bg-secondary"
                                           >
-                                              <div className="flex items-center gap-4 w-72">
+                                              <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
-                                                  <Skeleton height={"8px"} w={`${Math.floor(Math.random() + 60)}%`} />
+                                                  <Skeleton
+                                                      height={"8px"}
+                                                      width={`${Math.floor(Math.random() * 31) + 50}%`}
+                                                  />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"166px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"75px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"182px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"88px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"180px"}>
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                          </Td>
+                                          <Td isNumeric={true} px={"4px"} minW={"180px"}>
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                          </Td>
+                                          <Td isNumeric={true} px={"4px"} minW={"117px"}>
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                          </Td>
+                                          <Td isNumeric={true} px={"4px"} minW={"133px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                       </Tr>
@@ -344,20 +351,20 @@ function NewCryptoTable({
         </TableContainer>
     );
 }
-type NewCryptoProps = {
-    perPage?: number;
-};
-function NewCrypto({ perPage = 10 }: NewCryptoProps) {
+
+function NewCrypto() {
     const [page, setPage] = useState(1);
 
-    const { data, isLoading } = useFetchAPI(`/api/coins/list/new?page=${page}&per_page=${perPage}&centralized=true`);
+    const { data, isLoading } = useFetchAPI(
+        `/api/coins/list/new?page=${page}&per_page=${COIN_PER_PAGE}&centralized=true`
+    );
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
     return (
         <section className="flex flex-col items-center justify-center gap-6 w-full">
             {/* Table */}
-            <NewCryptoTable data={data} isLoading={isLoading} currentIndex={(page - 1) * perPage} />
+            <NewCryptoTable data={data} isLoading={isLoading} currentIndex={(page - 1) * Number(COIN_PER_PAGE)} />
             <div className="w-full py-4 flex justify-center">
                 <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
             </div>

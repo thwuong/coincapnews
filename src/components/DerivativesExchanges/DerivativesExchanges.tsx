@@ -1,5 +1,6 @@
 "use client";
 import useFetchAPI from "@/api/baseAPI";
+import { COIN_PER_PAGE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
@@ -189,7 +190,7 @@ function DerivativesExchangesTable({
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary"
+                                          className="bg-secondary text-sm"
                                       >
                                           {row.index + 1 + currentIndex}
                                       </Td>
@@ -238,7 +239,13 @@ function DerivativesExchangesTable({
                                               {row.original.number_of_futures_pairs}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"} height={"80px"} display={"flex"} justifyContent={"center"}>
+                                      <Td
+                                          px={"4px"}
+                                          height={"80px"}
+                                          display={"flex"}
+                                          justifyContent={"center"}
+                                          overflow={"hidden"}
+                                      >
                                           {row.original.chart && (
                                               <LineHighChart
                                                   data={row.original.chart.data.map((item) => Number(item))}
@@ -249,43 +256,48 @@ function DerivativesExchangesTable({
                                   </Tr>
                               );
                           })
-                        : Array(8)
+                        : Array(13)
                               .fill(0)
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
+                                          <Td isNumeric={true} px={"4px"} w={"37px"}>
+                                              <Skeleton height="15px" />
+                                          </Td>
                                           <Td
                                               p={"4px"}
                                               height={"80px"}
-                                              minW={"104px"}
+                                              minW={"390px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                               className="bg-secondary"
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />
-                                                  <Skeleton height="10px" width={"50%"} />
+                                                  <Skeleton
+                                                      height="10px"
+                                                      width={`${Math.floor(Math.random() * 31) + 50}%`}
+                                                  />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+
+                                          <Td isNumeric={true} px={"4px"} minW={"94px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+
+                                          <Td isNumeric={true} px={"4px"} minW={"204px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"262px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"82px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"118px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"88px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                              <Skeleton height="15px" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"180px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"187px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                       </Tr>
@@ -296,23 +308,24 @@ function DerivativesExchangesTable({
         </TableContainer>
     );
 }
-type DerivativesExchangesProps = {
-    perPage?: number;
-};
-function DerivativesExchanges({ perPage = 10 }: DerivativesExchangesProps) {
+
+function DerivativesExchanges() {
     const [page, setPage] = useState(1);
 
-    const { data, isLoading } = useFetchAPI(`/api/derivatives?per_page=${perPage}&centralized=true&exclude=tickers`);
+    const { data, isLoading } = useFetchAPI(
+        `/api/derivatives?per_page=${COIN_PER_PAGE}&centralized=true&exclude=tickers`
+    );
     const handlePageClick = ({ selected }: { selected: number }) => {
         setPage(selected + 1);
     };
     return (
         <div className="flex flex-col items-center justify-center gap-6 w-full">
-            <h1 className="text-[28px] leading-9 text-center py-8 max-lg:py-6 font-bold text-typo-4/80">
-                Derivatives Exchanges
-            </h1>
             {/* Table */}
-            <DerivativesExchangesTable data={data} isLoading={isLoading} currentIndex={(page - 1) * perPage} />
+            <DerivativesExchangesTable
+                data={data}
+                isLoading={isLoading}
+                currentIndex={(page - 1) * Number(COIN_PER_PAGE)}
+            />
             <div className="w-full py-4 flex justify-center">
                 <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
             </div>
