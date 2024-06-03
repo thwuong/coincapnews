@@ -163,7 +163,8 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"104px"}
+                                          minW={"120px"}
+                                          maxW={"160px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
                                           className="bg-secondary"
@@ -173,21 +174,21 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
-                                          <p className="uppercase text-center text-sm leading-4 font-semibold text-typo-4">
-                                              {row.original.base}/{row.original.target}
+                                          <p className="uppercase max-w-[600px] whitespace-normal text-center text-sm leading-4 font-semibold text-typo-4">
+                                              {row.original.base} / {row.original.target}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"89px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               {formatCurrency(row.original.converted_last["usd"])}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"145px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               {formatCurrency(row.original.converted_volume["usd"])}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"115px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               {Number(row.original.bid_ask_spread_percentage).toFixed(2)}%
                                           </p>
@@ -195,7 +196,7 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                   </Tr>
                               );
                           })
-                        : Array(8)
+                        : Array(10)
                               .fill(0)
                               .map((_, index) => {
                                   return (

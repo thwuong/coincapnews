@@ -6,7 +6,6 @@ import { ExchangeTableDetail } from "@/components/ExchangeTableDetail";
 import SpinnerLoading from "@/components/Loading/SpinnerLoading";
 import TablePagination from "@/components/TablePagination/TablePagination";
 import { Input, Select } from "@chakra-ui/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 export default function ExchangesContent({ params }: { params: { id: string } }) {
@@ -19,7 +18,8 @@ export default function ExchangesContent({ params }: { params: { id: string } })
     );
 
     const handlePageClick = ({ selected }: { selected: number }) => {
-        setPage(selected + 1);
+        // setPage(selected + 1);
+        setPage(page + 1);
     };
     const exchanges = useMemo(() => {
         if (!exchange?.tickers) return null;
@@ -34,14 +34,19 @@ export default function ExchangesContent({ params }: { params: { id: string } })
             <Container className="px-12 flex-col gap-4">
                 <div className="flex flex-col w-full gap-4">
                     <div className="flex items-center gap-4">
-                        <Image src={exchange.image} alt="bitcoin" width={50} height={50} />
+                        <img loading="lazy" src={exchange.image} alt="bitcoin" width={50} height={50} />
                         <h2 className="text-[28px] leading-9 font-bold text-typo-4/80">{exchange.name}</h2>
                     </div>
                     <ul className="flex flex-col gap-1">
                         <li className="text-base leading-[26px] text-[rgb(119,119,119)]">
                             <p>
                                 Website:{" "}
-                                <Link href={exchange.url} target="_blank" className="hover:text-primary-1 duration-300">
+                                <Link
+                                    href={exchange.url}
+                                    rel="nofollow"
+                                    target="_blank"
+                                    className="hover:text-primary-1 duration-300"
+                                >
                                     {exchange.url}
                                 </Link>
                             </p>
@@ -52,6 +57,7 @@ export default function ExchangesContent({ params }: { params: { id: string } })
                                 {exchange?.facebook_url && (
                                     <Link
                                         href={exchange.facebook_url}
+                                        rel="nofollow"
                                         target="_blank"
                                         className="hover:text-primary-1 duration-300"
                                     >
@@ -65,6 +71,7 @@ export default function ExchangesContent({ params }: { params: { id: string } })
                                 Twitter:{" "}
                                 <Link
                                     href={`https://twitter.com/`}
+                                    rel="nofollow"
                                     target="_blank"
                                     className="hover:text-primary-1 duration-300"
                                 >

@@ -31,7 +31,7 @@ function CurrencyModal({ isOpen, onClose }: CurrencyModalProps) {
         setKeyword(e.target.value);
     };
     const selectCurrency = (currency: string) => {
-        dispatch(setcurrentCurrency(currency));
+        dispatch(setcurrentCurrency("usd"));
         onClose();
     };
     const { data } = useFetchAPI(`/api/exchange_rates`);

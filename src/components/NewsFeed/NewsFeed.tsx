@@ -4,7 +4,6 @@ import { useTranslation } from "@/app/i18n/client";
 import { FeedType } from "@/app/types";
 import { useAppSelector } from "@/lib/hooks";
 import { Avatar, Button } from "@chakra-ui/react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -18,7 +17,7 @@ function NewsFeedItem(props: FeedType) {
         <li className="pb-8 border-b ">
             {pathName !== `/${currentLanguage}/news` ? (
                 <Link href={`${post_permalink}`} className="flex gap-8 max-md:flex-col" target="_blank">
-                    <Image
+                    <img
                         src={post_thumbnail}
                         alt="feed"
                         width={327}
@@ -57,7 +56,7 @@ function NewsFeedItem(props: FeedType) {
                             <p className="line-clamp-3 text-sm text-typo-1 leading-8 ">{post_excerpt}</p>
                         </div>
                     </div>
-                    <Image
+                    <img
                         src={post_thumbnail}
                         alt="feed"
                         width={327}

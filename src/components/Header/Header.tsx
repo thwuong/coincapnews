@@ -133,7 +133,8 @@ function Header({ lang }: HeaderProps) {
                                                             >
                                                                 <div className="flex items-center gap-1">
                                                                     {checkFormatImage(coin.thumb) && (
-                                                                        <Image
+                                                                        <img
+                                                                            loading="lazy"
                                                                             height={24}
                                                                             width={24}
                                                                             src={coin.thumb}
@@ -175,7 +176,8 @@ function Header({ lang }: HeaderProps) {
                                                             >
                                                                 <div className="flex items-center gap-1">
                                                                     {checkFormatImage(exchange.thumb) && (
-                                                                        <Image
+                                                                        <img
+                                                                            loading="lazy"
                                                                             height={24}
                                                                             width={24}
                                                                             src={exchange.thumb}

@@ -9,7 +9,8 @@ function CommonSection({ totalPage = 100, category }: { totalPage?: number; cate
     const [page, setPage] = React.useState<number>(1);
 
     const handlePageClick = (selectedItem: any) => {
-        setPage(selectedItem.selected + 1);
+        // setPage(selectedItem.selected + 1);
+        setPage(page + 1);
     };
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/details?categories=${category}&page=${page}&per_page=${COIN_PER_PAGE}`

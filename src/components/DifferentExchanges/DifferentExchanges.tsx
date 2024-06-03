@@ -112,7 +112,7 @@ function DifferentExchangesTable({
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
+    const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -131,7 +131,7 @@ function DifferentExchangesTable({
                                         className="bg-secondary cursor-pointer"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
-                                        left={index === 1 ? 6 : 0}
+                                        left={index === 1 ? 8 : 0}
                                         px={"4px"}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
@@ -186,45 +186,49 @@ function DifferentExchangesTable({
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
                                           textAlign={"center"}
+                                          zIndex={2}
                                           className="bg-secondary text-[13px] font-medium "
                                       >
                                           {row.index + 1 + currentIndex}
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"104px"}
+                                          minW={"120px"}
+                                          maxW={"150px"}
                                           height={"80px"}
                                           position={width <= 768 ? "sticky" : undefined}
-                                          left={6}
+                                          left={8}
+                                          zIndex={2}
                                           className="bg-secondary"
                                       >
                                           <Link
                                               href={`/exchanges/${row.original.id}`}
                                               className="flex items-center gap-3"
                                           >
-                                              <Image
+                                              <img
+                                                  loading="lazy"
                                                   src={row.original.image}
                                                   alt={row.original.name}
                                                   width={24}
                                                   height={24}
                                               />
-                                              <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
+                                              <p className="capitalize whitespace-normal text-sm leading-4 font-semibold text-typo-4 ">
                                                   {row.original.name}
                                               </p>
                                           </Link>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"97px"}>
                                           <p className="uppercase text-center text-sm leading-4 font-medium ">
                                               {row.original.trust_score}/10
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"263px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               {formatQuoteCurrency(row.original.trade_volume_24h_btc_normalized)}
                                               <span className="uppercase"> BTC</span>
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"233px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               {formatQuoteCurrency(row.original.trade_volume_24h_btc)}
                                               <span className="uppercase"> BTC</span>
@@ -236,6 +240,7 @@ function DifferentExchangesTable({
                                           height={"80px"}
                                           justifyContent={"center"}
                                           overflow={"hidden"}
+                                          minW={"259px"}
                                       >
                                           {row.original.chart && (
                                               <LineHighChart
@@ -252,13 +257,13 @@ function DifferentExchangesTable({
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
-                                          <Td isNumeric={true} px={"8px"}>
+                                          <Td isNumeric={true} px={"8px"} minW={"43px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                           <Td
                                               height={"80px"}
                                               p={"4px"}
-                                              minW={"104px"}
+                                              minW={"194px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
@@ -267,17 +272,17 @@ function DifferentExchangesTable({
                                                   <Skeleton height="10px" width={"50%"} />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"125px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"341px"}>
                                               <Skeleton height="15px" />
                                           </Td>
 
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"302px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"336px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                       </Tr>
@@ -299,7 +304,8 @@ function DifferentExchanges({ url, centralized = true }: DifferentExchangesProps
     );
     if (error) return `Error ${error}`;
     const handlePageClick = ({ selected }: { selected: number }) => {
-        setPage(selected + 1);
+        // setPage(selected + 1);
+        setPage(page + 1);
     };
     return (
         <div className="flex flex-col items-center justify-center gap-8 w-full">

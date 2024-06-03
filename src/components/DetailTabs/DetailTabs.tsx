@@ -16,7 +16,8 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
     const [keyword, setKeyword] = useState("");
 
     const handlePageClick = ({ selected }: { selected: number }) => {
-        setPage(selected + 1);
+        // setPage(selected + 1);
+        setPage(page + 1);
     };
     const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
@@ -139,7 +140,7 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                 </TabPanels>
             </Tabs>
             <ShareModal
-                image={coinData.image?.small}
+                image={coinData.image?.large}
                 newData={newData}
                 oldData={coinData?.market_data.current_price["usd"]}
                 symbol={coinData.symbol}

@@ -86,7 +86,7 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
+    const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -105,7 +105,7 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                         className="bg-secondary cursor-pointer"
                                         position={index <= 1 && width <= 768 ? "sticky" : "unset"}
                                         zIndex={index <= 1 && width <= 768 ? 2 : 0}
-                                        left={index === 1 ? 6 : 0}
+                                        left={index === 1 ? 8 : 0}
                                         px={"8px"}
                                         key={header.id}
                                         onClick={header.column.getToggleSortingHandler()}
@@ -165,9 +165,10 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"104px"}
+                                          minW={"120px"}
+                                          maxW={"150px"}
                                           position={width <= 768 ? "sticky" : undefined}
-                                          left={6}
+                                          left={8}
                                           className="bg-secondary"
                                       >
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
@@ -175,11 +176,11 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
-                                          <p className="uppercase text-center text-sm leading-4 font-medium text-primary-1 ">
-                                              {row.original.base}/{row.original.target}
+                                          <p className="uppercase whitespace-normal text-center text-sm leading-4 font-medium text-primary-1 ">
+                                              {row.original.base} / {row.original.target}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"120px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               {formatCurrency(
                                                   row.original.converted_last["usd"],
@@ -191,12 +192,12 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                               )}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"145px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               {formatCurrency(row.original.converted_volume["usd"])}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"132px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                                               Recently
                                           </p>
