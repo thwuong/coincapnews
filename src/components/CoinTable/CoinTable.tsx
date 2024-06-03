@@ -50,9 +50,9 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
         if (!data) return;
         const url = data.map((i) => `${i.symbol}usdt@ticker/`).join("");
         const socket = connectSocket(url);
-        function onConnect(this: WebSocket) {}
+        function onConnect(this: WebSocket) { }
 
-        function onDisconnect() {}
+        function onDisconnect() { }
         function getMessage(this: WebSocket, ev: MessageEvent<any>) {
             const streamData = JSON.parse(ev.data);
             const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
@@ -148,168 +148,168 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                 <Tbody ref={ref}>
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
-                              let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
+                            let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
 
-                              return (
-                                  <Tr key={row.index} data-symbol={convertId}>
-                                      <Td
-                                          p={"4px"}
-                                          minW={"104px"}
-                                          height={"100px"}
-                                          position={width <= 768 ? "sticky" : undefined}
-                                          left={0}
-                                          className="bg-secondary"
-                                      >
-                                          <Box display={"flex"} alignItems={"center"} gap={"8px"}>
-                                              <Image
-                                                  className="cursor-pointer"
-                                                  src={"/assets/icons/start.svg"}
-                                                  alt="sort-down"
-                                                  width={14}
-                                                  height={14}
-                                              />
+                            return (
+                                <Tr key={row.index} data-symbol={convertId}>
+                                    <Td
+                                        p={"4px"}
+                                        minW={"104px"}
+                                        height={"100px"}
+                                        position={width <= 768 ? "sticky" : undefined}
+                                        left={0}
+                                        className="bg-secondary"
+                                    >
+                                        <Box display={"flex"} alignItems={"center"} gap={"8px"}>
+                                            <Image
+                                                className="cursor-pointer"
+                                                src={"/assets/icons/start.svg"}
+                                                alt="sort-down"
+                                                width={14}
+                                                height={14}
+                                            />
 
-                                              <Link
-                                                  className="flex items-center gap-2 cursor-pointer"
-                                                  href={`/currency/${row.original.id}`}
-                                              >
-                                                  {checkFormatImage(row.original.image) && (
-                                                      <Image
-                                                          className="cursor-pointer"
-                                                          src={row.original.image}
-                                                          alt={row.original.name}
-                                                          width={24}
-                                                          height={24}
-                                                      />
-                                                  )}
+                                            <Link
+                                                className="flex items-center gap-2 cursor-pointer"
+                                                href={`/currency/${row.original.id}`}
+                                            >
+                                                {checkFormatImage(row.original.image) && (
+                                                    <Image
+                                                        className="cursor-pointer"
+                                                        src={row.original.image}
+                                                        alt={row.original.name}
+                                                        width={24}
+                                                        height={24}
+                                                    />
+                                                )}
 
-                                                  <Box flexDirection={"column"}>
-                                                      <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
-                                                          {row.original.name}
-                                                      </p>
-                                                      <Box display={"flex"} alignItems={"center"} gap={"4px"}>
-                                                          {row.original.market_cap_rank && (
-                                                              <Badge
-                                                                  p={"4px"}
-                                                                  className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
-                                                              >
-                                                                  {row.original.market_cap_rank}
-                                                              </Badge>
-                                                          )}
+                                                <Box flexDirection={"column"}>
+                                                    <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter hover:text-primary-1">
+                                                        {row.original.name}
+                                                    </p>
+                                                    <Box display={"flex"} alignItems={"center"} gap={"4px"}>
+                                                        {row.original.market_cap_rank && (
+                                                            <Badge
+                                                                p={"4px"}
+                                                                className="uppercase leading-[14px] text-12 text-typo-1 font-inter"
+                                                            >
+                                                                {row.original.market_cap_rank}
+                                                            </Badge>
+                                                        )}
 
-                                                          <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
-                                                              {row.original.symbol}
-                                                          </span>
-                                                      </Box>
-                                                  </Box>
-                                              </Link>
-                                          </Box>
-                                      </Td>
-                                      <Td isNumeric={true} px={"4px"}>
-                                          <p className="capitalize price text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original.current_price, "USD", currentLanguage, {
-                                                  maximumFractionDigits: 8,
-                                              })}
-                                          </p>
-                                      </Td>
-                                      <Td isNumeric={true} px={"4px"}>
-                                          <p
-                                              className={clsx(
-                                                  "capitalize text-sm leading-4 change24 font-semibold font-inter",
-                                                  row.original.price_change_percentage_24h_in_currency > 0
-                                                      ? "text-up"
-                                                      : "text-down"
-                                              )}
-                                          >
-                                              {row.original.price_change_percentage_24h_in_currency?.toFixed(2) || 0}%
-                                          </p>
-                                      </Td>
-                                      <Td isNumeric={true} px={"4px"}>
-                                          <p
-                                              className={clsx(
-                                                  "capitalize text-sm leading-4 font-semibold font-inter",
-                                                  row.original.price_change_percentage_7d_in_currency > 0
-                                                      ? "text-up"
-                                                      : "text-down"
-                                              )}
-                                          >
-                                              {row.original.price_change_percentage_7d_in_currency?.toFixed(2) || 0}%
-                                          </p>
-                                      </Td>
-                                      <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original.market_cap)}
-                                          </p>
-                                      </Td>
-                                      <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                          <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original.total_volume)}
-                                          </p>
-                                      </Td>
-                                      <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                          <div className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter flex gap-1 justify-end">
-                                              <p>{formatQuoteCurrency(row.original.total_supply)}</p>
-                                              <p className="uppercase">{row.original.symbol}</p>
-                                          </div>
-                                      </Td>
-                                      <Td isNumeric={true} px={"4px"} minW={"180px"}>
-                                          <Box display={"flex"} justifyContent={"end"}>
-                                              {/* <LineChartLastDays
+                                                        <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
+                                                            {row.original.symbol}
+                                                        </span>
+                                                    </Box>
+                                                </Box>
+                                            </Link>
+                                        </Box>
+                                    </Td>
+                                    <Td isNumeric={true} px={"4px"}>
+                                        <p className="capitalize price text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                            {formatCurrency(row.original.current_price, "USD", currentLanguage, {
+                                                maximumFractionDigits: 8,
+                                            })}
+                                        </p>
+                                    </Td>
+                                    <Td isNumeric={true} px={"4px"}>
+                                        <p
+                                            className={clsx(
+                                                "capitalize text-sm leading-4 change24 font-semibold font-inter",
+                                                row.original.price_change_percentage_24h_in_currency > 0
+                                                    ? "text-up"
+                                                    : "text-down"
+                                            )}
+                                        >
+                                            {row.original.price_change_percentage_24h_in_currency?.toFixed(2) || 0}%
+                                        </p>
+                                    </Td>
+                                    <Td isNumeric={true} px={"4px"}>
+                                        <p
+                                            className={clsx(
+                                                "capitalize text-sm leading-4 font-semibold font-inter",
+                                                row.original.price_change_percentage_7d_in_currency > 0
+                                                    ? "text-up"
+                                                    : "text-down"
+                                            )}
+                                        >
+                                            {row.original.price_change_percentage_7d_in_currency?.toFixed(2) || 0}%
+                                        </p>
+                                    </Td>
+                                    <Td isNumeric={true} px={"4px"} minW={"138px"}>
+                                        <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                            {formatQuoteCurrency(row.original.market_cap)}
+                                        </p>
+                                    </Td>
+                                    <Td isNumeric={true} px={"4px"} minW={"118px"}>
+                                        <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
+                                            {formatQuoteCurrency(row.original.total_volume)}
+                                        </p>
+                                    </Td>
+                                    <Td isNumeric={true} px={"4px"} minW={"182px"}>
+                                        <div className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter flex gap-1 justify-end">
+                                            <p>{formatQuoteCurrency(row.original.total_supply)}</p>
+                                            <p className="uppercase">{row.original.symbol}</p>
+                                        </div>
+                                    </Td>
+                                    <Td isNumeric={true} px={"4px"} minW={"180px"}>
+                                        <Box display={"flex"} justifyContent={"end"}>
+                                            {/* <LineChartLastDays
                                                   isUp={row.original.price_change_percentage_7d_in_currency > 0}
                                                   data={row.original.sparkline_in_7d.price}
                                               /> */}
-                                              <LineHighChart
-                                                  isUp={row.original.price_change_percentage_7d_in_currency > 0}
-                                                  data={row.original.sparkline_in_7d.price}
-                                              />
-                                          </Box>
-                                      </Td>
-                                  </Tr>
-                              );
-                          })
+                                            <LineHighChart
+                                                isUp={row.original.price_change_percentage_7d_in_currency > 0}
+                                                data={row.original.sparkline_in_7d.price}
+                                            />
+                                        </Box>
+                                    </Td>
+                                </Tr>
+                            );
+                        })
                         : Array(8)
-                              .fill(0)
-                              .map((_, index) => {
-                                  return (
-                                      <Tr key={index}>
-                                          <Td
-                                              height={"120px"}
-                                              p={"4px"}
-                                              minW={"200px"}
-                                              position={width <= 768 ? "sticky" : undefined}
-                                              left={0}
-                                          >
-                                              <div className="flex items-center gap-4">
-                                                  <SkeletonCircle size="5" />
-                                                  <div className="flex flex-col w-1/3">
-                                                      <SkeletonText noOfLines={2} spacing="2" skeletonHeight="2" />
-                                                  </div>
-                                              </div>
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"118px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"182px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"128px"}>
-                                              <Skeleton height={"30px"} />
-                                          </Td>
-                                      </Tr>
-                                  );
-                              })}
+                            .fill(0)
+                            .map((_, index) => {
+                                return (
+                                    <Tr key={index}>
+                                        <Td
+                                            height={"120px"}
+                                            p={"4px"}
+                                            minW={"200px"}
+                                            position={width <= 768 ? "sticky" : undefined}
+                                            left={0}
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <SkeletonCircle size="5" />
+                                                <div className="flex flex-col w-1/3">
+                                                    <SkeletonText noOfLines={2} spacing="2" skeletonHeight="2" />
+                                                </div>
+                                            </div>
+                                        </Td>
+                                        <Td isNumeric={true} px={"4px"}>
+                                            <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                        </Td>
+                                        <Td isNumeric={true} px={"4px"}>
+                                            <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                        </Td>
+                                        <Td isNumeric={true} px={"4px"}>
+                                            <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                        </Td>
+                                        <Td isNumeric={true} px={"4px"} minW={"138px"}>
+                                            <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                        </Td>
+                                        <Td isNumeric={true} px={"4px"} minW={"118px"}>
+                                            <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                        </Td>
+                                        <Td isNumeric={true} px={"4px"} minW={"182px"}>
+                                            <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                        </Td>
+                                        <Td isNumeric={true} px={"4px"} minW={"128px"}>
+                                            <Skeleton height={"30px"} />
+                                        </Td>
+                                    </Tr>
+                                );
+                            })}
                 </Tbody>
             </Table>
         </TableContainer>
