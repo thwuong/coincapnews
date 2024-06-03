@@ -213,7 +213,7 @@ function NewCryptoTable({
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary"
+                                          className="bg-secondary text-sm"
                                           textAlign={"center"}
                                           fontWeight={"500"}
                                       >

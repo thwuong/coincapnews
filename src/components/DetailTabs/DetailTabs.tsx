@@ -38,7 +38,7 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                 >
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
-                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
+                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit hover:bg-[#0000000a]"
                         py={"4px"}
                     >
                         <span className="text-13 ">{t("overview")}</span>
@@ -46,28 +46,28 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
                         py={"4px"}
-                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
+                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit hover:bg-[#0000000a]"
                     >
                         <span className="text-13 ">Market</span>
                     </Tab>
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
                         py={"4px"}
-                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
+                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit hover:bg-[#0000000a]"
                     >
                         <span className="text-13 ">{t("socials")}</span>
                     </Tab>
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
                         py={"4px"}
-                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
+                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit hover:bg-[#0000000a]"
                     >
                         <span className="text-13 ">{t("ratings")}</span>
                     </Tab>
                     <Tab
                         _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
                         py={"4px"}
-                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit"
+                        className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit hover:bg-[#0000000a]"
                     >
                         <span className="text-13 ">{t("analysis")}</span>
                     </Tab>

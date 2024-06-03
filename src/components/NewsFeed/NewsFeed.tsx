@@ -35,7 +35,7 @@ function NewsFeedItem(props: FeedType) {
                             <div className="flex items-center gap-1">
                                 <h6 className="text-base leading-[26px] font-semibold text-typo-4">{author.name}</h6>
                                 <span>&#183;</span>
-                                <span className="text-13 leading-[17px] text-typo-2 font-medium">{post_date}</span>
+                                <span className="text-13 leading-[26px] text-typo-2 font-medium">{post_date}</span>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@ function NewsFeedItem(props: FeedType) {
                         <div className="flex items-center gap-1">
                             <h6 className="text-base leading-[26px] font-semibold text-typo-4">{author.name}</h6>
                             <span>&#183;</span>
-                            <span className="text-13 leading-[17px] text-typo-2 font-medium">{post_date}</span>
+                            <span className="text-13 leading-[26px] text-typo-2 font-medium">{post_date}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
