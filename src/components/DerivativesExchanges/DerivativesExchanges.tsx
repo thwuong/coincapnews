@@ -117,7 +117,7 @@ function DerivativesExchangesTable({
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
+    const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -205,7 +205,8 @@ function DerivativesExchangesTable({
                                               href={`/exchanges/${row.original.id}`}
                                               className="flex items-center gap-3"
                                           >
-                                              <Image
+                                              <img
+                                                  loading="lazy"
                                                   src={row.original.image}
                                                   alt={row.original.name}
                                                   width={24}
@@ -316,7 +317,8 @@ function DerivativesExchanges() {
         `/api/derivatives?per_page=${COIN_PER_PAGE}&centralized=true&exclude=tickers`
     );
     const handlePageClick = ({ selected }: { selected: number }) => {
-        setPage(selected + 1);
+        // setPage(selected + 1);
+        setPage(page + 1);
     };
     return (
         <div className="flex flex-col items-center justify-center gap-6 w-full">

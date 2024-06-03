@@ -218,34 +218,41 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
 
                               return (
                                   <Tr key={row.original.name}>
-                                      <Td px={"4px"}>
+                                      <Td
+                                          px={"4px"}
+                                          position={width <= 768 ? "sticky" : undefined}
+                                          left={0}
+                                          className="bg-secondary"
+                                      >
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
                                               {row.index + 1 + currentIndex}
                                           </p>
                                       </Td>
                                       <Td
                                           p={"4px"}
-                                          minW={"104px"}
+                                          minW={"120px"}
+                                          maxW={"150px"}
                                           height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
-                                          left={0}
+                                          left={6}
                                           className="bg-secondary"
                                       >
                                           <Box display={"flex"} alignItems={"center"} gap={"8px"}>
                                               <div
-                                                  className="flex items-center gap-2 cursor-pointer"
+                                                  className="flex items-center gap-2 cursor-pointer "
                                                   onClick={() => {
                                                       nextPage(row.original.id);
                                                   }}
                                               >
-                                                  <Image
+                                                  <img
+                                                      loading="lazy"
                                                       className="cursor-pointer"
                                                       src={row.original.image}
                                                       alt={row.original.name}
                                                       width={24}
                                                       height={24}
                                                   />
-                                                  <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
+                                                  <p className="capitalize  whitespace-normal text-sm leading-4 font-semibold text-typo-4 font-inter">
                                                       {row.original.name}
                                                   </p>
                                               </div>
@@ -328,15 +335,15 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"34px"}>
                                               <Skeleton height="14px" w={"14px"} />
                                           </Td>
                                           <Td
                                               height={"100px"}
                                               p={"4px"}
-                                              minW={"270px"}
+                                              minW={"220px"}
                                               position={width <= 768 ? "sticky" : undefined}
-                                              left={0}
+                                              left={6}
                                           >
                                               <div className="flex items-center gap-4">
                                                   <SkeletonCircle size="5" />

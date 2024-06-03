@@ -154,7 +154,8 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                   <Tr key={row.index} data-symbol={convertId}>
                                       <Td
                                           p={"4px"}
-                                          minW={"104px"}
+                                          minW={"120px"}
+                                          maxW={"150px"}
                                           height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
@@ -174,17 +175,18 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                   href={`/currency/${row.original.id}`}
                                               >
                                                   {checkFormatImage(row.original.image) && (
-                                                      <Image
+                                                      <img
                                                           className="cursor-pointer"
                                                           src={row.original.image}
                                                           alt={row.original.name}
                                                           width={24}
                                                           height={24}
+                                                          loading="lazy"
                                                       />
                                                   )}
 
                                                   <Box flexDirection={"column"}>
-                                                      <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
+                                                      <p className="capitalize whitespace-normal text-sm leading-4 font-semibold text-typo-4 font-inter">
                                                           {row.original.name}
                                                       </p>
                                                       <Box display={"flex"} alignItems={"center"} gap={"4px"}>
@@ -271,7 +273,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                           <Td
                                               height={"100px"}
                                               p={"4px"}
-                                              minW={"255px"}
+                                              minW={"197px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
@@ -282,25 +284,25 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                   </div>
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"141px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"148px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"68px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"73px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"75px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"79px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"173px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"181px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"172px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"181px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"232px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"244px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"225px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"237px"}>
                                               <Skeleton height={"20px"} />
                                           </Td>
                                       </Tr>

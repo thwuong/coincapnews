@@ -75,11 +75,12 @@ export default function Page({ params }: PageProps) {
             <Container className="px-12 flex-col gap-4">
                 <div className="grid grid-cols-3 w-full items-center gap-8 max-lg:grid-cols-1">
                     <div className="flex flex-col gap-4 items-center ">
-                        <Image
+                        <img
                             src={coin.image?.large ? coin.image?.large : "/assets/icons/placeholder_coin.svg"}
                             alt="coin"
                             width={88}
                             height={88}
+                            loading="lazy"
                         />
                         <div className="flex items-center gap-2">
                             <h4 className="text-2xl leading-[38px] text-typo-4 font-bold capitalize">{coin.id}</h4>
@@ -248,6 +249,7 @@ export default function Page({ params }: PageProps) {
                             {coin.links?.blockchain_site?.length > 0 && (
                                 <Button
                                     as={Link}
+                                    rel="nofollow"
                                     href={coin.links.blockchain_site[0]}
                                     target="_blank"
                                     height={"fit-content"}
@@ -271,6 +273,7 @@ export default function Page({ params }: PageProps) {
                             {coin.links?.homepage?.length > 0 && (
                                 <Button
                                     as={Link}
+                                    rel="nofollow"
                                     href={coin.links.homepage[0]}
                                     target="_blank"
                                     height={"fit-content"}
@@ -294,6 +297,7 @@ export default function Page({ params }: PageProps) {
                             {coin.links?.repos_url?.github.length > 0 && (
                                 <Button
                                     as={Link}
+                                    rel="nofollow"
                                     href={coin.links.repos_url.github[0]}
                                     target="_blank"
                                     height={"fit-content"}
@@ -317,6 +321,7 @@ export default function Page({ params }: PageProps) {
                             {coin.links?.subreddit_url && (
                                 <Button
                                     as={Link}
+                                    rel="nofollow"
                                     href={coin.links.subreddit_url}
                                     target="_blank"
                                     height={"fit-content"}
@@ -340,6 +345,7 @@ export default function Page({ params }: PageProps) {
                             {coin.links?.twitter_screen_name && (
                                 <Button
                                     as={Link}
+                                    rel="nofollow"
                                     href={`https://twitter.com/${coin.links.twitter_screen_name}`}
                                     target="_blank"
                                     height={"fit-content"}
@@ -363,6 +369,7 @@ export default function Page({ params }: PageProps) {
                             {coin.links?.facebook_username && (
                                 <Button
                                     as={Link}
+                                    rel="nofollow"
                                     href={`https://www.facebook.com/${coin.links.facebook_username}`}
                                     target="_blank"
                                     height={"fit-content"}

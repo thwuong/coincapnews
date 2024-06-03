@@ -221,7 +221,8 @@ function NewCryptoTable({
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"104px"}
+                                          minW={"120px"}
+                                          maxW={"150px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={8}
                                           className="bg-secondary"
@@ -239,19 +240,19 @@ function NewCryptoTable({
                                                   />
                                               )}
 
-                                              <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
+                                              <p className="capitalize whitespace-normal text-sm leading-4 font-semibold text-typo-4 ">
                                                   {row.original.name}
                                               </p>
                                           </Link>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"136px"}>
                                           <p className="text-center text-sm leading-4 font-medium text-typo-4 ">
                                               {formatCurrency(row.original.current_price, "USD", currentLanguage, {
                                                   maximumFractionDigits: 9,
                                               })}
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"69px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm text-center leading-4 change24 font-medium ",
@@ -263,7 +264,7 @@ function NewCryptoTable({
                                               {row.original.price_change_percentage_1h_in_currency?.toFixed(2) || 0}%
                                           </p>
                                       </Td>
-                                      <Td px={"4px"}>
+                                      <Td px={"4px"} minW={"69px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm text-center leading-4 change24 font-medium ",
@@ -304,13 +305,13 @@ function NewCryptoTable({
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
-                                          <Td isNumeric={true} px={"8px"} py={"16px"} minW={"48px"}>
+                                          <Td isNumeric={true} px={"8px"} py={"16px"} minW={"53px"}>
                                               <SkeletonText noOfLines={1} spacing="4" skeletonHeight="2" />
                                           </Td>
                                           <Td
                                               p={"4px"}
                                               height={"57px"}
-                                              minW={"350px"}
+                                              minW={"216px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               className="bg-secondary"
                                           >
@@ -322,25 +323,25 @@ function NewCryptoTable({
                                                   />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"166px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"196px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"75px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"99px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"88px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"92px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"180px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"206px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"180px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"197px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"117px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"128px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"133px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"145px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                       </Tr>
@@ -359,7 +360,8 @@ function NewCrypto() {
         `/api/coins/list/new?page=${page}&per_page=${COIN_PER_PAGE}&centralized=true`
     );
     const handlePageClick = ({ selected }: { selected: number }) => {
-        setPage(selected + 1);
+        // setPage(selected + 1);
+        setPage(page + 1);
     };
     return (
         <section className="flex flex-col items-center justify-center gap-6 w-full">

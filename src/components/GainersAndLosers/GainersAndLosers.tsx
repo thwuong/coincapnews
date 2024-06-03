@@ -165,7 +165,8 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                       </Td>
                                       <Td
                                           p={"4px"}
-                                          minW={"104px"}
+                                          minW={"120px"}
+                                          maxW={"150px"}
                                           height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
@@ -178,14 +179,15 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                                       nextPage(row.original.id);
                                                   }}
                                               >
-                                                  <Image
+                                                  <img
+                                                      loading="lazy"
                                                       className="cursor-pointer"
                                                       src={row.original.image}
                                                       alt={row.original.name}
                                                       width={24}
                                                       height={24}
                                                   />
-                                                  <p className="capitalize text-sm leading-4 font-semibold text-typo-4 font-inter">
+                                                  <p className="capitalize whitespace-normal text-sm leading-4 font-semibold text-typo-4 font-inter">
                                                       {row.original.name}
                                                   </p>
                                               </div>
@@ -222,13 +224,13 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
-                                          <Td isNumeric={true} px={"4px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"30px"}>
                                               <Skeleton height="14px" w={"16px"} />
                                           </Td>
                                           <Td
                                               height={"100px"}
                                               p={"4px"}
-                                              minW={"260px"}
+                                              minW={"197px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
@@ -262,7 +264,8 @@ function GainersAndLosers({ lang }: { lang: string }) {
     const [page, setPage] = React.useState<number>(1);
 
     const handlePageClick = (selectedItem: any) => {
-        setPage(selectedItem.selected + 1);
+        // setPage(selectedItem.selected + 1);
+        setPage(page + 1);
     };
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/top_gainers_losers?vs_currency=usd&page=${page}&per_page=${COIN_PER_PAGE}`

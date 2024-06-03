@@ -100,7 +100,8 @@ function TableSection() {
         setKeyword(e.target.value);
     };
     const handlePageClick = (selectedItem: any) => {
-        setPage(selectedItem.selected + 1);
+        // setPage(selectedItem.selected + 1);
+        setPage(page + 1);
     };
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}`

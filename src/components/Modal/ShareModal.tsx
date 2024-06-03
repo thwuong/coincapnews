@@ -2,11 +2,10 @@
 import { NewDataType } from "@/app/types";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import getNewData from "@/app/utils/getNewData";
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay } from "@chakra-ui/react";
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useToast } from "@chakra-ui/react";
 type ShareModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -47,7 +46,7 @@ function ShareModal({ isOpen, onClose, newData, oldData, symbol, image }: ShareM
                 <ModalCloseButton />
                 <ModalBody>
                     <div className="flex flex-col items-center justify-center gap-6 pt-16 pb-4">
-                        <Image src={image} alt={symbol || "coin"} width={80} height={80} />
+                        <img loading="lazy" src={image} alt={symbol || "coin"} width={80} height={80} />
                         <div className="flex flex-col gap-4 text-center">
                             <h2 className="text-2xl font-bold text-typo-4">Share it with your friends</h2>
                             <p className="text-typo-1">

@@ -1,7 +1,7 @@
 import UseResize from "@/hooks/UseResize";
+import { Button } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
 import ReactPaginate from "react-paginate";
 
 type TablePaginationType = {
@@ -23,6 +23,9 @@ function TablePagination(props: TablePaginationType) {
         disbledNext = false,
     } = props;
     const [width] = UseResize();
+    if (true) {
+        return <Button onClick={handlePageClick}>Next</Button>;
+    }
     return (
         <ReactPaginate
             breakLabel="..."
