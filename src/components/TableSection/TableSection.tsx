@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import useFetchAPI from "@/api/baseAPI";
+import { COIN_PER_PAGE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
 import { useAppSelector } from "@/lib/hooks";
@@ -102,7 +103,7 @@ function TableSection() {
         setPage(selectedItem.selected + 1);
     };
     const { data: dataAPI, isLoading } = useFetchAPI(
-        `/api/coins/markets?page=${page}&per_page=${process.env.NEXT_PUBLIC_PER_PAGE}&search=${searchTerms}`
+        `/api/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}`
     );
     const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage, "home");
@@ -116,7 +117,7 @@ function TableSection() {
     }, [keyword]);
 
     return (
-        <section className="flex flex-col items-center gap-8 py-6 pb-32 w-full">
+        <section className="flex flex-col items-center gap-8 w-full">
             <section className="flex items-center justify-between w-full">
                 <Box
                     _hover={{
@@ -156,11 +157,13 @@ function TableSection() {
                 </InputGroup>
             </section>
             <CoinTable columns={columns} data={dataAPI} isLoading={isLoading} />
-            <TablePagination
-                className={isLoading ? "hidden" : "flex"}
-                pageCount={pageCount}
-                handlePageClick={handlePageClick}
-            />
+            <section className="w-full py-4 flex justify-center">
+                <TablePagination
+                    className={isLoading ? "hidden" : "flex"}
+                    pageCount={pageCount}
+                    handlePageClick={handlePageClick}
+                />
+            </section>
         </section>
     );
 }

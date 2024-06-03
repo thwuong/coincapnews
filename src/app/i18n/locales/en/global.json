@@ -218,6 +218,22 @@
     "gaming" : "Gaming",
     "earn_crypto" : "Earn Crypto",
     "sponsored" : "Sponsored",
-    "official_website" : "Official Website"
+    "official_website" : "Official Website",
+    "title" : {
+        "new" : "New Cryptocurrencies",
+        "nft" : "NFT Collections Listed By 7 Day Sales Volume",
+        "bsc" : "BSC",
+        "defi" : "Top DeFi Coins by Market Capitalization",
+        "polkadot_eco" : "Polkadot Eco",
+        "top_gainers" : "Top Gainers",
+        "top_losers" : "Top Losers",
+        "about" : "About",
+        "converter" : "Cryptocurrency Converter Calculator",
+        "news" : "News",
+        "spot" : "Spot Exchanges",
+        "derivatives" : "Derivatives Exchanges",
+        "dex" : "Dex Exchanges",
+        "submit_coin" : "Submit a request"
+    }
 }
 

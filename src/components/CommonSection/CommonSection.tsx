@@ -1,26 +1,18 @@
+"use client";
 import useFetchAPI from "@/api/baseAPI";
+import { COIN_PER_PAGE } from "@/app/contants";
 import React from "react";
 import { CommonTable } from "../CommonTable";
 import { TablePagination } from "../TablePagination";
 
-function CommonSection({
-    totalPage,
-    url,
-    perPage,
-    category,
-}: {
-    totalPage: number;
-    category: string;
-    perPage: number;
-    url: string;
-}) {
+function CommonSection({ totalPage = 100, category }: { totalPage?: number; category: string }) {
     const [page, setPage] = React.useState<number>(1);
 
     const handlePageClick = (selectedItem: any) => {
         setPage(selectedItem.selected + 1);
     };
     const { data: dataAPI, isLoading } = useFetchAPI(
-        `/api/coins/details?categories=${category}&page=${page}&per_page=${perPage}`
+        `/api/coins/details?categories=${category}&page=${page}&per_page=${COIN_PER_PAGE}`
     );
     return (
         <section className="w-full flex flex-col items-center">

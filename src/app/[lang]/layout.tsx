@@ -82,8 +82,8 @@ export async function generateStaticParams() {
 }
 export default function RootLayout({ children, params: { lang } }: LayoutProps) {
     return (
-        <html lang={lang} dir={dir(lang)}>
-            <body className="scroll-smooth">
+        <html lang={lang} dir={dir(lang)} className="scroll-smooth">
+            <body>
                 <MainLayout params={{ lang }}>{children}</MainLayout>
             </body>
         </html>

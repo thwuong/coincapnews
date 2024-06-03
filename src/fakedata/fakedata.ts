@@ -161,4 +161,10 @@ export const pageList = [
     "recently-added",
     "polkadot",
     "gainers-and-losers",
+    "about",
+    "privacy-and-cookie-policy",
+    "terms-of-use",
+    "faq-frequently-asked-questions",
+    "my-account",
+    "my-account/edit-account",
 ];
