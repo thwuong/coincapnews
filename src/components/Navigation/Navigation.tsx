@@ -66,7 +66,7 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                             as={Link}
                             href={item.href}
                             className="group/child"
-                            bg={"transparent"}
+                            bg={pathName.includes(item.href || "/") ? "gray.100" : "transparent"}
                             _hover={{
                                 bg: "gray.100",
                             }}
@@ -86,7 +86,12 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
                                 />
                             }
                         >
-                            <span className="text-sm leading-4 font-bold group-hover/child:text-primary-1 duration-300">
+                            <span
+                                className={clsx(
+                                    "text-sm leading-4 font-bold group-hover/child:text-primary-1 duration-300",
+                                    pathName.includes(item.href || "/") && "text-primary-1"
+                                )}
+                            >
                                 {t(`header.${item.key}`)}
                             </span>
                         </Button>

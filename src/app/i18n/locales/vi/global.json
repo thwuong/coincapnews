@@ -151,7 +151,22 @@
   "gaming": "chơi game",
   "earn_crypto": "Kiếm tiền điện tử",
   "sponsored" : "Được tài trợ",
-  "official_website" : "Website chính thức"
+  "official_website" : "Website chính thức",
+  "title": {
+    "new": "Những đồng tiền điện tử mới",
+    "nft": "Bộ sưu tập NFT được liệt kê theo khối lượng bán hàng trong 7 ngày",
+    "bsc": "BSC",
+    "defi": "Đồng tiền DeFi hàng đầu theo vốn hóa thị trường",
+    "polkadot_eco": "Polkadot Eco",
+    "top_gainers": "Mã tăng cao nhất",
+    "top_losers": "Mã giảm nhiều nhất",
+    "about": "Về",
+    "converter": "Máy Tính Quy Đổi Tiền Điện Tử",
+    "news": "Tin tức",
+    "spot": "Các sàn giao dịch tiền mã hóa giao ngay",
+    "derivatives": "Các sàn giao dịch tiền mã hóa phát sinh",
+    "dex": "Các sàn giao dịch tiền mã hóa phi tập trung"
+  }
 
 
 }

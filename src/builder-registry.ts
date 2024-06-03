@@ -1,5 +1,5 @@
 "use client";
-import { builder, Builder, withChildren } from "@builder.io/react";
+import { Builder, withChildren } from "@builder.io/react";
 import { Auth } from "./components/Auth";
 import { BannerSlide } from "./components/BannerSlide";
 import { CommonSection } from "./components/CommonSection";
@@ -16,7 +16,7 @@ import { Paragraph } from "./components/Paragraph";
 import { SumbitCoin } from "./components/SubmitCoin";
 import { TableSection } from "./components/TableSection";
 
-builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
+// builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
 Builder.registerComponent(withChildren(Container), {
     name: "Container",

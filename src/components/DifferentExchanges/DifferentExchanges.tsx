@@ -1,5 +1,6 @@
 "use client";
 import useFetchAPI from "@/api/baseAPI";
+import { COIN_PER_PAGE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
 import { formatQuoteCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
@@ -192,6 +193,7 @@ function DifferentExchangesTable({
                                       <Td
                                           px={"4px"}
                                           minW={"104px"}
+                                          height={"80px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
                                           className="bg-secondary"
@@ -228,7 +230,13 @@ function DifferentExchangesTable({
                                               <span className="uppercase"> BTC</span>
                                           </p>
                                       </Td>
-                                      <Td px={"4px"} height={"80px"} display={"flex"} justifyContent={"center"}>
+                                      <Td
+                                          px={"4px"}
+                                          display={"flex"}
+                                          height={"80px"}
+                                          justifyContent={"center"}
+                                          overflow={"hidden"}
+                                      >
                                           {row.original.chart && (
                                               <LineHighChart
                                                   data={row.original.chart.data.map((item) => Number(item))}
@@ -239,7 +247,7 @@ function DifferentExchangesTable({
                                   </Tr>
                               );
                           })
-                        : Array(8)
+                        : Array(13)
                               .fill(0)
                               .map((_, index) => {
                                   return (
@@ -281,15 +289,13 @@ function DifferentExchangesTable({
     );
 }
 type DifferentExchangesProps = {
-    perPage?: number;
-    title?: string;
     url?: string;
     centralized: boolean;
 };
-function DifferentExchanges({ perPage = 10, title, url, centralized = true }: DifferentExchangesProps) {
+function DifferentExchanges({ url, centralized = true }: DifferentExchangesProps) {
     const [page, setPage] = useState(1);
     const { data, isLoading, error } = useFetchAPI(
-        `${url}?per_page=${perPage}&page=${page}&centralized=${centralized}&exclude=tickers,status_updates`
+        `${url}?per_page=${COIN_PER_PAGE}&page=${page}&centralized=${centralized}&exclude=tickers,status_updates`
     );
     if (error) return `Error ${error}`;
     const handlePageClick = ({ selected }: { selected: number }) => {
@@ -297,12 +303,12 @@ function DifferentExchanges({ perPage = 10, title, url, centralized = true }: Di
     };
     return (
         <div className="flex flex-col items-center justify-center gap-8 w-full">
-            {title && (
-                <h1 className="text-[28px] leading-9 text-center py-8 max-lg:py-6 font-bold text-typo-4/80">{title}</h1>
-            )}
-
             {/* Table */}
-            <DifferentExchangesTable data={data} isLoading={isLoading} currentIndex={(page - 1) * perPage} />
+            <DifferentExchangesTable
+                data={data}
+                isLoading={isLoading}
+                currentIndex={(page - 1) * Number(COIN_PER_PAGE)}
+            />
             <div className="w-full py-4 flex justify-center">
                 <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
             </div>

@@ -172,7 +172,7 @@ function MenuMobile({ onClose, isOpen, lang }: MenuMobileProps) {
                             <Avatar src="https://bit.ly/broken-link" size={"sm"} />
                             <div
                                 onClick={() => {
-                                    nextPage("/account");
+                                    nextPage("/my-account");
                                 }}
                             >
                                 <p className="text-typo-4 text-base leading-5 font-semibold capitalize">

@@ -9,7 +9,9 @@ function Heading({ title, className, textAlign, headingTag }: HeadingProps) {
     const Tag = headingTag || "h1";
     return (
         <Tag
-            className={twMerge(clsx("text-[28px] leading-9 font-bold text-typo-4/80", className))}
+            className={twMerge(
+                clsx("text-[28px] text-center leading-9 font-bold text-typo-4/80 max-lg:text-[20px]", className)
+            )}
             style={{
                 textAlign: textAlign,
             }}

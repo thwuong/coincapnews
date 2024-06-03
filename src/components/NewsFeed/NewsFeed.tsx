@@ -15,7 +15,7 @@ function NewsFeedItem(props: FeedType) {
     const pathName = usePathname();
 
     return (
-        <li className="pb-8 border-b">
+        <li className="pb-8 border-b ">
             {pathName !== `/${currentLanguage}/news` ? (
                 <Link href={`${post_permalink}`} className="flex gap-8 max-md:flex-col" target="_blank">
                     <Image
@@ -77,7 +77,7 @@ function NewsFeed() {
     const { t } = useTranslation(currentLanguage);
     return (
         <div className="flex flex-col gap-6 w-full">
-            <h2 className="text-2xl font-bold text-typo-4">{t("newsfeed")}</h2>
+            <h1 className="text-2xl font-bold text-typo-4">{t("newsfeed")}</h1>
             <ul className="flex flex-col gap-8 w-full">
                 {!isLoading &&
                     data.map((item: FeedType, index: number) => {
