@@ -226,7 +226,7 @@ function Header({ lang }: HeaderProps) {
                             </Box>
                             <Button
                                 as={Link}
-                                href={"/account"}
+                                href={"/my-account"}
                                 bgColor={"#3861fb"}
                                 _hover={{
                                     bgColor: "none",

@@ -42,23 +42,23 @@ function MainLayout({ children, params: { lang } }: LayoutProps) {
 
     return (
         <Providers lang={lang}>
-            {pathName !== `/${lang}/account` && <Header lang={lang} />}
+            {pathName !== `/${lang}/my-account` && <Header lang={lang} />}
             <section
                 className={clsx(
                     "flex w-full justify-center bg-secondary",
                     pathName === `/${lang}/news` && "max-w-[1440px] ml-auto mr-auto bg-transparent md:pl-12 md:pr-12"
                 )}
             >
-                {pathName !== `/${lang}/account` && <SideBar images={imagesLeft} />}
+                {pathName !== `/${lang}/my-account` && <SideBar images={imagesLeft} />}
                 <div
                     className={clsx(
                         "w-full xl:min-h-[1220px]",
-                        pathName === `/${lang}/account` ? "w-full" : "max-w-[1440px]"
+                        pathName === `/${lang}/my-account` ? "w-full" : "max-w-[1440px]"
                     )}
                 >
                     {children}
                 </div>
-                {pathName !== `/${lang}/account` && <SideBar images={imagesRight} />}
+                {pathName !== `/${lang}/my-account` && <SideBar images={imagesRight} />}
             </section>
             {pathName !== `/${lang}/my-account` && <Footer />}
             <ToastContainer />
