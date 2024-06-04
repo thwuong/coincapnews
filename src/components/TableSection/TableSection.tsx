@@ -103,6 +103,10 @@ function TableSection() {
         // setPage(selectedItem.selected + 1);
         setPage(page + 1);
     };
+    const handlePrePage = (selectedItem: any) => {
+        // setPage(selectedItem.selected + 1);
+        setPage(page - 1);
+    };
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}`
     );
@@ -160,6 +164,8 @@ function TableSection() {
             <CoinTable columns={columns} data={dataAPI} isLoading={isLoading} />
             <section className="w-full py-4 flex justify-center">
                 <TablePagination
+                    handlePrePage={handlePrePage}
+                    currentPage={page}
                     className={isLoading ? "hidden" : "flex"}
                     pageCount={pageCount}
                     handlePageClick={handlePageClick}

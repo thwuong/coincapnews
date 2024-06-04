@@ -1,7 +1,7 @@
 import { WEBSITE_HOST_URL } from "@/app/contants";
 import { Container } from "@/components/Container";
 import { GainersAndLosers } from "@/components/GainersAndLosers";
-import { ResolvingMetadata, Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 interface PageProps {
     params: {
         id: string;
@@ -46,7 +46,7 @@ async function Page(props: PageProps) {
     return (
         <main className="pb-24">
             <Container className="px-12">
-                <GainersAndLosers lang={props.params.lang} />
+                <GainersAndLosers />
             </Container>
         </main>
     );

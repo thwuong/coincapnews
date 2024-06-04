@@ -27,6 +27,10 @@ export default function ExchangesContent({ params }: { params: { id: string } })
             item.coin_id.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
         );
     }, [exchange?.tickers, keyword]);
+    const handlePrePage = (selectedItem: any) => {
+        // setPage(selectedItem.selected + 1);
+        setPage(page - 1);
+    };
     if (isLoading) return <SpinnerLoading />;
 
     return (
@@ -129,6 +133,8 @@ export default function ExchangesContent({ params }: { params: { id: string } })
                             {exchanges && exchanges.length / perPage > 1 && (
                                 <div className="w-full py-4 flex justify-center">
                                     <TablePagination
+                                        currentPage={page}
+                                        handlePrePage={handlePrePage}
                                         disbledPre
                                         disbledNext
                                         pageCount={exchanges.length / perPage}

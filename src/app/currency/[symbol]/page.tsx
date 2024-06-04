@@ -14,6 +14,7 @@ import { Button, useToast } from "@chakra-ui/react";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 interface PageProps {
@@ -68,7 +69,10 @@ export default function Page({ params }: PageProps) {
         const objectToArray = Object.keys(coin.platforms).map((key) => [key, coin.platforms[key]]);
         return objectToArray;
     }, [coin]);
-    const { t } = useTranslation(params.lang);
+    const search = useSearchParams();
+    const lang = search.get("lang") || "en";
+
+    const { t } = useTranslation(lang);
     if (isLoading) return <SpinnerLoading />;
     return (
         <main className="pt-10 pb-20 w-full bg-secondary flex items-center justify-center">

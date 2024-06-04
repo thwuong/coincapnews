@@ -5,26 +5,38 @@ import Image from "next/image";
 import ReactPaginate from "react-paginate";
 
 type TablePaginationType = {
+    handlePrePage: (data: any) => void;
     handlePageClick: (data: any) => void;
     pageCount: number;
     className?: string;
     pageRangeDisplayed?: number;
     disbledPre?: boolean;
     disbledNext?: boolean;
+    currentPage: number;
 };
 
 function TablePagination(props: TablePaginationType) {
     const {
         handlePageClick,
+        handlePrePage,
         pageCount,
         className,
         pageRangeDisplayed = 3,
         disbledPre = false,
         disbledNext = false,
+        currentPage,
     } = props;
     const [width] = UseResize();
+
     if (true) {
-        return <Button onClick={handlePageClick}>Next</Button>;
+        return (
+            <div className="flex items-center gap-10 ">
+                <Button onClick={handlePrePage} isDisabled={currentPage === 1}>
+                    Previous
+                </Button>
+                <Button onClick={handlePageClick}>Next</Button>
+            </div>
+        );
     }
     return (
         <ReactPaginate

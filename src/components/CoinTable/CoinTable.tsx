@@ -32,6 +32,8 @@ export type DataTableProps = {
     isLoading: boolean;
 };
 function CoinTable({ data, columns, isLoading }: DataTableProps) {
+    const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
+
     const [sorting, setSorting] = React.useState<SortingState>([]);
     let ref = React.useRef<any>();
     const table = useReactTable({
@@ -58,7 +60,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
             const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
             if (priceEL) {
-                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c), "USD", currentLanguage, {
+                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c), currentCurrency, currentLanguage, {
                     maximumFractionDigits: 8,
                 });
             }
@@ -82,7 +84,6 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             socket.close();
         };
     }, [data]);
-    const { currentLanguage } = useAppSelector((state) => state.globalStore);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -209,9 +210,14 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize price text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original.current_price, "USD", currentLanguage, {
-                                                  maximumFractionDigits: 8,
-                                              })}
+                                              {formatCurrency(
+                                                  row.original.current_price,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      maximumFractionDigits: 8,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>

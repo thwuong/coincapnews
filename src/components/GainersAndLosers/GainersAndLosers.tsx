@@ -16,7 +16,7 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const columnHelper = createColumnHelper<CoinTopType>();
@@ -260,7 +260,7 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
     );
 }
 
-function GainersAndLosers({ lang }: { lang: string }) {
+function GainersAndLosers() {
     const [page, setPage] = React.useState<number>(1);
 
     const handlePageClick = (selectedItem: any) => {
@@ -270,6 +270,8 @@ function GainersAndLosers({ lang }: { lang: string }) {
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/top_gainers_losers?vs_currency=usd&page=${page}&per_page=${COIN_PER_PAGE}`
     );
+    const search = useSearchParams();
+    const lang = search.get("lang") || "en";
     const { t } = useTranslation(lang);
 
     return (

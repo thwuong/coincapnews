@@ -12,6 +12,10 @@ function CommonSection({ totalPage = 100, category }: { totalPage?: number; cate
         // setPage(selectedItem.selected + 1);
         setPage(page + 1);
     };
+    const handlePrePage = (selectedItem: any) => {
+        // setPage(selectedItem.selected + 1);
+        setPage(page - 1);
+    };
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/details?categories=${category}&page=${page}&per_page=${COIN_PER_PAGE}`
     );
@@ -20,6 +24,8 @@ function CommonSection({ totalPage = 100, category }: { totalPage?: number; cate
             <CommonTable data={dataAPI} isLoading={isLoading} />
             <div className="py-10">
                 <TablePagination
+                    currentPage={page}
+                    handlePrePage={handlePrePage}
                     className={isLoading ? "hidden" : "flex"}
                     pageCount={totalPage}
                     handlePageClick={handlePageClick}

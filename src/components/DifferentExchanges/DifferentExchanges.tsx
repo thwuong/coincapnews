@@ -307,6 +307,10 @@ function DifferentExchanges({ url, centralized = true }: DifferentExchangesProps
         // setPage(selected + 1);
         setPage(page + 1);
     };
+    const handlePrePage = (selectedItem: any) => {
+        // setPage(selectedItem.selected + 1);
+        setPage(page - 1);
+    };
     return (
         <div className="flex flex-col items-center justify-center gap-8 w-full">
             {/* Table */}
@@ -316,7 +320,14 @@ function DifferentExchanges({ url, centralized = true }: DifferentExchangesProps
                 currentIndex={(page - 1) * Number(COIN_PER_PAGE)}
             />
             <div className="w-full py-4 flex justify-center">
-                <TablePagination disbledPre disbledNext pageCount={100} handlePageClick={handlePageClick} />
+                <TablePagination
+                    currentPage={page}
+                    handlePrePage={handlePrePage}
+                    disbledPre
+                    disbledNext
+                    pageCount={100}
+                    handlePageClick={handlePageClick}
+                />
             </div>
         </div>
     );
