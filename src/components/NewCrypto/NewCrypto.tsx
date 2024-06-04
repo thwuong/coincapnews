@@ -140,7 +140,7 @@ function NewCryptoTable({
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
+    const { currentLanguage, currentCurrency } = useAppSelector((store) => store.globalStore);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -248,9 +248,14 @@ function NewCryptoTable({
                                       </Td>
                                       <Td px={"4px"} minW={"136px"}>
                                           <p className="text-center text-sm leading-4 font-medium text-typo-4 ">
-                                              {formatCurrency(row.original.current_price, "USD", currentLanguage, {
-                                                  maximumFractionDigits: 9,
-                                              })}
+                                              {formatCurrency(
+                                                  row.original.current_price,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      maximumFractionDigits: 9,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td px={"4px"} minW={"69px"}>
@@ -279,12 +284,26 @@ function NewCryptoTable({
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.market_cap)}
+                                              {formatCurrency(
+                                                  row.original.market_cap || 0,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      minimumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.volume_24h || 0)}
+                                              {formatCurrency(
+                                                  row.original.volume_24h || 0,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      minimumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>

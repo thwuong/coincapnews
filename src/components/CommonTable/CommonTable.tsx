@@ -1,6 +1,6 @@
 import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
-import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import { formatCurrency } from "@/app/utils/formatCurrency";
 import getNewData from "@/app/utils/getNewData";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
@@ -147,7 +147,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
     //         socket.close();
     //     };
     // }, []);
-    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
+    const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -262,7 +262,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                           <p className="capitalize text-sm leading-4 text-center font-semibold text-typo-1 font-inter">
                                               {formatCurrency(
                                                   getNewData(stream[convertId]?.price, row.original.current_price),
-                                                  "USD",
+                                                  currentCurrency,
                                                   currentLanguage,
                                                   {
                                                       maximumFractionDigits: 8,
@@ -311,12 +311,28 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"138px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-center text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original.market_cap)}
+                                              {formatCurrency(
+                                                  row.original.market_cap || 0,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      maximumFractionDigits: 3,
+                                                      minimumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"118px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-center text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original.total_volume)}
+                                              {formatCurrency(
+                                                  row.original.total_volume || 0,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      maximumFractionDigits: 3,
+                                                      minimumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"180px"} overflow={"hidden"}>

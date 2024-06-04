@@ -140,32 +140,40 @@ function Footer() {
                             </p>
                         </div>
                         <div className="flex items-center gap-4">
-                            <Link href={"https://www.facebook.com/coincapnews/"} target="_blank">
+                            <Link href={"https://www.facebook.com/coincapnews/"} target="_blank" rel="nofollow">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
                                     <Image src={"/assets/icons/fb.svg"} alt="Facebook" width={20} height={20} />
                                 </div>
                             </Link>
-                            <Link href={"https://x.com/Coincapnewscom"} target="_blank">
+                            <Link href={"https://x.com/Coincapnewscom"} target="_blank" rel="nofollow">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
                                     <Image src={"/assets/icons/x-white.svg"} alt="Instagram" width={20} height={20} />
                                 </div>
                             </Link>
-                            <Link href={"https://t.me/coincapnewsofficial"} target="_blank">
+                            <Link href={"https://t.me/coincapnewsofficial"} target="_blank" rel="nofollow">
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
                                     <Image src={"/assets/icons/telegram.svg"} alt="Telegram" width={20} height={20} />
                                 </div>
                             </Link>
-                            <Link href={"https://www.hahalolo.com/p/60cd7fd4424eb16e2778552e"} target="_blank">
+                            <Link
+                                href={"https://www.hahalolo.com/p/60cd7fd4424eb16e2778552e"}
+                                target="_blank"
+                                rel="nofollow"
+                            >
                                 <div className="p-2 rounded-full bg-gray-100/10 hover:bg-gray-100/30 duration-300">
                                     <Image src={"/assets/icons/hahalolo.svg"} alt="Hahalolo" width={20} height={20} />
                                 </div>
                             </Link>
                         </div>
                         <div className="flex gap-4">
-                            <Link href={"https://www.apple.com/app-store/"} target="_blank">
+                            <Link href={"https://www.apple.com/app-store/"} target="_blank" rel="nofollow">
                                 <Image src={"/assets/icons/ios-app.svg"} alt="fb" width={136} height={45} />
                             </Link>
-                            <Link href={"https://play.google.com/store/games?device=windows&pli=1"} target="_blank">
+                            <Link
+                                href={"https://play.google.com/store/games?device=windows&pli=1"}
+                                target="_blank"
+                                rel="nofollow"
+                            >
                                 <Image src={"/assets/icons/google-app.svg"} alt="fb" width={136} height={45} />
                             </Link>
                         </div>

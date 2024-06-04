@@ -57,10 +57,18 @@ function ShareModal({ isOpen, onClose, newData, oldData, symbol, image }: ShareM
                             </p>
                         </div>
                         <div className="flex items-center gap-4">
-                            <Link href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`} target="_blank">
+                            <Link
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}
+                                target="_blank"
+                                rel="nofollow"
+                            >
                                 <Image src={"/assets/icons/fb-gray.svg"} alt="fb-gray" width={24} height={24} />
                             </Link>
-                            <Link href={`https://twitter.com/intent/post?url=${currentUrl}`} target="_blank">
+                            <Link
+                                href={`https://twitter.com/intent/post?url=${currentUrl}`}
+                                target="_blank"
+                                rel="nofollow"
+                            >
                                 <Image src={"/assets/icons/x.svg"} alt="x" width={24} height={24} />
                             </Link>
                         </div>

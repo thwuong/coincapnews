@@ -29,7 +29,7 @@ function LanguageMenu() {
 
     const selectedLang = (item: LangType) => {
         router.push(`${path}?lang=${item.code}`);
-        router.refresh();
+        // router.refresh();
         // window.location.href = `${path}?lang=${item.code}`;
     };
     const currLang = React.useMemo(

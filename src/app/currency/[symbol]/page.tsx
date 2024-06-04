@@ -9,6 +9,7 @@ import { Container } from "@/components/Container";
 import { DetailTabs } from "@/components/DetailTabs";
 import { SpinnerLoading } from "@/components/Loading";
 import { NewsFeed } from "@/components/NewsFeed";
+import { useAppSelector } from "@/lib/hooks";
 import { socketDetail } from "@/socket/client";
 import { Button, useToast } from "@chakra-ui/react";
 import clsx from "clsx";
@@ -24,6 +25,7 @@ interface PageProps {
     };
 }
 export default function Page({ params }: PageProps) {
+    const { currentCurrency } = useAppSelector((state) => state.globalStore);
     const toast = useToast();
     const [stream, setStream] = useState<NewDataType | any>();
     const [moreContract, setMoreContract] = useState<boolean>(false);
@@ -115,8 +117,8 @@ export default function Page({ params }: PageProps) {
                             <h4 className="font-bold text-[32px] leading-[41px]">
                                 {formatCurrency(
                                     getNewData(stream?.price, coin.market_data?.current_price["usd"]),
-                                    "USD",
-                                    params.lang,
+                                    currentCurrency,
+                                    lang,
                                     {
                                         maximumFractionDigits: 8,
                                     }
@@ -170,13 +172,15 @@ export default function Page({ params }: PageProps) {
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">{t("24h_low_24h_high")}</p>
                             <p className="text-sm font-bold">
-                                {formatCurrency(coin.market_data?.low_24h?.usd || 0)} /{" "}
-                                {formatCurrency(coin.market_data?.high_24h?.usd || 0)}
+                                {formatCurrency(coin.market_data?.low_24h?.usd || 0, currentCurrency, lang)} /{" "}
+                                {formatCurrency(coin.market_data?.high_24h?.usd || 0, currentCurrency, lang)}
                             </p>
                         </div>
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">{t("24h_trading_vol")}</p>
-                            <p className="text-sm font-bold">{formatCurrency(coin.market_data.total_volume["usd"])}</p>
+                            <p className="text-sm font-bold">
+                                {formatCurrency(coin.market_data.total_volume["usd"] || 0, currentCurrency, lang)}
+                            </p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4 w-full">

@@ -5,7 +5,9 @@ export const formatCurrency = (
     options?: Intl.NumberFormatOptions
 ) => {
     // return new Intl.NumberFormat(lang, { style: "currency", currency: code, ...options }).format(amount);
-    return amount.toLocaleString(lang, {
+    const locale = lang === "en" ? "en-US" : "vi-VN";
+
+    return amount.toLocaleString(locale, {
         style: "currency",
         currency: code,
         ...options,

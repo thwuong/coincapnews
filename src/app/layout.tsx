@@ -86,7 +86,7 @@ export default function RootLayout({ children }: LayoutProps) {
     return (
         <html lang={lang} dir={dir(lang)} className="scroll-smooth">
             <body>
-                <MainLayout>{children}</MainLayout>;
+                <MainLayout>{children}</MainLayout>
             </body>
         </html>
     );

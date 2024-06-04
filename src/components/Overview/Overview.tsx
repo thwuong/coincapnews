@@ -55,7 +55,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
     const [readMore, setReadMore] = useState(false);
     const descHeight = useRef<any>();
 
-    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
+    const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
 
     const { data, isLoading } = useFetchAPI(
         `/api/coins/market_chart/${overviewData.id}?vs_currency=usd&days=${datetime}`
@@ -244,7 +244,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                     </Box>
                     <Box className="py-5 px-4 flex items-center justify-between gap-4" bg={"#F8FAFD"}>
                         <p className="font-semibold text-sm text-black uppercase">USD</p>
-                        <p className="font-bold text-lg min-h-10">{result ? formatCurrency(result) : ""}</p>
+                        <p className="font-bold text-lg min-h-10">
+                            {result ? formatCurrency(result, currentCurrency, currentLanguage) : ""}
+                        </p>
                     </Box>
                 </div>
                 {/* Price Status */}
@@ -259,13 +261,11 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 {`${overviewData.name} ${t("price_today")}`}
                             </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{`${overviewData.name} ${t(
-                                    "price"
-                                )}`}</p>
+                                <p className="text-typo-1 text-sm  ">{`${overviewData.name} ${t("price")}`}</p>
                                 <p className="font-semibold text-sm">
                                     {formatCurrency(
                                         getNewData(newData?.price, overviewData.market_data?.current_price?.usd),
-                                        "USD",
+                                        currentCurrency,
                                         currentLanguage,
                                         {
                                             maximumFractionDigits: 8,
@@ -274,18 +274,24 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("trading_volume")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("trading_volume")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data.total_volume?.usd)}
+                                    {formatCurrency(
+                                        overviewData.market_data.total_volume?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
+                                    )}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap">{t("price_change_24h")}</p>
+                                <p className="text-typo-1 text-sm ">{t("price_change_24h")}</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
                                             {formatCurrency(
-                                                overviewData.market_data?.price_change_24h_in_currency?.usd || 0
+                                                overviewData.market_data?.price_change_24h_in_currency?.usd || 0,
+                                                currentCurrency,
+                                                currentLanguage
                                             )}
                                         </p>
                                     </StatNumber>
@@ -322,23 +328,32 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("24h_low_24h_high")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("24h_low_24h_high")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data?.low_24h?.usd || 0)} {" / "}
-                                    {formatCurrency(overviewData.market_data?.high_24h?.usd || 0)}
-                                </p>
-                            </Box>
-                            <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("volume_market_cap")}</p>
-                                <p className="font-semibold text-sm">
-                                    {formatQuoteCurrency(
-                                        overviewData.market_data.total_volume?.usd /
-                                        overviewData.market_data?.market_cap?.usd || 0
+                                    {formatCurrency(
+                                        overviewData.market_data?.low_24h?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
+                                    )}{" "}
+                                    {" / "}
+                                    {formatCurrency(
+                                        overviewData.market_data?.high_24h?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
                                     )}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("market_rank")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("volume_market_cap")}</p>
+                                <p className="font-semibold text-sm">
+                                    {formatQuoteCurrency(
+                                        overviewData.market_data.total_volume?.usd /
+                                            overviewData.market_data?.market_cap?.usd || 0
+                                    )}
+                                </p>
+                            </Box>
+                            <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
+                                <p className="text-typo-1 text-sm  ">{t("market_rank")}</p>
                                 <p className="font-semibold text-sm">#{overviewData.market_cap_rank}</p>
                             </Box>
                         </li>
@@ -348,17 +363,23 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 {`${overviewData.name} ${t("market_cap")}`}
                             </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("market_cap")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("market_cap")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data?.market_cap?.usd || 0)}
+                                    {formatCurrency(
+                                        overviewData.market_data?.market_cap?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
+                                    )}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">
-                                    {t("fully_diluted_market_cap")}
-                                </p>
+                                <p className="text-typo-1 text-sm ">{t("fully_diluted_market_cap")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData?.market_data?.fully_diluted_valuation?.usd || 0)}
+                                    {formatCurrency(
+                                        overviewData?.market_data?.fully_diluted_valuation?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
+                                    )}
                                 </p>
                             </Box>
                         </li>
@@ -368,14 +389,23 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 {`${overviewData.name} ${t("price_yesterday")}`}
                             </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("yesterday_low_high")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("yesterday_low_high")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data?.low_24h?.usd || 0)} {" / "}
-                                    {formatCurrency(overviewData.market_data?.high_24h?.usd || 0)}
+                                    {formatCurrency(
+                                        overviewData.market_data?.low_24h?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
+                                    )}{" "}
+                                    {" / "}
+                                    {formatCurrency(
+                                        overviewData.market_data?.high_24h?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
+                                    )}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("yesterday_change")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("yesterday_change")}</p>
                                 <Stat className="text-right">
                                     <StatHelpText
                                         fontSize={"12px"}
@@ -400,9 +430,13 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("yesterday_volume")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("yesterday_volume")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatCurrency(overviewData.market_data?.market_cap?.usd || 0)}
+                                    {formatCurrency(
+                                        overviewData.market_data?.market_cap?.usd || 0,
+                                        currentCurrency,
+                                        currentLanguage
+                                    )}
                                 </p>
                             </Box>
                         </li>
@@ -412,11 +446,15 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 {`${overviewData.name} ${t("price_history")}`}
                             </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("ath")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("ath")}</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
-                                            {formatCurrency(overviewData.market_data.ath?.usd)}
+                                            {formatCurrency(
+                                                overviewData.market_data.ath?.usd || 0,
+                                                currentCurrency,
+                                                currentLanguage
+                                            )}
                                         </p>
                                     </StatNumber>
                                     <StatHelpText
@@ -445,11 +483,15 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 </Stat>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("atl")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("atl")}</p>
                                 <Stat className="text-right">
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
-                                            {formatCurrency(overviewData.market_data.atl?.usd)}
+                                            {formatCurrency(
+                                                overviewData.market_data.atl?.usd || 0,
+                                                currentCurrency,
+                                                currentLanguage
+                                            )}
                                         </p>
                                     </StatNumber>
                                     <StatHelpText
@@ -477,8 +519,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                     </StatHelpText>
                                 </Stat>
                             </Box>
-                            <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{overviewData.name} ROI</p>
+                            {/* <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
+                                <p className="text-typo-1 text-sm  ">{overviewData.name} ROI</p>
                                 <Stat className="text-right">
                                     <StatHelpText
                                         fontSize={"12px"}
@@ -489,7 +531,7 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         9.05%
                                     </StatHelpText>
                                 </Stat>
-                            </Box>
+                            </Box> */}
                         </li>
                         {/* Bitcoin Supply */}
                         <li className="flex flex-col">
@@ -497,19 +539,19 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 "supply"
                             )}`}</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("circulating_supply")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("circulating_supply")}</p>
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(overviewData.market_data.circulating_supply || 0)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("total_supply")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("total_supply")}</p>
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(overviewData.market_data.total_supply || 0)}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm whitespace-nowrap ">{t("max_supply")}</p>
+                                <p className="text-typo-1 text-sm  ">{t("max_supply")}</p>
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(overviewData.market_data.max_supply || 0)}
                                 </p>

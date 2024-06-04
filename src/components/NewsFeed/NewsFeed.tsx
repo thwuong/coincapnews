@@ -16,7 +16,7 @@ function NewsFeedItem(props: FeedType) {
     return (
         <li className="pb-8 border-b ">
             {pathName !== `/${currentLanguage}/news` ? (
-                <Link href={`${post_permalink}`} className="flex gap-8 max-md:flex-col" target="_blank">
+                <Link href={`${post_permalink}`} rel="nofollow" className="flex gap-8 max-md:flex-col" target="_blank">
                     <img
                         src={post_thumbnail}
                         alt="feed"
@@ -41,7 +41,12 @@ function NewsFeedItem(props: FeedType) {
                     </div>
                 </Link>
             ) : (
-                <Link href={`${post_permalink}`} className="flex flex-col gap-4 max-md:flex-col" target="_blank">
+                <Link
+                    href={`${post_permalink}`}
+                    rel="nofollow"
+                    className="flex flex-col gap-4 max-md:flex-col"
+                    target="_blank"
+                >
                     <div className="flex items-center gap-4">
                         <Avatar src={author.avatar} size={"sm"} />
                         <div className="flex items-center gap-1">

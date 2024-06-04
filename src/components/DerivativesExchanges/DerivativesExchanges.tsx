@@ -117,7 +117,7 @@ function DerivativesExchangesTable({
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
+    const { currentLanguage, currentCurrency } = useAppSelector((store) => store.globalStore);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -222,12 +222,28 @@ function DerivativesExchangesTable({
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.open_interest_btc)}
+                                              {formatCurrency(
+                                                  row.original.open_interest_btc || 0,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      minimumFractionDigits: 0,
+                                                      maximumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(row.original.trade_volume_24h_btc)}
+                                              {formatCurrency(
+                                                  Number(row.original.trade_volume_24h_btc) || 0,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      minimumFractionDigits: 0,
+                                                      maximumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td px={"4px"}>
