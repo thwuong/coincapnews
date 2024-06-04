@@ -9,7 +9,7 @@ function LineHighChart({ data, isUp }: LineChartLastDaysProps) {
     const options: Highcharts.Options = useMemo(() => {
         return {
             chart: {
-                backgroundColor: "#F8FAFD",
+                backgroundColor: "transparent",
                 width: 164,
                 height: 80,
                 reflow: true,

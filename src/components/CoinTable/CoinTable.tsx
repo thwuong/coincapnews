@@ -2,6 +2,7 @@ import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
 import { checkFormatImage } from "@/app/utils/checkFormatImage";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
+import { coinSticky } from "@/fakedata/fakedata";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
 import { connectSocket } from "@/socket/client";
@@ -30,15 +31,19 @@ export type DataTableProps = {
     data: CoinType[];
     columns: ColumnDef<CoinType, any>[];
     isLoading: boolean;
+    currentPage: number;
 };
-function CoinTable({ data, columns, isLoading }: DataTableProps) {
+function CoinTable({ data, columns, isLoading, currentPage }: DataTableProps) {
     const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
-
     const [sorting, setSorting] = React.useState<SortingState>([]);
+    const list = React.useMemo(() => {
+        if (!data) return [];
+        return currentPage === 1 ? [coinSticky, ...(data.filter((item) => coinSticky.id !== item.id) || [])] : data;
+    }, [data, currentPage]);
     let ref = React.useRef<any>();
     const table = useReactTable({
         columns,
-        data,
+        data: list,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
@@ -49,8 +54,8 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
     const [width] = UseResize();
 
     React.useEffect(() => {
-        if (!data) return;
-        const url = data.map((i) => `${i.symbol}usdt@ticker/`).join("");
+        if (!list) return;
+        const url = list.map((i) => `${i.symbol}usdt@ticker/`).join("");
         const socket = connectSocket(url);
         function onConnect(this: WebSocket) {}
 
@@ -88,7 +93,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             socket.onclose = onDisconnect;
             socket.close();
         };
-    }, [data, currentLanguage]);
+    }, [list, currentLanguage]);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -157,15 +162,24 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                               let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
 
                               return (
-                                  <Tr key={row.index} data-symbol={convertId}>
+                                  <Tr
+                                      key={row.index}
+                                      data-symbol={convertId}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                      bg={row.original.id === "fimarkcoin-com" ? "gray.100" : "btn.50"}
+                                  >
                                       <Td
                                           p={"4px"}
-                                          minW={"120px"}
-                                          maxW={"150px"}
+                                          minW={"200px"}
+                                          maxW={"220px"}
                                           height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary"
+                                          zIndex={2}
+                                          className="bg-inherit"
                                       >
                                           <Box display={"flex"} alignItems={"center"} gap={"8px"}>
                                               <Image
@@ -208,12 +222,21 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                           <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
                                                               {row.original.symbol}
                                                           </span>
+                                                          {row.original.id === "fimarkcoin-com" && (
+                                                              <Badge
+                                                                  variant="outline"
+                                                                  colorScheme="brand"
+                                                                  fontSize={"11px"}
+                                                              >
+                                                                  Sponsored
+                                                              </Badge>
+                                                          )}
                                                       </Box>
                                                   </Box>
                                               </Link>
                                           </Box>
                                       </Td>
-                                      <Td isNumeric={true} px={"4px"}>
+                                      <Td isNumeric={true} px={"4px"} minW={"100px"}>
                                           <p className="capitalize price text-sm leading-4 font-semibold text-typo-1 font-inter">
                                               {formatCurrency(
                                                   row.original.current_price,
@@ -225,7 +248,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                               )}
                                           </p>
                                       </Td>
-                                      <Td isNumeric={true} px={"4px"}>
+                                      <Td isNumeric={true} px={"4px"} minW={"60px"}>
                                           <p
                                               className={clsx(
                                                   "capitalize text-sm leading-4 change24 font-semibold font-inter",
@@ -298,7 +321,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                           <Td
                                               height={"100px"}
                                               p={"4px"}
-                                              minW={"197px"}
+                                              minW={"260px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
@@ -309,25 +332,25 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                                   </div>
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"148px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"127px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"73px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"76px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"79px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"80px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"181px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"172px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"181px"}>
-                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
-                                          </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"244px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"150px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                           <Td isNumeric={true} px={"4px"} minW={"237px"}>
+                                              <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
+                                          </Td>
+                                          <Td isNumeric={true} px={"4px"} minW={"229px"}>
                                               <Skeleton height={"20px"} />
                                           </Td>
                                       </Tr>

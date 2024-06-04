@@ -208,12 +208,18 @@ function NewCryptoTable({
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               return (
-                                  <Tr key={row.index}>
+                                  <Tr
+                                      key={row.index}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                  >
                                       <Td
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary text-sm"
+                                          className="bg-inherit text-sm"
                                           textAlign={"center"}
                                           fontWeight={"500"}
                                       >
@@ -221,11 +227,11 @@ function NewCryptoTable({
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"120px"}
-                                          maxW={"150px"}
+                                          minW={"200px"}
+                                          maxW={"240px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={8}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <Link
                                               href={`/currency/${row.original.id}`}
@@ -331,7 +337,7 @@ function NewCryptoTable({
                                           <Td
                                               p={"4px"}
                                               height={"57px"}
-                                              minW={"216px"}
+                                              minW={"307px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               className="bg-secondary"
                                           >
@@ -343,25 +349,25 @@ function NewCryptoTable({
                                                   />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"196px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"208px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"99px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"106px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"92px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"106px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"206px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"133px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"197px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"138px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"128px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"136px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"145px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"154px"}>
                                               <SkeletonText noOfLines={1} spacing="2" skeletonHeight="2" />
                                           </Td>
                                       </Tr>

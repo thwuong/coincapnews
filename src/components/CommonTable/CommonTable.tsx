@@ -217,12 +217,18 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                               let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
 
                               return (
-                                  <Tr key={row.original.name}>
+                                  <Tr
+                                      key={row.original.name}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                  >
                                       <Td
                                           px={"4px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
                                               {row.index + 1 + currentIndex}
@@ -230,12 +236,12 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                       </Td>
                                       <Td
                                           p={"4px"}
-                                          minW={"120px"}
-                                          maxW={"150px"}
+                                          minW={"200px"}
+                                          maxW={"240px"}
                                           height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <Box display={"flex"} alignItems={"center"} gap={"8px"}>
                                               <div
@@ -357,7 +363,7 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                           <Td
                                               height={"100px"}
                                               p={"4px"}
-                                              minW={"220px"}
+                                              minW={"316px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={6}
                                           >
@@ -369,25 +375,25 @@ function CommonTable({ data, isLoading, currentIndex = 0 }: DataTableProps) {
                                                   />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"140px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"127px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"84px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"74px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"84px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"85px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"84px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"85px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"192px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"196px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"190px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"167px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"250px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"256px"}>
                                               <Skeleton height="14px" />
                                           </Td>
                                       </Tr>

@@ -161,7 +161,7 @@ function TableSection() {
                     />
                 </InputGroup>
             </section>
-            <CoinTable columns={columns} data={dataAPI} isLoading={isLoading} />
+            <CoinTable columns={columns} data={dataAPI} isLoading={isLoading} currentPage={page} />
             <section className="w-full py-4 flex justify-center">
                 <TablePagination
                     handlePrePage={handlePrePage}
