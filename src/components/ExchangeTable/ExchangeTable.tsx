@@ -156,10 +156,16 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                     {!isLoading
                         ? table.getRowModel().rows.map((row, index) => {
                               return (
-                                  <Tr key={row.index}>
+                                  <Tr
+                                      key={row.index}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                  >
                                       <Td
                                           px={"8px"}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
                                       >
@@ -167,11 +173,11 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"120px"}
-                                          maxW={"150px"}
+                                          minW={"180px"}
+                                          maxW={"200px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={8}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
                                               {row.original.market.name}

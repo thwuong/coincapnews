@@ -185,21 +185,28 @@ function DerivativesExchangesTable({
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               return (
-                                  <Tr key={row.index}>
+                                  <Tr
+                                      key={row.index}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                  >
                                       <Td
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary text-sm"
+                                          className="bg-inherit text-sm"
                                       >
                                           {row.index + 1 + currentIndex}
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"104px"}
+                                          minW={"200px"}
+                                          maxW={"240px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <Link
                                               href={`/exchanges/${row.original.id}`}
@@ -259,6 +266,7 @@ function DerivativesExchangesTable({
                                       <Td
                                           px={"4px"}
                                           height={"80px"}
+                                          minW={"180px"}
                                           display={"flex"}
                                           justifyContent={"center"}
                                           overflow={"hidden"}
@@ -278,13 +286,13 @@ function DerivativesExchangesTable({
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
-                                          <Td isNumeric={true} px={"4px"} w={"37px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"51px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                           <Td
                                               p={"4px"}
                                               height={"80px"}
-                                              minW={"390px"}
+                                              minW={"364px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                               className="bg-secondary"
@@ -298,23 +306,23 @@ function DerivativesExchangesTable({
                                               </div>
                                           </Td>
 
-                                          <Td isNumeric={true} px={"4px"} minW={"94px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"126px"}>
                                               <Skeleton height="15px" />
                                           </Td>
 
-                                          <Td isNumeric={true} px={"4px"} minW={"204px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"193px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"262px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"122px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"82px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"126px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"88px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"97px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"187px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"261px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                       </Tr>

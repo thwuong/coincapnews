@@ -157,7 +157,13 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               return (
-                                  <Tr key={row.original.name}>
+                                  <Tr
+                                      key={row.original.name}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                  >
                                       <Td px={"4px"} position={width <= 768 ? "sticky" : undefined} left={0}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
                                               {row.index + 1 + currentIndex}
@@ -165,12 +171,12 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                       </Td>
                                       <Td
                                           p={"4px"}
-                                          minW={"120px"}
-                                          maxW={"150px"}
+                                          minW={"200px"}
+                                          maxW={"240px"}
                                           height={"100px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <Box display={"flex"} alignItems={"center"} gap={"8px"}>
                                               <div
@@ -237,7 +243,7 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                           <Td
                                               height={"100px"}
                                               p={"4px"}
-                                              minW={"197px"}
+                                              minW={"256px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
@@ -249,13 +255,13 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                                   />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"133px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"136px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"69px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"71px"}>
                                               <Skeleton height="14px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"163px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"159px"}>
                                               <Skeleton height="14px" />
                                           </Td>
                                       </Tr>

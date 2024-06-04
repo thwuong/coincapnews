@@ -180,26 +180,32 @@ function DifferentExchangesTable({
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               return (
-                                  <Tr key={row.index}>
+                                  <Tr
+                                      key={row.index}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                  >
                                       <Td
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
                                           textAlign={"center"}
                                           zIndex={2}
-                                          className="bg-secondary text-[13px] font-medium "
+                                          className="bg-inherit text-[13px] font-medium "
                                       >
                                           {row.index + 1 + currentIndex}
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"120px"}
-                                          maxW={"150px"}
+                                          minW={"200px"}
+                                          maxW={"240px"}
                                           height={"80px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={8}
                                           zIndex={2}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <Link
                                               href={`/exchanges/${row.original.id}`}
@@ -271,13 +277,13 @@ function DifferentExchangesTable({
                               .map((_, index) => {
                                   return (
                                       <Tr key={index}>
-                                          <Td isNumeric={true} px={"8px"} minW={"43px"}>
+                                          <Td isNumeric={true} px={"8px"} minW={"41px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                           <Td
                                               height={"80px"}
                                               p={"4px"}
-                                              minW={"194px"}
+                                              minW={"247px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                           >
@@ -286,17 +292,17 @@ function DifferentExchangesTable({
                                                   <Skeleton height="10px" width={"50%"} />
                                               </div>
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"125px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"120px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"341px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"325px"}>
                                               <Skeleton height="15px" />
                                           </Td>
 
-                                          <Td isNumeric={true} px={"4px"} minW={"302px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"288px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"336px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"320px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                       </Tr>

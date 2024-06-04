@@ -152,22 +152,28 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               return (
-                                  <Tr key={row.index}>
+                                  <Tr
+                                      key={row.index}
+                                      className="bg-secondary duration-300"
+                                      _hover={{
+                                          bg: "gray.100",
+                                      }}
+                                  >
                                       <Td
                                           px={"8px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={0}
-                                          className="bg-secondary text-[13px] font-medium"
+                                          className="bg-inherit text-[13px] font-medium"
                                       >
                                           {row.index + 1 + currentIndex}
                                       </Td>
                                       <Td
                                           px={"4px"}
-                                          minW={"120px"}
-                                          maxW={"160px"}
+                                          minW={"160px"}
+                                          maxW={"180px"}
                                           position={width <= 768 ? "sticky" : undefined}
                                           left={6}
-                                          className="bg-secondary"
+                                          className="bg-inherit"
                                       >
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
                                               {row.original.coin_id}
