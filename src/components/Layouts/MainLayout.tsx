@@ -2,20 +2,16 @@
 import { Providers } from "@/app/providers";
 import { createStandaloneToast } from "@chakra-ui/react";
 import clsx from "clsx";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import { SideBar } from "../SideBar";
-
 interface LayoutProps {
-    params: {
-        lang: string;
-    };
     children: Readonly<React.ReactNode>;
 }
 
-function MainLayout({ children, params: { lang } }: LayoutProps) {
+function MainLayout({ children }: LayoutProps) {
     const { ToastContainer } = createStandaloneToast();
     const pathName = usePathname();
     const imagesLeft = [
@@ -39,28 +35,29 @@ function MainLayout({ children, params: { lang } }: LayoutProps) {
             alt: "Description for image 4",
         },
     ];
-
+    const search = useSearchParams();
+    const lang = search.get("lang") || "en";
     return (
         <Providers lang={lang}>
-            {pathName !== `/${lang}/my-account` && <Header lang={lang} />}
+            {pathName !== `/my-account` && <Header lang={lang} />}
             <section
                 className={clsx(
                     "flex w-full justify-center bg-secondary",
-                    pathName === `/${lang}/news` && "max-w-[1440px] ml-auto mr-auto bg-transparent md:pl-12 md:pr-12"
+                    pathName === `/news` && "max-w-[1440px] ml-auto mr-auto bg-transparent md:pl-12 md:pr-12"
                 )}
             >
-                {pathName !== `/${lang}/my-account` && <SideBar images={imagesLeft} />}
+                {pathName !== `/my-account` && <SideBar images={imagesLeft} />}
                 <div
                     className={clsx(
                         "w-full xl:min-h-[1220px]",
-                        pathName === `/${lang}/my-account` ? "w-full" : "max-w-[1440px]"
+                        pathName === `/my-account` ? "w-full" : "max-w-[1440px]"
                     )}
                 >
                     {children}
                 </div>
-                {pathName !== `/${lang}/my-account` && <SideBar images={imagesRight} />}
+                {pathName !== `/my-account` && <SideBar images={imagesRight} />}
             </section>
-            {pathName !== `/${lang}/my-account` && <Footer />}
+            {pathName !== `/my-account` && <Footer />}
             <ToastContainer />
         </Providers>
     );

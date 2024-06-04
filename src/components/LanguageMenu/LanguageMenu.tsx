@@ -3,7 +3,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { memo } from "react";
 type LangType = {
     label: string;
     code: string;
@@ -24,13 +24,13 @@ const langData: LangType[] = [
 
 function LanguageMenu() {
     const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
-    const router = useRouter();
     const path = usePathname();
+    const router = useRouter();
 
     const selectedLang = (item: LangType) => {
-        const currentHref = path.replace(currentLanguage, item.code);
-        router.push(currentHref);
+        router.push(`${path}?lang=${item.code}`);
         router.refresh();
+        // window.location.href = `${path}?lang=${item.code}`;
     };
     const currLang = React.useMemo(
         () => langData.find((item) => item.code === currentLanguage) || langData[0],
@@ -41,6 +41,7 @@ function LanguageMenu() {
         <Menu>
             <MenuButton
                 bg={"transparent"}
+                className="animate-fade"
                 _hover={{
                     bg: "gray.100",
                 }}
@@ -77,4 +78,4 @@ function LanguageMenu() {
     );
 }
 
-export default LanguageMenu;
+export default memo(LanguageMenu);

@@ -22,10 +22,7 @@ type MarketData = {
         };
     };
 };
-type TopbarProps = {
-    lang: string;
-};
-function Topbar({ lang }: TopbarProps) {
+function Topbar() {
     const [currency, setCurrency] = useState<string>();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { data: dataGlobal, isLoading }: { data: MarketData; isLoading: boolean } =
@@ -33,7 +30,7 @@ function Topbar({ lang }: TopbarProps) {
     const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
     const { t } = useTranslation(currentLanguage);
     useEffect(() => {
-        setCurrency(currentCurrency);
+        currentCurrency && setCurrency(currentCurrency);
     }, [currentCurrency]);
     return (
         <section className="w-full flex items-center justify-between text-12 min-h-[48px] max-lg:overflow-x-auto">
@@ -79,11 +76,12 @@ function Topbar({ lang }: TopbarProps) {
             )}
 
             <div className="flex items-center gap-2 max-lg:hidden">
-                <LanguageMenu />
+                {currentLanguage ? <LanguageMenu /> : <div className="loader-lang mr-4"></div>}
                 {currency ? (
                     <Button
                         onClick={() => onOpen()}
                         bg={"transparent"}
+                        className="animate-fade"
                         _hover={{
                             bg: "gray.100",
                         }}

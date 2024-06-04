@@ -19,6 +19,10 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
         // setPage(selected + 1);
         setPage(page + 1);
     };
+    const handlePrePage = (selectedItem: any) => {
+        // setPage(selectedItem.selected + 1);
+        setPage(page - 1);
+    };
     const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage);
     const exchanges = useMemo(() => {
@@ -129,6 +133,8 @@ function DetailTabs({ coinData, newData }: { coinData: DetailCoinType; newData: 
                         {exchanges && exchanges?.length / selected > 1 && (
                             <div className="w-full py-4 flex justify-center">
                                 <TablePagination
+                                    handlePrePage={handlePrePage}
+                                    currentPage={page}
                                     disbledPre
                                     disbledNext
                                     pageCount={exchanges?.length / selected}

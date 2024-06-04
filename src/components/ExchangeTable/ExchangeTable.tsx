@@ -1,7 +1,6 @@
 import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
-import { useAppSelector } from "@/lib/hooks";
 import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
     ColumnDef,
@@ -13,6 +12,7 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 type Exchange = {
     coin_id: string;
@@ -86,8 +86,10 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
         },
     });
     const [width] = UseResize();
-    const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
-    const { t } = useTranslation(currentLanguage);
+    // const currentLanguage = useAppSelector((store) => store.globalStore.currentLanguage);
+    const search = useSearchParams();
+    const lang = search.get("lang") || "en";
+    const { t } = useTranslation(lang);
     return (
         <TableContainer w={"100%"}>
             <Table>
@@ -182,14 +184,9 @@ function ExchangeTable({ data, isLoading, currentIndex = 0 }: ExchangeTableProps
                                       </Td>
                                       <Td px={"4px"} minW={"120px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {formatCurrency(
-                                                  row.original.converted_last["usd"],
-                                                  "USD",
-                                                  currentLanguage,
-                                                  {
-                                                      maximumFractionDigits: 6,
-                                                  }
-                                              )}
+                                              {formatCurrency(row.original.converted_last["usd"], "USD", lang, {
+                                                  maximumFractionDigits: 6,
+                                              })}
                                           </p>
                                       </Td>
                                       <Td px={"4px"} minW={"145px"}>

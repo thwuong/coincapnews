@@ -1,15 +1,18 @@
 import MainLayout from "@/components/Layouts/MainLayout";
+import { pageList } from "@/fakedata/fakedata";
 import { dir } from "i18next";
 import type { Metadata } from "next";
-import { WEBSITE_HOST_URL } from "../contants";
-import "../globals.css";
-import { languages } from "../i18n/settings";
+import { cookies } from "next/headers";
+import { WEBSITE_HOST_URL } from "./contants";
+import "./globals.css";
+import { cookieName } from "./i18n/settings";
 const meta = {
     title: "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",
     description:
         "Top cryptocurrency prices and charts, listed by market capitalization. Free access to current and historic data for Bitcoin and thousands of altcoins.",
     image: `${WEBSITE_HOST_URL}/assets/images/logo.png`,
 };
+
 export const metadata: Metadata = {
     title: {
         template: "%s",
@@ -71,20 +74,19 @@ export const metadata: Metadata = {
     },
 };
 interface LayoutProps {
-    params: {
-        lang: string;
-    };
     children: Readonly<React.ReactNode>;
 }
-
 export async function generateStaticParams() {
-    return languages.map((lng) => ({ lng }));
+    return pageList.map((item) => `/${item}`);
 }
-export default function RootLayout({ children, params: { lang } }: LayoutProps) {
+export default function RootLayout({ children }: LayoutProps) {
+    const cookieStore = cookies();
+    const lang = cookieStore.get(cookieName)?.value || "en";
+
     return (
         <html lang={lang} dir={dir(lang)} className="scroll-smooth">
             <body>
-                <MainLayout params={{ lang }}>{children}</MainLayout>
+                <MainLayout>{children}</MainLayout>;
             </body>
         </html>
     );

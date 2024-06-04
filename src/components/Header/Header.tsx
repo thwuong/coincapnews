@@ -74,7 +74,7 @@ function Header({ lang }: HeaderProps) {
     return (
         <header className="flex items-center justify-center flex-col">
             <Container className="px-12">
-                <Topbar lang={lang} />
+                <Topbar />
             </Container>
             <div
                 className={clsx(
@@ -109,7 +109,7 @@ function Header({ lang }: HeaderProps) {
                                     py={"6px"}
                                     type="text"
                                     value={keyword}
-                                    placeholder={t("search coin")}
+                                    placeholder={t("search")}
                                     border={"none"}
                                     className="placeholder:text-13"
                                 />
