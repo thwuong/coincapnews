@@ -7,6 +7,7 @@ interface PageProps {
         lang: string;
     };
 }
+export const dynamic = "force-dynamic";
 export async function generateStaticParams() {
     const data = await fetchAPI("/api/exchanges");
     return data.map((coin: DetailExchangeType) => ({
