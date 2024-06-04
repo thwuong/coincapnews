@@ -8,7 +8,7 @@ type ImageProps = {
 
 const ImageComponent: React.FC<ImageProps> = ({ src, alt }) => {
     return (
-        <Link href={"https://fmcpay.com/"} target="_blank">
+        <Link href={"https://fmcpay.com/"} target="_blank" rel="nofollow">
             <img
                 loading="lazy"
                 src={src}
@@ -20,8 +20,6 @@ const ImageComponent: React.FC<ImageProps> = ({ src, alt }) => {
 };
 
 const SideBar = ({ images }: { images: ImageProps[] }) => {
-
-
     return (
         <aside className="5xl:flex box-border hidden relative flex-col shrink-0 w-full max-w-[190px] max-md:hidden">
             <div className="box-border flex sticky bottom-4 top-1/2 -translate-y-1/2 flex-col shrink-0 w-full max-w-[190px]">

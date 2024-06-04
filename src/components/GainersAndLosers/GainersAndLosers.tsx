@@ -89,7 +89,7 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
     const nextPage = (href: string) => {
         router.push(`/currency/${href}`);
     };
-    const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
+    const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -195,7 +195,7 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
                                       </Td>
                                       <Td isNumeric={true} px={"4px"}>
                                           <p className="capitalize text-sm text-center leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original.usd, "USD", currentLanguage, {
+                                              {formatCurrency(row.original.usd, currentCurrency, currentLanguage, {
                                                   maximumFractionDigits: 9,
                                               })}
                                           </p>
@@ -213,7 +213,14 @@ function GainersAndLosersTable({ data, isLoading, currentIndex = 0 }: DataTableP
 
                                       <Td isNumeric={true} px={"4px"} minW={"118px"}>
                                           <p className="capitalize text-sm text-center leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatCurrency(row.original.usd_24h_vol, "USD", currentLanguage)}
+                                              {formatCurrency(
+                                                  row.original.usd_24h_vol || 0,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      minimumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                   </Tr>

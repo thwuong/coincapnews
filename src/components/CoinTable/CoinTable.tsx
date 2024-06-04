@@ -60,9 +60,14 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             const priceEL = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.price`);
             const change24 = document.querySelector(`tr[data-symbol="${streamData.data.s}"] td p.change24`);
             if (priceEL) {
-                priceEL.innerHTML = formatCurrency(parseFloat(streamData.data.c), currentCurrency, currentLanguage, {
-                    maximumFractionDigits: 8,
-                });
+                priceEL.innerHTML = formatCurrency(
+                    parseFloat(streamData.data.c),
+                    currentCurrency,
+                    currentLanguage || "en",
+                    {
+                        maximumFractionDigits: 8,
+                    }
+                );
             }
             if (change24) {
                 change24.innerHTML = `${parseFloat(streamData.data.P)?.toFixed(2)}%`;
@@ -83,7 +88,7 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
             socket.onclose = onDisconnect;
             socket.close();
         };
-    }, [data]);
+    }, [data, currentLanguage]);
     const { t } = useTranslation(currentLanguage);
     return (
         <TableContainer w={"100%"}>
@@ -246,12 +251,26 @@ function CoinTable({ data, columns, isLoading }: DataTableProps) {
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"138px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original.market_cap)}
+                                              {formatCurrency(
+                                                  row.original.market_cap,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      minimumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"118px"}>
                                           <p className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter">
-                                              {formatQuoteCurrency(row.original.total_volume)}
+                                              {formatCurrency(
+                                                  row.original.total_volume,
+                                                  currentCurrency,
+                                                  currentLanguage,
+                                                  {
+                                                      minimumFractionDigits: 0,
+                                                  }
+                                              )}
                                           </p>
                                       </Td>
                                       <Td isNumeric={true} px={"4px"} minW={"182px"}>
