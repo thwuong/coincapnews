@@ -232,7 +232,8 @@ function NewCryptoTable({
                                               className="flex items-center gap-3"
                                           >
                                               {checkFormatImage(row.original.image) && (
-                                                  <Image
+                                                  <img
+                                                      loading="lazy"
                                                       src={row.original.image}
                                                       alt={row.original.name}
                                                       width={24}
