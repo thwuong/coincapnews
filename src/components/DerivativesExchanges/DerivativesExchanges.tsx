@@ -5,7 +5,19 @@ import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
-import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+    Badge,
+    Box,
+    Skeleton,
+    SkeletonCircle,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+} from "@chakra-ui/react";
 import {
     ColumnDef,
     SortingState,
@@ -100,15 +112,23 @@ function DerivativesExchangesTable({
     data,
     isLoading,
     currentIndex = 0,
+    features,
+    currentPage,
 }: {
     data: Exchange[];
     isLoading: boolean;
     currentIndex?: number;
+    features: any;
+    currentPage: number;
 }) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
+    const list: Exchange[] = React.useMemo(() => {
+        if (!data) return [];
+        return currentPage === 1 ? [features[0], ...data] : data;
+    }, [data, currentPage]);
     const table = useReactTable({
         columns,
-        data,
+        data: list,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
@@ -191,6 +211,7 @@ function DerivativesExchangesTable({
                                       _hover={{
                                           bg: "gray.100",
                                       }}
+                                      bg={row.original.id === "fmcpay" ? "gray.100" : "btn.50"}
                                   >
                                       <Td
                                           px={"8px"}
@@ -222,6 +243,11 @@ function DerivativesExchangesTable({
                                               <p className="capitalize text-sm leading-4 font-semibold text-typo-4 ">
                                                   {row.original.name}
                                               </p>
+                                              {row.original.id === "fmcpay" && (
+                                                  <Badge variant="outline" colorScheme="brand" fontSize={"11px"}>
+                                                      Sponsored
+                                                  </Badge>
+                                              )}
                                           </Link>
                                       </Td>
                                       <Td px={"4px"}>
@@ -340,6 +366,7 @@ function DerivativesExchanges() {
     const { data, isLoading } = useFetchAPI(
         `/api/derivatives?per_page=${COIN_PER_PAGE}&centralized=true&exclude=tickers`
     );
+    const { data: features } = useFetchAPI(`/api/exchanges?exclude=tickers,description&search=fmcpay`);
     const handlePageClick = ({ selected }: { selected: number }) => {
         // setPage(selected + 1);
         setPage(page + 1);
@@ -353,6 +380,8 @@ function DerivativesExchanges() {
             {/* Table */}
             <DerivativesExchangesTable
                 data={data}
+                features={features}
+                currentPage={page}
                 isLoading={isLoading}
                 currentIndex={(page - 1) * Number(COIN_PER_PAGE)}
             />
