@@ -1,6 +1,7 @@
 "use client";
 import { Providers } from "@/app/providers";
 import { createStandaloneToast } from "@chakra-ui/react";
+import { Analytics } from "@vercel/analytics/react";
 import clsx from "clsx";
 import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
@@ -59,6 +60,7 @@ function MainLayout({ children }: LayoutProps) {
             </section>
             {pathName !== `/my-account` && <Footer />}
             <ToastContainer />
+            {process.env.NODE_ENV === "production" && <Analytics />}
         </Providers>
     );
 }
