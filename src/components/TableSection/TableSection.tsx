@@ -110,7 +110,7 @@ function TableSection() {
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}`
     );
-    const { data: features } = useFetchAPI(`/api/coins/markets/?ids=${IDS_FEATURE}`);
+    const { data: features, isLoading: isLoadingFeature } = useFetchAPI(`/api/coins/markets/?ids=${IDS_FEATURE}`);
 
     const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage, "home");
@@ -168,7 +168,7 @@ function TableSection() {
                 <TablePagination
                     handlePrePage={handlePrePage}
                     currentPage={page}
-                    className={isLoading ? "hidden" : "flex"}
+                    className={isLoading && isLoadingFeature ? "hidden" : "flex"}
                     pageCount={pageCount}
                     handlePageClick={handlePageClick}
                 />

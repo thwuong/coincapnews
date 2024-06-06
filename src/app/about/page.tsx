@@ -4,6 +4,8 @@ import { useTranslation } from "@/app/i18n";
 import { Container } from "@/components/Container";
 import { Markdown } from "@/components/Markdown";
 import { Metadata, ResolvingMetadata } from "next";
+import { cookies } from "next/headers";
+import { cookieName } from "../i18n/settings";
 interface PageProps {
     params: {
         lang: string;
@@ -12,7 +14,8 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
     // read route params
-    const lang = params.lang;
+    const cookieStore = cookies();
+    const lang = cookieStore.get(cookieName)?.value || "en";
 
     // fetch data
     const content = await getPayloadContent("https://content-cms.onrender.com/api/pages/1", lang);
@@ -27,13 +30,13 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
             images: [...(openGraph?.images || [])],
             title: content.meta?.title || title || "",
             description: content.meta?.description || description || "",
-            url: `${WEBSITE_HOST_URL}/${lang}/about`,
+            url: `${WEBSITE_HOST_URL}/about?lang=${lang}`,
             locale: "en-US",
             siteName: content.meta?.title,
             type: "website",
         },
         alternates: {
-            canonical: `${WEBSITE_HOST_URL}/${lang}/about`,
+            canonical: `${WEBSITE_HOST_URL}/about?lang=${lang}`,
         },
         twitter: {
             title: content.meta?.title,

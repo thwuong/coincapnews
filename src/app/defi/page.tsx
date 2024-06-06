@@ -4,6 +4,8 @@ import { CommonSection } from "@/components/CommonSection";
 import { Container } from "@/components/Container";
 import { Heading } from "@/components/Heading";
 import { Metadata, ResolvingMetadata } from "next";
+import { cookies } from "next/headers";
+import { cookieName } from "../i18n/settings";
 interface PageProps {
     params: {
         id: string;
@@ -12,7 +14,8 @@ interface PageProps {
 }
 export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
     // read route params
-    const lang = params.lang;
+    const cookieStore = cookies();
+    const lang = cookieStore.get(cookieName)?.value || "en";
     const content = {
         meta: {
             title: "DeFi | Coincapnews",
@@ -28,13 +31,13 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
             images: [...(openGraph?.images || [])],
             title: content.meta?.title || title || "",
             description: content.meta?.description || description || "",
-            url: `${WEBSITE_HOST_URL}/${lang}/defi`,
+            url: `${WEBSITE_HOST_URL}/defi?lang=${lang}`,
             locale: "en-US",
             siteName: content.meta?.title,
             type: "website",
         },
         alternates: {
-            canonical: `${WEBSITE_HOST_URL}/${lang}/defi`,
+            canonical: `${WEBSITE_HOST_URL}/defi?lang=${lang}`,
         },
         twitter: {
             title: content.meta?.title,
