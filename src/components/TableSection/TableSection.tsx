@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import useFetchAPI from "@/api/baseAPI";
-import { COIN_PER_PAGE } from "@/app/contants";
+import { COIN_PER_PAGE, IDS_FEATURE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
 import { useAppSelector } from "@/lib/hooks";
@@ -110,10 +110,12 @@ function TableSection() {
     const { data: dataAPI, isLoading } = useFetchAPI(
         `/api/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}`
     );
+    const { data: features } = useFetchAPI(`/api/coins/markets/?ids=${IDS_FEATURE}`);
+
     const currentLanguage = useAppSelector((state) => state.globalStore.currentLanguage);
     const { t } = useTranslation(currentLanguage, "home");
     React.useEffect(() => {
-        if (!keyword) return;
+        // if (!keyword) return;
         if (timer.current) clearTimeout(timer.current);
 
         timer.current = setTimeout(() => {
@@ -161,7 +163,7 @@ function TableSection() {
                     />
                 </InputGroup>
             </section>
-            <CoinTable columns={columns} data={dataAPI} isLoading={isLoading} currentPage={page} />
+            <CoinTable columns={columns} data={dataAPI} features={features} isLoading={isLoading} currentPage={page} />
             <section className="w-full py-4 flex justify-center">
                 <TablePagination
                     handlePrePage={handlePrePage}
