@@ -4,6 +4,8 @@ import { Container } from "@/components/Container";
 import { ConvertAmount } from "@/components/ConvertAmount";
 import { Heading } from "@/components/Heading";
 import { Metadata, ResolvingMetadata } from "next";
+import { cookies } from "next/headers";
+import { cookieName } from "../i18n/settings";
 interface PageProps {
     params: {
         lang: string;
@@ -11,7 +13,8 @@ interface PageProps {
 }
 export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
     // read route params
-    const lang = params.lang;
+    const cookieStore = cookies();
+    const lang = cookieStore.get(cookieName)?.value || "en";
     const content = {
         meta: {
             title: "Converter | Coincapnews",
@@ -27,13 +30,13 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
             images: [...(openGraph?.images || [])],
             title: content.meta?.title || title || "",
             description: content.meta?.description || description || "",
-            url: `${WEBSITE_HOST_URL}/${lang}/converter`,
+            url: `${WEBSITE_HOST_URL}/converter?lang=${lang}`,
             locale: "en-US",
             siteName: content.meta?.title,
             type: "website",
         },
         alternates: {
-            canonical: `${WEBSITE_HOST_URL}/${lang}/converter`,
+            canonical: `${WEBSITE_HOST_URL}/converter?lang=${lang}`,
         },
         twitter: {
             title: content.meta?.title,
