@@ -63,7 +63,7 @@ function Header({ lang }: HeaderProps) {
         resetSearch();
     };
     React.useEffect(() => {
-        if (!keyword) return;
+        // if (!keyword) return;
         if (timer.current) clearTimeout(timer.current);
 
         timer.current = setTimeout(() => {
@@ -110,10 +110,13 @@ function Header({ lang }: HeaderProps) {
                                     type="text"
                                     value={keyword}
                                     placeholder={t("search")}
+                                    onFocus={() => {
+                                        setShow(true);
+                                    }}
                                     border={"none"}
                                     className="placeholder:text-13"
                                 />
-                                {!loading && searchList && show && (
+                                {!loading && searchList && show && keyword && (
                                     <Box
                                         position={"absolute"}
                                         zIndex={30}

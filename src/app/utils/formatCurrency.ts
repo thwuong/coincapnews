@@ -1,5 +1,5 @@
 export const formatCurrency = (
-    amount: number,
+    amount: number = 0,
     code: string = "USD",
     lang: string = "en-US",
     options?: Intl.NumberFormatOptions
@@ -7,7 +7,7 @@ export const formatCurrency = (
     // return new Intl.NumberFormat(lang, { style: "currency", currency: code, ...options }).format(amount);
     const locale = lang === "en" ? "en-US" : "vi-VN";
 
-    return amount.toLocaleString(locale, {
+    return Number(amount).toLocaleString(locale, {
         style: "currency",
         currency: code,
         ...options,

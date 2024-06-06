@@ -1,6 +1,7 @@
 "use client";
 import { Providers } from "@/app/providers";
-import { createStandaloneToast } from "@chakra-ui/react";
+import UseGetScrollY from "@/hooks/UseGetScrollY";
+import { Button, createStandaloneToast } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
 import clsx from "clsx";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -38,6 +39,7 @@ function MainLayout({ children }: LayoutProps) {
     ];
     const search = useSearchParams();
     const lang = search.get("lang") || "en";
+    const [scrollY] = UseGetScrollY();
     return (
         <Providers lang={lang}>
             {pathName !== `/my-account` && <Header lang={lang} />}
@@ -61,6 +63,33 @@ function MainLayout({ children }: LayoutProps) {
             {pathName !== `/my-account` && <Footer />}
             <ToastContainer />
             {process.env.NODE_ENV === "production" && <Analytics />}
+            {scrollY && scrollY > 400 && (
+                <div className="fixed bottom-4 right-4 z-[99999] duration-500">
+                    <Button
+                        p={"8px"}
+                        bg={"brand.500"}
+                        _hover={{
+                            bg: "brand.600",
+                        }}
+                        className="group shadow"
+                        borderRadius={"100%"}
+                        onClick={() => {
+                            window.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                            });
+                        }}
+                    >
+                        <img
+                            src="/assets/icons/top.svg"
+                            alt="scroll top"
+                            width={24}
+                            height={24}
+                            className="group-hover:-translate-y-0.5 duration-200"
+                        />
+                    </Button>
+                </div>
+            )}
         </Providers>
     );
 }

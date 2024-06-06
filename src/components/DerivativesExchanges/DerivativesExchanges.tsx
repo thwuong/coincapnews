@@ -124,7 +124,7 @@ function DerivativesExchangesTable({
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const list: Exchange[] = React.useMemo(() => {
         if (!data) return [];
-        return currentPage === 1 ? [features[0], ...data] : data;
+        return currentPage === 1 ? [...(features || []), ...data] : data;
     }, [data, currentPage]);
     const table = useReactTable({
         columns,
@@ -318,7 +318,7 @@ function DerivativesExchangesTable({
                                           <Td
                                               p={"4px"}
                                               height={"80px"}
-                                              minW={"364px"}
+                                              minW={"285px"}
                                               position={width <= 768 ? "sticky" : undefined}
                                               left={0}
                                               className="bg-secondary"
@@ -332,23 +332,23 @@ function DerivativesExchangesTable({
                                               </div>
                                           </Td>
 
-                                          <Td isNumeric={true} px={"4px"} minW={"126px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"103px"}>
                                               <Skeleton height="15px" />
                                           </Td>
 
-                                          <Td isNumeric={true} px={"4px"} minW={"193px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"224px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"122px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"288px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"126px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"90px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"97px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"96px"}>
                                               <Skeleton height="15px" />
                                           </Td>
-                                          <Td isNumeric={true} px={"4px"} minW={"261px"}>
+                                          <Td isNumeric={true} px={"4px"} minW={"214px"}>
                                               <Skeleton height="15px" />
                                           </Td>
                                       </Tr>

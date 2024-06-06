@@ -2,7 +2,6 @@ import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
 import { checkFormatImage } from "@/app/utils/checkFormatImage";
 import { formatCurrency, formatQuoteCurrency } from "@/app/utils/formatCurrency";
-import { coinSticky } from "@/fakedata/fakedata";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
 import { connectSocket } from "@/socket/client";
@@ -32,14 +31,20 @@ export type DataTableProps = {
     columns: ColumnDef<CoinType, any>[];
     isLoading: boolean;
     currentPage: number;
+    features: CoinType[];
 };
-function CoinTable({ data, columns, isLoading, currentPage }: DataTableProps) {
+function CoinTable({ data, columns, isLoading, currentPage, features }: DataTableProps) {
     const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const list = React.useMemo(() => {
         if (!data) return [];
-        return currentPage === 1 ? [coinSticky, ...(data.filter((item) => coinSticky.id !== item.id) || [])] : data;
-    }, [data, currentPage]);
+        return currentPage === 1
+            ? [
+                  ...(features || []),
+                  ...data.filter((item) => features?.every((feature: CoinType) => feature.id !== item.id)),
+              ]
+            : data;
+    }, [data, currentPage, features]);
     let ref = React.useRef<any>();
     const table = useReactTable({
         columns,
