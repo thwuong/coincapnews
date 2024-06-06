@@ -1,3 +1,4 @@
+import { IDS_FEATURE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
 import { checkFormatImage } from "@/app/utils/checkFormatImage";
@@ -174,7 +175,7 @@ function CoinTable({ data, columns, isLoading, currentPage, features }: DataTabl
                                       _hover={{
                                           bg: "gray.100",
                                       }}
-                                      bg={row.original.id === "fimarkcoin-com" ? "gray.100" : "btn.50"}
+                                      bg={IDS_FEATURE?.includes(row.original.id) ? "gray.100" : "btn.50"}
                                   >
                                       <Td
                                           p={"4px"}
@@ -227,7 +228,7 @@ function CoinTable({ data, columns, isLoading, currentPage, features }: DataTabl
                                                           <span className="uppercase leading-[18px] text-12 text-typo-1 font-inter">
                                                               {row.original.symbol}
                                                           </span>
-                                                          {row.original.id === "fimarkcoin-com" && (
+                                                          {IDS_FEATURE?.includes(row.original.id) && (
                                                               <Badge
                                                                   variant="outline"
                                                                   colorScheme="brand"
