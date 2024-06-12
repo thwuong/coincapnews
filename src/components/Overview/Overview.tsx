@@ -47,7 +47,13 @@ type OverviewProps = {
     };
     market_cap_rank: number;
 };
-function Overview({ overviewData, newData }: { overviewData: OverviewProps; newData: NewDataType | any }) {
+function Overview({
+    overviewData,
+    newData,
+}: {
+    overviewData: OverviewProps;
+    newData: NewDataType | any;
+}) {
     const [tabActive, setTabActive] = useState("price");
     const [datetime, setDatetime] = useState("1");
     const [isMore, setIsMore] = useState(false);
@@ -85,7 +91,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             }}
                             bg={tabActive === "price" ? "white" : ""}
                         >
-                            <span className="text-black font-semibold leading-[30px] text-13">{t("price")}</span>
+                            <span className="text-black font-semibold leading-[30px] text-13">
+                                {t("price")}
+                            </span>
                         </Button>
                         <Button
                             className="w-fit max-md:w-full"
@@ -96,7 +104,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             }}
                             bg={tabActive === "trading" ? "white" : ""}
                         >
-                            <span className="text-black font-semibold leading-[30px] text-13">{t("trading_view")}</span>
+                            <span className="text-black font-semibold leading-[30px] text-13">
+                                {t("trading_view")}
+                            </span>
                         </Button>
                     </div>
                     {tabActive === "price" && (
@@ -110,7 +120,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 }}
                                 bg={datetime === "1" ? "white" : ""}
                             >
-                                <span className="text-black font-semibold leading-[30px] text-13">1D</span>
+                                <span className="text-black font-semibold leading-[30px] text-13">
+                                    1D
+                                </span>
                             </Button>
                             <Button
                                 className="w-fit max-md:w-full"
@@ -121,7 +133,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 }}
                                 bg={datetime === "7" ? "white" : ""}
                             >
-                                <span className="text-black font-semibold leading-[30px] text-13">7D</span>
+                                <span className="text-black font-semibold leading-[30px] text-13">
+                                    7D
+                                </span>
                             </Button>
                             <Button
                                 className="w-fit max-md:w-full"
@@ -132,7 +146,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 }}
                                 bg={datetime === "30" ? "white" : ""}
                             >
-                                <span className="text-black font-semibold leading-[30px] text-13">1M</span>
+                                <span className="text-black font-semibold leading-[30px] text-13">
+                                    1M
+                                </span>
                             </Button>
                             <Button
                                 className="w-fit max-md:w-full"
@@ -143,7 +159,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 }}
                                 bg={datetime === "90" ? "white" : ""}
                             >
-                                <span className="text-black font-semibold leading-[30px] text-13">3M</span>
+                                <span className="text-black font-semibold leading-[30px] text-13">
+                                    3M
+                                </span>
                             </Button>
                             <Button
                                 className="w-fit max-md:w-full"
@@ -154,7 +172,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 }}
                                 bg={datetime === "180" ? "white" : ""}
                             >
-                                <span className="text-black font-semibold leading-[30px] text-13">6M</span>
+                                <span className="text-black font-semibold leading-[30px] text-13">
+                                    6M
+                                </span>
                             </Button>
                             <Button
                                 className="w-fit max-md:w-full"
@@ -165,7 +185,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 }}
                                 bg={datetime === "365" ? "white" : ""}
                             >
-                                <span className="text-black font-semibold leading-[30px] text-13">1Y</span>
+                                <span className="text-black font-semibold leading-[30px] text-13">
+                                    1Y
+                                </span>
                             </Button>
                         </div>
                     )}
@@ -185,7 +207,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                 {/* About coin */}
                 {overviewData.description && (
                     <div className="py-6 flex flex-col gap-5">
-                        <h2 className="text-[25px] font-bold text-typo-4">{`${t("about")} ${overviewData.name}`}</h2>
+                        <h2 className="text-[25px] font-bold text-typo-4">{`${t("about")} ${
+                            overviewData.name
+                        }`}</h2>
                         <div
                             ref={descHeight}
                             className={clsx(
@@ -196,7 +220,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                         >
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: overviewData.description[currentLanguage] || overviewData.description["en"],
+                                    __html:
+                                        overviewData.description[currentLanguage] ||
+                                        overviewData.description["en"],
                                 }}
                                 id="description"
                             ></div>
@@ -225,7 +251,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
             <div className="col-span-4 flex flex-col mt-12 gap-6 max-lg:col-span-1">
                 <div className="rounded-2xl border border-[rgb(239,242,245)] overflow-hidden">
                     <Box className="py-5 px-4 flex items-center justify-between gap-4" bg={"white"}>
-                        <p className="font-semibold text-sm text-black uppercase">{overviewData.symbol}</p>
+                        <p className="font-semibold text-sm text-black uppercase">
+                            {overviewData.symbol}
+                        </p>
                         <NumberInput>
                             <NumberInputField
                                 px={"0px"}
@@ -242,7 +270,10 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                             />
                         </NumberInput>
                     </Box>
-                    <Box className="py-5 px-4 flex items-center justify-between gap-4" bg={"#F8FAFD"}>
+                    <Box
+                        className="py-5 px-4 flex items-center justify-between gap-4"
+                        bg={"#F8FAFD"}
+                    >
                         <p className="font-semibold text-sm text-black uppercase">USD</p>
                         <p className="font-bold text-lg min-h-10">
                             {result ? formatCurrency(result, currentCurrency, currentLanguage) : ""}
@@ -254,17 +285,27 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                     <h2 className="text-2xl font-bold text-typo-4">
                         <span className="uppercase">{overviewData.symbol}</span> {t("price_status")}
                     </h2>
-                    <ul className={clsx("flex flex-col gap-6 overflow-hidden", isMore ? "h-auto" : "h-[430px]")}>
+                    <ul
+                        className={clsx(
+                            "flex flex-col gap-6 overflow-hidden",
+                            isMore ? "h-auto" : "h-[430px]"
+                        )}
+                    >
                         {/* Bitcoin Price Today */}
                         <li className="flex flex-col">
                             <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">
                                 {`${overviewData.name} ${t("price_today")}`}
                             </h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm  ">{`${overviewData.name} ${t("price")}`}</p>
+                                <p className="text-typo-1 text-sm  ">{`${overviewData.name} ${t(
+                                    "price"
+                                )}`}</p>
                                 <p className="font-semibold text-sm">
                                     {formatCurrency(
-                                        getNewData(newData?.price, overviewData.market_data?.current_price?.usd),
+                                        getNewData(
+                                            newData?.price,
+                                            overviewData.market_data?.current_price?.usd
+                                        ),
                                         currentCurrency,
                                         currentLanguage,
                                         {
@@ -289,7 +330,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                     <StatNumber>
                                         <p className="font-semibold text-sm">
                                             {formatCurrency(
-                                                overviewData.market_data?.price_change_24h_in_currency?.usd || 0,
+                                                overviewData.market_data
+                                                    ?.price_change_24h_in_currency?.usd || 0,
                                                 currentCurrency,
                                                 currentLanguage
                                             )}
@@ -301,7 +343,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         className={
                                             getNewData(
                                                 newData?.change24,
-                                                overviewData.market_data?.market_cap_change_percentage_24h || 0
+                                                overviewData.market_data
+                                                    ?.market_cap_change_percentage_24h || 0
                                             ) > 0
                                                 ? "text-up"
                                                 : "text-down"
@@ -311,7 +354,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                             type={
                                                 getNewData(
                                                     newData?.change24,
-                                                    overviewData.market_data?.market_cap_change_percentage_24h || 0
+                                                    overviewData.market_data
+                                                        ?.market_cap_change_percentage_24h || 0
                                                 ) > 0
                                                     ? "increase"
                                                     : "decrease"
@@ -321,7 +365,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         />
                                         {getNewData(
                                             newData?.change24,
-                                            overviewData.market_data?.market_cap_change_percentage_24h || 0
+                                            overviewData.market_data
+                                                ?.market_cap_change_percentage_24h || 0
                                         )?.toFixed(2)}
                                         %
                                     </StatHelpText>
@@ -343,18 +388,19 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                     )}
                                 </p>
                             </Box>
-                            <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
+                            {/* <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm  ">{t("volume_market_cap")}</p>
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(
-                                        overviewData.market_data.total_volume?.usd /
-                                            overviewData.market_data?.market_cap?.usd || 0
+                                        overviewData.market_data?.market_cap?.usd || 0
                                     )}
                                 </p>
-                            </Box>
+                            </Box> */}
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm  ">{t("market_rank")}</p>
-                                <p className="font-semibold text-sm">#{overviewData.market_cap_rank}</p>
+                                <p className="font-semibold text-sm">
+                                    #{overviewData.market_cap_rank}
+                                </p>
                             </Box>
                         </li>
                         {/* BitcoinMarket Cap */}
@@ -373,10 +419,13 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
-                                <p className="text-typo-1 text-sm ">{t("fully_diluted_market_cap")}</p>
+                                <p className="text-typo-1 text-sm ">
+                                    {t("fully_diluted_market_cap")}
+                                </p>
                                 <p className="font-semibold text-sm">
                                     {formatCurrency(
-                                        overviewData?.market_data?.fully_diluted_valuation?.usd || 0,
+                                        overviewData?.market_data?.fully_diluted_valuation?.usd ||
+                                            0,
                                         currentCurrency,
                                         currentLanguage
                                     )}
@@ -395,8 +444,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         overviewData.market_data?.low_24h?.usd || 0,
                                         currentCurrency,
                                         currentLanguage
-                                    )}{" "}
-                                    {" / "}
+                                    )}
+                                    {"/"}
                                     {formatCurrency(
                                         overviewData.market_data?.high_24h?.usd || 0,
                                         currentCurrency,
@@ -411,21 +460,26 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                         fontSize={"12px"}
                                         fontWeight={"600"}
                                         className={
-                                            overviewData.market_data?.market_cap_change_percentage_24h > 0
+                                            overviewData.market_data
+                                                ?.market_cap_change_percentage_24h > 0
                                                 ? "text-up"
                                                 : "text-down"
                                         }
                                     >
                                         <StatArrow
                                             type={
-                                                overviewData.market_data?.market_cap_change_percentage_24h > 0
+                                                overviewData.market_data
+                                                    ?.market_cap_change_percentage_24h > 0
                                                     ? "increase"
                                                     : "decrease"
                                             }
                                             w={"8px"}
                                             h={"8px"}
                                         />
-                                        {overviewData.market_data.market_cap_change_percentage_24h?.toFixed(2)}%
+                                        {overviewData.market_data.market_cap_change_percentage_24h?.toFixed(
+                                            2
+                                        )}
+                                        %
                                     </StatHelpText>
                                 </Stat>
                             </Box>
@@ -468,7 +522,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                     >
                                         <StatArrow
                                             type={
-                                                overviewData.market_data.ath_change_percentage?.usd > 0
+                                                overviewData.market_data.ath_change_percentage
+                                                    ?.usd > 0
                                                     ? "increase"
                                                     : "decrease"
                                             }
@@ -476,7 +531,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                             h={"8px"}
                                         />
                                         {formatQuoteCurrency(
-                                            overviewData.market_data.ath_change_percentage?.usd?.toFixed(2)
+                                            overviewData.market_data.ath_change_percentage?.usd?.toFixed(
+                                                2
+                                            )
                                         )}
                                         %
                                     </StatHelpText>
@@ -505,7 +562,8 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                     >
                                         <StatArrow
                                             type={
-                                                overviewData.market_data.atl_change_percentage?.usd > 0
+                                                overviewData.market_data.atl_change_percentage
+                                                    ?.usd > 0
                                                     ? "increase"
                                                     : "decrease"
                                             }
@@ -513,7 +571,9 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                                             h={"8px"}
                                         />
                                         {formatQuoteCurrency(
-                                            overviewData.market_data.atl_change_percentage?.usd?.toFixed(2)
+                                            overviewData.market_data.atl_change_percentage?.usd?.toFixed(
+                                                2
+                                            )
                                         )}
                                         %
                                     </StatHelpText>
@@ -535,19 +595,23 @@ function Overview({ overviewData, newData }: { overviewData: OverviewProps; newD
                         </li>
                         {/* Bitcoin Supply */}
                         <li className="flex flex-col">
-                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">{`${overviewData.name} ${t(
-                                "supply"
-                            )}`}</h6>
+                            <h6 className="font-bold text-[13.6px] text-typo-4/80 pb-3">{`${
+                                overviewData.name
+                            } ${t("supply")}`}</h6>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm  ">{t("circulating_supply")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatQuoteCurrency(overviewData.market_data.circulating_supply || 0)}
+                                    {formatQuoteCurrency(
+                                        overviewData.market_data.circulating_supply || 0
+                                    )}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
                                 <p className="text-typo-1 text-sm  ">{t("total_supply")}</p>
                                 <p className="font-semibold text-sm">
-                                    {formatQuoteCurrency(overviewData.market_data.total_supply || 0)}
+                                    {formatQuoteCurrency(
+                                        overviewData.market_data.total_supply || 0
+                                    )}
                                 </p>
                             </Box>
                             <Box className="py-3 flex items-center justify-between gap-4 border-dashed border-t-[0.8px] border-black/[0.08]">
