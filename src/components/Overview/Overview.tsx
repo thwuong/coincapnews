@@ -69,8 +69,8 @@ function Overview({
     const result = React.useMemo(() => {
         if (!amount || !overviewData.market_data) return;
 
-        return Number(overviewData.market_data?.current_price?.usd) * amount;
-    }, [amount, overviewData]);
+        return Number(newData?.price) * amount;
+    }, [amount, newData]);
     const { t } = useTranslation(currentLanguage);
 
     return (
