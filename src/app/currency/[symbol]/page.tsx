@@ -82,15 +82,23 @@ export default function Page({ params }: PageProps) {
                 <div className="grid grid-cols-3 w-full items-center gap-8 max-lg:grid-cols-1">
                     <div className="flex flex-col gap-4 items-center ">
                         <img
-                            src={coin.image?.large ? coin.image?.large : "/assets/icons/placeholder_coin.svg"}
+                            src={
+                                coin.image?.large
+                                    ? coin.image?.large
+                                    : "/assets/icons/placeholder_coin.svg"
+                            }
                             alt="coin"
                             width={88}
                             height={88}
                             loading="lazy"
                         />
                         <div className="flex items-center gap-2">
-                            <h4 className="text-2xl leading-[38px] text-typo-4 font-bold capitalize">{coin.id}</h4>
-                            <span className="text-base leading-9 text-typo-1 uppercase">{coin.symbol}</span>
+                            <h4 className="text-2xl leading-[38px] text-typo-4 font-bold capitalize">
+                                {coin.id}
+                            </h4>
+                            <span className="text-base leading-9 text-typo-1 uppercase">
+                                {coin.symbol}
+                            </span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Button
@@ -104,19 +112,23 @@ export default function Page({ params }: PageProps) {
                             >
                                 {`${t("rank")} ${coin.market_cap_rank}`}
                             </Button>
-                            <Button size={"xs"} bg={"gray.100"} className="text-[11px] font-semibold capitalize">
+                            {/* <Button size={"xs"} bg={"gray.100"} className="text-[11px] font-semibold capitalize">
                                 coin
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 items-start ">
                         <p className="text-[13px] font-medium leading-[21px] text-typo-1">
-                            {`${coin.name} ${t("price")}`} <span className="uppercase">({coin.symbol})</span>
+                            {`${coin.name} ${t("price")}`}{" "}
+                            <span className="uppercase">({coin.symbol})</span>
                         </p>
                         <div className="flex items-center justify-between w-full">
                             <h4 className="font-bold text-[32px] leading-[41px]">
                                 {formatCurrency(
-                                    getNewData(stream?.price, coin.market_data?.current_price["usd"]),
+                                    getNewData(
+                                        stream?.price,
+                                        coin.market_data?.current_price["usd"]
+                                    ),
                                     currentCurrency,
                                     lang,
                                     {
@@ -129,7 +141,10 @@ export default function Page({ params }: PageProps) {
                                 height={"fit-content"}
                                 py={"8px"}
                                 bg={
-                                    getNewData(stream?.change24, coin.market_data?.market_cap_change_percentage_24h) > 0
+                                    getNewData(
+                                        stream?.change24,
+                                        coin.market_data?.market_cap_change_percentage_24h
+                                    ) > 0
                                         ? "#16C784"
                                         : "#ea3943"
                                 }
@@ -167,24 +182,40 @@ export default function Page({ params }: PageProps) {
                             </Button>
                         </div>
                         <p className="text-base font-medium leading-[26px] text-typo-1">
-                            {`${coin.name} ${t("price")}`} <span className="uppercase">({coin.symbol})</span>
+                            {`${coin.name} ${t("price")}`}{" "}
+                            <span className="uppercase">({coin.symbol})</span>
                         </p>
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">{t("24h_low_24h_high")}</p>
                             <p className="text-sm font-bold">
-                                {formatCurrency(coin.market_data?.low_24h?.usd || 0, currentCurrency, lang)} /{" "}
-                                {formatCurrency(coin.market_data?.high_24h?.usd || 0, currentCurrency, lang)}
+                                {formatCurrency(
+                                    coin.market_data?.low_24h?.usd || 0,
+                                    currentCurrency,
+                                    lang
+                                )}{" "}
+                                /{" "}
+                                {formatCurrency(
+                                    coin.market_data?.high_24h?.usd || 0,
+                                    currentCurrency,
+                                    lang
+                                )}
                             </p>
                         </div>
                         <div className="flex items-center justify-between text-typo-1 w-full">
                             <p className="text-12 font-medium">{t("24h_trading_vol")}</p>
                             <p className="text-sm font-bold">
-                                {formatCurrency(coin.market_data.total_volume["usd"] || 0, currentCurrency, lang)}
+                                {formatCurrency(
+                                    coin.market_data.total_volume["usd"] || 0,
+                                    currentCurrency,
+                                    lang
+                                )}
                             </p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4 w-full">
-                        <p className="text-[14px] leading-[1] font-bold  text-typo-1">{t("sponsored")}</p>
+                        <p className="text-[14px] leading-[1] font-bold  text-typo-1">
+                            {t("sponsored")}
+                        </p>
                         <div className="w-full grid grid-cols-2 gap-2">
                             <Button
                                 size={"md"}
@@ -536,7 +567,12 @@ export default function Page({ params }: PageProps) {
                         <div className="flex gap-2 flex-wrap">
                             {new Array(1).fill(4).map((_, index) => {
                                 return (
-                                    <Button key={index} height={"fit-content"} py={"8px"} bg={"rgba(0, 0, 0, 0.04)"}>
+                                    <Button
+                                        key={index}
+                                        height={"fit-content"}
+                                        py={"8px"}
+                                        bg={"rgba(0, 0, 0, 0.04)"}
+                                    >
                                         <span className="text-12 font-semibold capitalize text-black/80 hover:text-primary-1">
                                             Smart Contracts
                                         </span>

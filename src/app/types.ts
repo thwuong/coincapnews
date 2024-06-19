@@ -16,6 +16,11 @@ export type DetailCoinType = {
         price_change_percentage_24h_in_currency: any;
         current_price: any;
         price_change_24h_in_currency: any;
+        price_change_percentage_7d_in_currency: any;
+        price_change_percentage_30d_in_currency: any;
+        price_change_percentage_60d_in_currency: any;
+        price_change_percentage_200d_in_currency: any;
+        price_change_percentage_1y_in_currency: any;
         market_cap: any;
         fully_diluted_valuation: any;
         ath: any;
