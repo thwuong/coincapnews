@@ -32,6 +32,11 @@ type OverviewProps = {
         low_24h: any;
         high_24h: any;
         price_change_percentage_24h_in_currency: any;
+        price_change_percentage_7d_in_currency: any;
+        price_change_percentage_30d_in_currency: any;
+        price_change_percentage_60d_in_currency: any;
+        price_change_percentage_200d_in_currency: any;
+        price_change_percentage_1y_in_currency: any;
         current_price: any;
         price_change_24h_in_currency: any;
         market_cap: any;
@@ -66,13 +71,32 @@ function Overview({
     const { data, isLoading } = useFetchAPI(
         `/api/coins/market_chart/${overviewData.id}?vs_currency=usd&days=${datetime}`
     );
+    const {
+        data: coinDetail,
+    }: {
+        data: {
+            price_change_percentage_24h_in_currency: any;
+            price_change_percentage_7d_in_currency: any;
+            price_change_percentage_30d_in_currency: any;
+            price_change_percentage_60d_in_currency: any;
+            price_change_percentage_200d_in_currency: any;
+            price_change_percentage_1y_in_currency: any;
+        };
+    } = useFetchAPI(`/api/coins/markets/${overviewData.id}?exclude=sparkline_in_7d`);
     const result = React.useMemo(() => {
         if (!amount || !overviewData.market_data) return;
 
         return Number(newData?.price) * amount;
     }, [amount, newData]);
     const { t } = useTranslation(currentLanguage);
-
+    const getPriceByTime: any = {
+        "1": coinDetail?.price_change_percentage_24h_in_currency,
+        "7": coinDetail?.price_change_percentage_7d_in_currency,
+        "30": coinDetail?.price_change_percentage_30d_in_currency,
+        "90": coinDetail?.price_change_percentage_60d_in_currency,
+        "180": coinDetail?.price_change_percentage_200d_in_currency,
+        "365": overviewData?.market_data?.price_change_percentage_1y_in_currency?.usd,
+    };
     return (
         <section className="grid grid-cols-12 gap-5 w-full max-lg:grid-cols-1">
             {/* Chart */}
@@ -139,6 +163,19 @@ function Overview({
                             </Button>
                             <Button
                                 className="w-fit max-md:w-full"
+                                onClick={() => setDatetime("14")}
+                                height={"min-content"}
+                                _hover={{
+                                    bg: "white",
+                                }}
+                                bg={datetime === "14" ? "white" : ""}
+                            >
+                                <span className="text-black font-semibold leading-[30px] text-13">
+                                    14D
+                                </span>
+                            </Button>
+                            <Button
+                                className="w-fit max-md:w-full"
                                 onClick={() => setDatetime("30")}
                                 height={"min-content"}
                                 _hover={{
@@ -148,19 +185,6 @@ function Overview({
                             >
                                 <span className="text-black font-semibold leading-[30px] text-13">
                                     1M
-                                </span>
-                            </Button>
-                            <Button
-                                className="w-fit max-md:w-full"
-                                onClick={() => setDatetime("90")}
-                                height={"min-content"}
-                                _hover={{
-                                    bg: "white",
-                                }}
-                                bg={datetime === "90" ? "white" : ""}
-                            >
-                                <span className="text-black font-semibold leading-[30px] text-13">
-                                    3M
                                 </span>
                             </Button>
                             <Button
@@ -196,7 +220,7 @@ function Overview({
                 {data && tabActive === "price" && (
                     <LineChartOverview
                         data={data?.prices}
-                        isUp={overviewData.market_data?.market_cap_change_percentage_24h > 0}
+                        isUp={Number(getPriceByTime[datetime]) > 0}
                     />
                 )}
                 {tabActive === "trading" && (
