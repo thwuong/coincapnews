@@ -97,7 +97,7 @@ export const navigationHeaderData: NavItemType[] = [
         icon: "/assets/icons/news.svg",
         label: "Knowledge",
         key: "knowledge",
-        href: "/knowledge",
+        href: "/#",
     },
     {
         icon: "/assets/icons/convert.svg",

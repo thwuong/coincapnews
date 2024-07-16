@@ -295,11 +295,11 @@ function Overview({
                         </NumberInput>
                     </Box>
                     <Box
-                        className="py-5 px-4 flex items-center justify-between gap-4"
+                        className="py-5 px-4 flex items-center justify-between gap-4 "
                         bg={"#F8FAFD"}
                     >
                         <p className="font-semibold text-sm text-black uppercase">USD</p>
-                        <p className="font-bold text-lg min-h-10">
+                        <p className="font-bold text-lg min-h-10 truncate">
                             {result ? formatCurrency(result, currentCurrency, currentLanguage) : ""}
                         </p>
                     </Box>

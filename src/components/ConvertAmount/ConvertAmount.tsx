@@ -80,6 +80,7 @@ function ConvertAmount() {
                 <Select
                     className="font-semibold text-sm text-black uppercase"
                     border={"none"}
+                    minW={"fit-content"}
                     w={"fit-content"}
                     value={to}
                     onChange={(e) => {
@@ -95,7 +96,7 @@ function ConvertAmount() {
                             );
                         })}
                 </Select>
-                <p className="font-bold text-sm">
+                <p className="font-bold text-sm truncate">
                     {result
                         ? formatCurrency(result, "USD", currentLanguage, {
                             maximumFractionDigits: 2,

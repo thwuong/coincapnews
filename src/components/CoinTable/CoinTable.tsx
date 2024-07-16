@@ -20,7 +20,7 @@ import {
     Thead,
     Tr,
 } from "@chakra-ui/react";
-import { ColumnDef, SortingState, getCoreRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
+import { ColumnDef, SortingFn, SortingState, getCoreRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -33,8 +33,11 @@ export type DataTableProps = {
     isLoading: boolean;
     currentPage: number;
     features: CoinType[];
+    skipFirstRowSortingFn : SortingFn<CoinType>
 };
-function CoinTable({ data, columns, isLoading, currentPage, features }: DataTableProps) {
+
+
+function CoinTable({ data, columns, isLoading, currentPage, features , skipFirstRowSortingFn }: DataTableProps) {
     const { currentLanguage, currentCurrency } = useAppSelector((state) => state.globalStore);
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const list = React.useMemo(() => {
@@ -53,6 +56,9 @@ function CoinTable({ data, columns, isLoading, currentPage, features }: DataTabl
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
+        sortingFns : {
+            skipFirstRowSortingFn
+        },
         state: {
             sorting,
         },
@@ -166,7 +172,6 @@ function CoinTable({ data, columns, isLoading, currentPage, features }: DataTabl
                     {!isLoading
                         ? table.getRowModel().rows.map((row) => {
                               let convertId = `${row.original.symbol}USDT`.toLocaleUpperCase();
-
                               return (
                                   <Tr
                                       key={row.index}
