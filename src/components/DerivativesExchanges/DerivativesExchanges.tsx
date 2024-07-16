@@ -344,7 +344,7 @@ function DerivativesExchanges() {
     const [page, setPage] = useState(1);
 
     const { data, isLoading } = useFetchAPI(
-        `/api/derivatives?per_page=${COIN_PER_PAGE}&centralized=true&exclude=tickers`
+        `/api/derivatives?per_page=${COIN_PER_PAGE}&centralized=true&exclude=tickers&page=${page}`
     );
     const handlePageClick = ({ selected }: { selected: number }) => {
         // setPage(selected + 1);

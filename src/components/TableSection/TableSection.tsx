@@ -8,13 +8,20 @@ import { COIN_PER_PAGE, IDS_FEATURE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
 import { CoinType } from "@/app/types";
 import { useAppSelector } from "@/lib/hooks";
-import { createColumnHelper } from "@tanstack/react-table";
+import { SortingFn, createColumnHelper } from "@tanstack/react-table";
 import dynamic from "next/dynamic";
 import { TablePagination } from "../TablePagination";
 const CoinTable = dynamic(() => import("../CoinTable").then((mod) => mod.CoinTable));
 
 const columnHelper = createColumnHelper<CoinType>();
-
+const skipFirstRowSortingFn: SortingFn<CoinType> = (rowA: any, rowB: any, columnId: string) => {
+  // Skip sorting for the first row
+  if (rowA.index <= 1 || rowB.index <= 1) {
+    return 0;
+  }
+  // Your custom sorting logic here
+  return rowA.original[columnId] > rowB.original[columnId] ? 1 : rowA.original[columnId] < rowB.original[columnId] ? -1 : 0;
+};
 const columns = [
     columnHelper.group({
         header: "# Name",
@@ -42,6 +49,7 @@ const columns = [
         meta: {
             isNumeric: true,
         },
+        sortingFn : skipFirstRowSortingFn
     }),
     columnHelper.accessor("price_change_percentage_24h", {
         cell: (info) => info.getValue(),
@@ -49,6 +57,8 @@ const columns = [
         meta: {
             isNumeric: true,
         },
+        sortingFn : skipFirstRowSortingFn
+
     }),
     columnHelper.accessor("price_change_percentage_7d_in_currency", {
         cell: (info) => info.getValue(),
@@ -56,6 +66,8 @@ const columns = [
         meta: {
             isNumeric: true,
         },
+        sortingFn : skipFirstRowSortingFn
+
     }),
     columnHelper.accessor("market_cap", {
         cell: (info) => info.getValue(),
@@ -63,6 +75,8 @@ const columns = [
         meta: {
             isNumeric: true,
         },
+        sortingFn : skipFirstRowSortingFn
+
     }),
     columnHelper.accessor("total_volume", {
         cell: (info) => info.getValue(),
@@ -70,6 +84,8 @@ const columns = [
         meta: {
             isNumeric: true,
         },
+        sortingFn : skipFirstRowSortingFn
+
     }),
     columnHelper.accessor("total_supply", {
         cell: (info) => info.getValue(),
@@ -77,6 +93,8 @@ const columns = [
         meta: {
             isNumeric: true,
         },
+        sortingFn : skipFirstRowSortingFn
+
     }),
     columnHelper.accessor("sparkline_in_7d.price", {
         cell: (info) => info.getValue(),
@@ -84,6 +102,8 @@ const columns = [
         meta: {
             isNumeric: true,
         },
+        sortingFn : skipFirstRowSortingFn
+
     }),
 ];
 function TableSection() {
@@ -163,7 +183,7 @@ function TableSection() {
                     />
                 </InputGroup>
             </section>
-            <CoinTable columns={columns} data={dataAPI} features={features} isLoading={isLoading} currentPage={page} />
+            <CoinTable columns={columns} data={dataAPI} features={features} isLoading={isLoading} currentPage={page} skipFirstRowSortingFn={skipFirstRowSortingFn}/>
             <section className="w-full py-4 flex justify-center">
                 <TablePagination
                     handlePrePage={handlePrePage}
