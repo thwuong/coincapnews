@@ -8,7 +8,9 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
     (state) => state.globalStore.currentLanguage
   );
   const symbolFormat =
-    symbol === "fmc" ? `${symbol.toUpperCase()}USDT` : symbol.toUpperCase();
+    symbol === "fmc"
+      ? `${symbol.toUpperCase()}USDT`
+      : `${symbol.toUpperCase()}USD`;
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
