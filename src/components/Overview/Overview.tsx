@@ -78,7 +78,7 @@ function Overview({
   );
 
   const { data, isLoading } = useFetchAPI(
-    `/api/coins/market_chart/${overviewData.id}?vs_currency=usd&days=${datetime}`
+    `/coins/market_chart/${overviewData.id}?vs_currency=usd&days=${datetime}`
   );
   const {
     data: coinDetail,
@@ -91,9 +91,7 @@ function Overview({
       price_change_percentage_200d_in_currency: any;
       price_change_percentage_1y_in_currency: any;
     };
-  } = useFetchAPI(
-    `/api/coins/markets/${overviewData.id}?exclude=sparkline_in_7d`
-  );
+  } = useFetchAPI(`/coins/markets/${overviewData.id}?exclude=sparkline_in_7d`);
   const result = React.useMemo(() => {
     if (!amount || !overviewData.market_data) return;
 
