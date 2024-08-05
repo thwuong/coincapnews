@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import {
   ColumnDef,
+  SortingFn,
   SortingState,
   createColumnHelper,
   getCoreRowModel,
@@ -54,6 +55,25 @@ export type ExchangeTableProps = {
   data: Exchange[];
   isLoading: boolean;
 };
+const skipFirstRowSortingFn: SortingFn<Exchange> = (
+  rowA: any,
+  rowB: any,
+  columnId: string
+) => {
+  // Skip sorting for the first row
+  console.log(rowA, rowB);
+  const check =
+    rowA.original.id.includes("fmcpay") || rowB.original.id.includes("fmcpay");
+  if ((rowA.index === 0 || rowB.index === 0) && check) {
+    return 0;
+  }
+  // Your custom sorting logic here
+  return rowA.original[columnId] > rowB.original[columnId]
+    ? 1
+    : rowA.original[columnId] < rowB.original[columnId]
+    ? -1
+    : 0;
+};
 const columnHelper = createColumnHelper<Exchange>();
 
 const columns: ColumnDef<Exchange, any>[] = [
@@ -70,24 +90,28 @@ const columns: ColumnDef<Exchange, any>[] = [
     meta: {
       center: true,
     },
+    sortingFn: skipFirstRowSortingFn,
   }),
   columnHelper.accessor("name", {
     cell: (info) => info.getValue(),
     header: "Name",
+    sortingFn: skipFirstRowSortingFn,
   }),
-  columnHelper.accessor("id", {
+  columnHelper.accessor("trust_score", {
     cell: (info) => info.getValue(),
     header: "Trust Code",
     meta: {
       center: true,
     },
+    sortingFn: skipFirstRowSortingFn,
   }),
-  columnHelper.accessor("open_interest_btc", {
+  columnHelper.accessor("trade_volume_24h_btc_normalized", {
     cell: (info) => info.getValue(),
     header: "Trade Volume 24h(Normalized)",
     meta: {
       isNumeric: true,
     },
+    sortingFn: skipFirstRowSortingFn,
   }),
   columnHelper.accessor("trade_volume_24h_btc", {
     cell: (info) => info.getValue(),
@@ -95,6 +119,7 @@ const columns: ColumnDef<Exchange, any>[] = [
     meta: {
       isNumeric: true,
     },
+    sortingFn: skipFirstRowSortingFn,
   }),
   columnHelper.accessor("number_of_perpetual_pairs", {
     cell: (info) => info.getValue(),
@@ -102,6 +127,7 @@ const columns: ColumnDef<Exchange, any>[] = [
     meta: {
       center: true,
     },
+    sortingFn: skipFirstRowSortingFn,
   }),
 ];
 
@@ -123,12 +149,16 @@ function DifferentExchangesTable({
     if (!data) return [];
     return currentPage === 1 ? [...(features || []), ...data] : data;
   }, [data, currentPage]);
+
   const table = useReactTable({
     columns,
     data: list,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    sortingFns: {
+      skipFirstRowSortingFn,
+    },
     state: {
       sorting,
     },
