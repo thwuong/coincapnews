@@ -225,7 +225,7 @@ function NewCryptoTable({
                       textAlign={"center"}
                       fontWeight={"500"}
                     >
-                      {row.id}
+                      {row.index + 1 + currentIndex}
                     </Td>
                     <Td
                       px={"4px"}
