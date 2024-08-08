@@ -2,12 +2,12 @@
 import useFetchAPI from "@/api/baseAPI";
 import { DetailExchangeType } from "@/app/types";
 import Container from "@/components/Container/Container";
-import { ExchangeTableDetail } from "@/components/ExchangeTableDetail";
 import SpinnerLoading from "@/components/Loading/SpinnerLoading";
 import TablePagination from "@/components/TablePagination/TablePagination";
 import { Input, Select } from "@chakra-ui/react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import DerivativeTableDetail from "./DerivativeTableDetail";
 export default function ExchangesContent({ params }: { params: { id: string; url: string } }) {
     const [perPage, setPerPage] = useState(10);
     const [keyword, setKeyword] = useState("");
@@ -23,7 +23,7 @@ export default function ExchangesContent({ params }: { params: { id: string; url
     const exchanges = useMemo(() => {
         if (!exchange?.tickers) return null;
         return exchange.tickers.filter((item) =>
-            item.coin_id.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
+            item.symbol.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
         );
     }, [exchange?.tickers, keyword]);
     const handlePrePage = (selectedItem: any) => {
@@ -134,7 +134,7 @@ export default function ExchangesContent({ params }: { params: { id: string; url
                                 </Select>
                             </div>
                             {exchanges && (
-                                <ExchangeTableDetail
+                                <DerivativeTableDetail
                                     data={exchanges.slice((page - 1) * perPage, perPage * page)}
                                     isLoading={isLoading}
                                     currentIndex={(page - 1) * perPage}

@@ -164,7 +164,8 @@
         "Perpetuals" : "Perpetuals",
         "Futures" : "Futures",
         "Volume (7Days)" : "Volume (7Days)",
-        "Update" : "Update"
+        "Update" : "Update",
+        "Spread" : "Spread"
     },
     "load_more" : "Load more",
     "read_more" : "Read more",
