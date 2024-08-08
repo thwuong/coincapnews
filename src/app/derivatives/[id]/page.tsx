@@ -1,6 +1,6 @@
 import fetchAPI from "@/api/fetchAPI";
 import { DetailExchangeType } from "@/app/types";
-import { ExchangesContent } from "@/components/ExchangesContent";
+import { DerivativeContent } from "@/components/DerivativeContent";
 interface PageProps {
     params: {
         id: string;
@@ -19,5 +19,9 @@ export async function generateStaticParams() {
     );
 }
 export default function Page({ params }: PageProps) {
-    return <ExchangesContent params={{ id: params.id, url: `/exchanges/details/${params.id}` }} />;
+    return (
+        <DerivativeContent
+            params={{ id: params.id, url: `/v1/derivatives/details/${params.id}` }}
+        />
+    );
 }

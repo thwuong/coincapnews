@@ -2,7 +2,18 @@ import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
-import { Box, Skeleton, SkeletonCircle, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+    Box,
+    Skeleton,
+    SkeletonCircle,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+} from "@chakra-ui/react";
 import {
     ColumnDef,
     SortingState,
@@ -65,7 +76,7 @@ const columns: ColumnDef<ExchangeChart, any>[] = [
     }),
     columnHelper.accessor("bid_ask_spread_percentage", {
         cell: (info) => info.getValue(),
-        header: "Volume (%)",
+        header: "Spread",
         meta: {
             isNumeric: true,
         },
@@ -112,7 +123,9 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                         <Box
                                             display={"flex"}
                                             alignItems={"center"}
-                                            justifyContent={(meta?.isNumeric || meta?.center) && "center"}
+                                            justifyContent={
+                                                (meta?.isNumeric || meta?.center) && "center"
+                                            }
                                             flexDirection={"row"}
                                         >
                                             <p
@@ -196,7 +209,10 @@ function ExchangeTableDetail({ data, isLoading, currentIndex = 0 }: ExchangeTabl
                                       </Td>
                                       <Td px={"4px"} minW={"115px"}>
                                           <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                                              {Number(row.original.bid_ask_spread_percentage).toFixed(2)}%
+                                              {Number(
+                                                  row.original.bid_ask_spread_percentage
+                                              ).toFixed(2)}
+                                              %
                                           </p>
                                       </Td>
                                   </Tr>

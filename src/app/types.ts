@@ -91,8 +91,10 @@ export type DetailExchangeType = {
             converted_volume: any;
             target: string;
             bid_ask_spread_percentage: string;
+            bid_ask_spread: number;
             converted_last: any;
             base: string;
+            symbol: string;
         }
     ];
 };

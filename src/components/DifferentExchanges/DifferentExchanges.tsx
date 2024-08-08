@@ -121,14 +121,14 @@ const columns: ColumnDef<Exchange, any>[] = [
     },
     sortingFn: skipFirstRowSortingFn,
   }),
-  columnHelper.accessor("number_of_perpetual_pairs", {
-    cell: (info) => info.getValue(),
-    header: "Volume (7d)",
-    meta: {
-      center: true,
-    },
-    sortingFn: skipFirstRowSortingFn,
-  }),
+  // columnHelper.accessor("number_of_perpetual_pairs", {
+  //   cell: (info) => info.getValue(),
+  //   header: "Volume (7d)",
+  //   meta: {
+  //     center: true,
+  //   },
+  //   sortingFn: skipFirstRowSortingFn,
+  // }),
 ];
 
 function DifferentExchangesTable({
@@ -320,7 +320,7 @@ function DifferentExchangesTable({
                         {/* <span className="uppercase"> BTC</span> */}
                       </p>
                     </Td>
-                    <Td
+                    {/* <Td
                       px={"4px"}
                       display={"flex"}
                       height={"80px"}
@@ -336,7 +336,7 @@ function DifferentExchangesTable({
                           isUp={true}
                         />
                       )}
-                    </Td>
+                    </Td> */}
                   </Tr>
                 );
               })
@@ -368,9 +368,6 @@ function DifferentExchangesTable({
                       </Td>
 
                       <Td isNumeric={true} px={"4px"} minW={"288px"}>
-                        <Skeleton height="15px" />
-                      </Td>
-                      <Td isNumeric={true} px={"4px"} minW={"320px"}>
                         <Skeleton height="15px" />
                       </Td>
                     </Tr>
