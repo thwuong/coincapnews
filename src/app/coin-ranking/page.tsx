@@ -1,13 +1,13 @@
-import { WEBSITE_HOST_URL } from "@/app/contants";
 import { useTranslation } from "@/app/i18n";
 import { Container } from "@/components/Container";
-import { DifferentExchanges } from "@/components/DifferentExchanges";
-import { Heading } from "@/components/Heading";
+import { TableSection } from "@/components/TableSection";
 import { Metadata, ResolvingMetadata } from "next";
 import { cookies } from "next/headers";
+import { WEBSITE_HOST_URL } from "../contants";
 import { cookieName } from "../i18n/settings";
 interface PageProps {
   params: {
+    id: string;
     lang: string;
   };
 }
@@ -20,7 +20,8 @@ export async function generateMetadata(
   const lang = cookieStore.get(cookieName)?.value || "en";
   const content = {
     meta: {
-      title: "Spot | Coincapnews",
+      title:
+        "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",
       description: "",
     },
   };
@@ -33,13 +34,13 @@ export async function generateMetadata(
       images: [...(openGraph?.images || [])],
       title: content.meta?.title || title || "",
       description: content.meta?.description || description || "",
-      url: `${WEBSITE_HOST_URL}/spot?lang=${lang}`,
+      url: `${WEBSITE_HOST_URL}/?lang=${lang}`,
       locale: "en-US",
       siteName: content.meta?.title,
       type: "website",
     },
     alternates: {
-      canonical: `${WEBSITE_HOST_URL}/spot?lang=${lang}`,
+      canonical: `${WEBSITE_HOST_URL}/?lang=${lang}`,
     },
     twitter: {
       title: content.meta?.title,
@@ -54,9 +55,8 @@ async function Page(props: PageProps) {
 
   return (
     <main className="pb-24">
-      <Container className="px-12">
-        <Heading className="pt-8 pb-12 max-lg:py-8" title={t("title.spot")} />
-        <DifferentExchanges url="/v1/exchanges" centralized />
+      <Container className="px-12 py-8">
+        <TableSection />
       </Container>
     </main>
   );

@@ -33,7 +33,7 @@ export default function Page({ params }: PageProps) {
     data: coin,
     isLoading,
   }: { data: DetailCoinType; isLoading: boolean } = useFetchAPI(
-    `/coins/details/${params.symbol}`
+    `/v1/coins/details/${params.symbol}`
   );
   const copy = (contract: string) => {
     navigator.clipboard.writeText(contract);

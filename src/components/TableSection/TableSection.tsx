@@ -135,10 +135,10 @@ function TableSection() {
     setPage(page - 1);
   };
   const { data: dataAPI, isLoading } = useFetchAPI(
-    `/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}`
+    `/v1/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}&sparkline=true`
   );
   const { data: features, isLoading: isLoadingFeature } = useFetchAPI(
-    `/coins/markets/?ids=${IDS_FEATURE}`
+    `/v1/coins/markets/?ids=${IDS_FEATURE}&sparkline=true`
   );
 
   const currentLanguage = useAppSelector(

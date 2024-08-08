@@ -21,7 +21,7 @@ export default function ExchangesContent({
     data: exchange,
     isLoading,
   }: { data: DetailExchangeType; isLoading: boolean } = useFetchAPI(
-    `/exchanges/details/${params.id}`
+    `/v1/derivatives/details/${params.id}?include_tickers=all`
   );
 
   const handlePageClick = ({ selected }: { selected: number }) => {
@@ -31,7 +31,7 @@ export default function ExchangesContent({
   const exchanges = useMemo(() => {
     if (!exchange?.tickers) return null;
     return exchange.tickers.filter((item) =>
-      item.coin_id.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
+      item.symbol.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
     );
   }, [exchange?.tickers, keyword]);
   const handlePrePage = (selectedItem: any) => {
@@ -60,14 +60,16 @@ export default function ExchangesContent({
             <li className="text-base leading-[26px] text-[rgb(119,119,119)]">
               <p>
                 Website:{" "}
-                <Link
-                  href={exchange.url}
-                  rel="nofollow"
-                  target="_blank"
-                  className="hover:text-primary-1 duration-300"
-                >
-                  {exchange.url}
-                </Link>
+                {exchange.url && (
+                  <Link
+                    href={exchange.url}
+                    rel="nofollow"
+                    target="_blank"
+                    className="hover:text-primary-1 duration-300"
+                  >
+                    {exchange.url}
+                  </Link>
+                )}
               </p>
             </li>
             <li className="text-base leading-[26px] text-[rgb(119,119,119)]">

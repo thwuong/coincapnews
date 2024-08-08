@@ -65,13 +65,7 @@ const columns: ColumnDef<Exchange, any>[] = [
     cell: (info) => info.getValue(),
     header: "Exchange",
   }),
-  columnHelper.accessor("id", {
-    cell: (info) => info.getValue(),
-    header: "Settlement",
-    meta: {
-      center: true,
-    },
-  }),
+
   columnHelper.accessor("open_interest_btc", {
     cell: (info) => info.getValue(),
     header: "24h Open Interest",
@@ -100,13 +94,13 @@ const columns: ColumnDef<Exchange, any>[] = [
       isNumeric: true,
     },
   }),
-  columnHelper.accessor("chart.data", {
-    cell: (info) => info.getValue(),
-    header: "Volume (7Days)",
-    meta: {
-      isNumeric: true,
-    },
-  }),
+  // columnHelper.accessor("chart.data", {
+  //   cell: (info) => info.getValue(),
+  //   header: "Volume (7Days)",
+  //   meta: {
+  //     isNumeric: true,
+  //   },
+  // }),
 ];
 
 function DerivativesExchangesTable({
@@ -247,11 +241,11 @@ function DerivativesExchangesTable({
                                               )} */}
                       </Link>
                     </Td>
-                    <Td px={"4px"}>
+                    {/* <Td px={"4px"}>
                       <p className="text-center text-sm leading-4 font-medium text-typo-4 ">
                         Cash
                       </p>
-                    </Td>
+                    </Td> */}
                     <Td px={"4px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
@@ -288,7 +282,7 @@ function DerivativesExchangesTable({
                         {row.original.number_of_futures_pairs}
                       </p>
                     </Td>
-                    <Td
+                    {/* <Td
                       px={"4px"}
                       height={"80px"}
                       minW={"180px"}
@@ -304,7 +298,7 @@ function DerivativesExchangesTable({
                           isUp={true}
                         />
                       )}
-                    </Td>
+                    </Td> */}
                   </Tr>
                 );
               })
@@ -333,9 +327,9 @@ function DerivativesExchangesTable({
                         </div>
                       </Td>
 
-                      <Td isNumeric={true} px={"4px"} minW={"103px"}>
+                      {/* <Td isNumeric={true} px={"4px"} minW={"103px"}>
                         <Skeleton height="15px" />
-                      </Td>
+                      </Td> */}
 
                       <Td isNumeric={true} px={"4px"} minW={"224px"}>
                         <Skeleton height="15px" />
@@ -349,9 +343,9 @@ function DerivativesExchangesTable({
                       <Td isNumeric={true} px={"4px"} minW={"96px"}>
                         <Skeleton height="15px" />
                       </Td>
-                      <Td isNumeric={true} px={"4px"} minW={"214px"}>
+                      {/* <Td isNumeric={true} px={"4px"} minW={"214px"}>
                         <Skeleton height="15px" />
-                      </Td>
+                      </Td> */}
                     </Tr>
                   );
                 })}
@@ -365,7 +359,7 @@ function DerivativesExchanges() {
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useFetchAPI(
-    `/derivatives?per_page=${COIN_PER_PAGE}&centralized=true&exclude=tickers&page=${page}`
+    `/v1/derivatives?per_page=${COIN_PER_PAGE}&centralized=true&exclude=tickers&page=${page}`
   );
   const handlePageClick = ({ selected }: { selected: number }) => {
     // setPage(selected + 1);
