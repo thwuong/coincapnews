@@ -61,7 +61,6 @@ const skipFirstRowSortingFn: SortingFn<Exchange> = (
   columnId: string
 ) => {
   // Skip sorting for the first row
-  console.log(rowA, rowB);
   const check =
     rowA.original.id.includes("fmcpay") || rowB.original.id.includes("fmcpay");
   if ((rowA.index === 0 || rowB.index === 0) && check) {
