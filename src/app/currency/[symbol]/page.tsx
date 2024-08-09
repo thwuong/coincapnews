@@ -70,11 +70,16 @@ export default function Page({ params }: PageProps) {
 
   const platforms = useMemo(() => {
     if (!coin?.platforms) return;
-
-    const objectToArray = Object.keys(coin.platforms).map((key) => [
-      key,
-      coin.platforms[key],
-    ]);
+    let objectToArray: any[] = [];
+    Object.keys(coin.platforms).forEach((key) => {
+      if (key) {
+        objectToArray.push([key, coin.platforms[key]]);
+      }
+    });
+    // const objectToArray = Object.keys(coin.platforms).map((key) => [
+    //   key,
+    //   coin.platforms[key],
+    // ]);
     return objectToArray;
   }, [coin]);
   const search = useSearchParams();

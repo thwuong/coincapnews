@@ -163,6 +163,7 @@ export default function ExchangesContent({
                     handlePrePage={handlePrePage}
                     disbledPre
                     disbledNext
+                    disabled={page * perPage - exchanges.length >= 0}
                     pageCount={exchanges.length / perPage}
                     handlePageClick={handlePageClick}
                   />
