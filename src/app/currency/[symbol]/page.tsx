@@ -578,10 +578,12 @@ export default function Page({ params }: PageProps) {
           <div className="flex flex-col gap-4">
             <h5 className="text-sm font-bold text-typo-1/80">{t("tags")}</h5>
             <div className="flex gap-2 flex-wrap">
-              {new Array(1).fill(4).map((_, index) => {
-                return (
+              {coin.links.blockchain_site &&
+                coin.links.blockchain_site.length > 0 && (
                   <Button
-                    key={index}
+                    as={"a"}
+                    href={coin.links.blockchain_site[0]}
+                    target="_blank"
                     height={"fit-content"}
                     py={"8px"}
                     bg={"rgba(0, 0, 0, 0.04)"}
@@ -590,8 +592,7 @@ export default function Page({ params }: PageProps) {
                       Smart Contracts
                     </span>
                   </Button>
-                );
-              })}
+                )}
             </div>
           </div>
         </div>
