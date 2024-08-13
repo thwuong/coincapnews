@@ -1,16 +1,12 @@
+import { WEBSITE_HOST_URL } from "@/app/contants";
 import { useTranslation } from "@/app/i18n";
-import { BannerSlide } from "@/components/BannerSlide";
 import { Container } from "@/components/Container";
-import { TableSection } from "@/components/TableSection";
+import { NewsFeed } from "@/components/NewsFeed";
 import { Metadata, ResolvingMetadata } from "next";
 import { cookies } from "next/headers";
-import { WEBSITE_HOST_URL } from "./contants";
-import { cookieName } from "./i18n/settings";
-import getNewsByCategory from "@/api/getNewsByCategory";
-import { FeedType } from "./types";
+import { cookieName } from "../i18n/settings";
 interface PageProps {
   params: {
-    id: string;
     lang: string;
   };
 }
@@ -21,10 +17,10 @@ export async function generateMetadata(
   // read route params
   const cookieStore = cookies();
   const lang = cookieStore.get(cookieName)?.value || "en";
+  // fetch data
   const content = {
     meta: {
-      title:
-        "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",
+      title: "Knowledge | Coincapnews",
       description: "",
     },
   };
@@ -37,13 +33,13 @@ export async function generateMetadata(
       images: [...(openGraph?.images || [])],
       title: content.meta?.title || title || "",
       description: content.meta?.description || description || "",
-      url: `${WEBSITE_HOST_URL}/?lang=${lang}`,
+      url: `${WEBSITE_HOST_URL}/knowledge?lang=${lang}`,
       locale: "en-US",
       siteName: content.meta?.title,
       type: "website",
     },
     alternates: {
-      canonical: `${WEBSITE_HOST_URL}/?lang=${lang}`,
+      canonical: `${WEBSITE_HOST_URL}/knowledge?lang=${lang}`,
     },
     twitter: {
       title: content.meta?.title,
@@ -55,13 +51,11 @@ export async function generateMetadata(
 }
 async function Page(props: PageProps) {
   const { t } = await useTranslation(props.params.lang);
-  const data: FeedType[] = await getNewsByCategory("announcements");
 
   return (
-    <main className="pb-24">
+    <main className="pb-24 pt-8">
       <Container className="px-12">
-        <BannerSlide data={data} />
-        <TableSection />
+        <NewsFeed category="crypto-insights" titleKey="knowledge" />
       </Container>
     </main>
   );
