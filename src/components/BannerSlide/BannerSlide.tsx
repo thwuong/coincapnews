@@ -40,6 +40,7 @@ function BannerSlide({ data }: { data: FeedType[] }) {
             className="h-[136px] relative"
             href={item.post_permalink}
             key={item.id}
+            target="_blank"
           >
             <Image
               src={item.post_thumbnail || "/assets/images/banner-coin.png"}
