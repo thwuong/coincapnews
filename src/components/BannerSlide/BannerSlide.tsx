@@ -50,46 +50,6 @@ function BannerSlide({ data }: { data: FeedType[] }) {
             />
           </a>
         ))}
-        {/* <div className="h-[136px] relative">
-          <Image
-            src={"/assets/images/banner-coin.png"}
-            alt="banner"
-            fill
-            className="rounded-md absolute max-lg:w-full max-lg:h-[136px] object-cover"
-          />
-        </div>
-        <div className="h-[136px] relative">
-          <Image
-            src={"/assets/images/banner-coin.png"}
-            alt="banner"
-            fill
-            className="rounded-md absolute max-lg:w-full max-lg:h-[136px] object-cover"
-          />
-        </div>
-        <div className="h-[136px] relative">
-          <Image
-            src={"/assets/images/banner-coin1.png"}
-            alt="banner"
-            fill
-            className="rounded-md absolute max-lg:w-full max-lg:h-[136px] object-cover"
-          />
-        </div>
-        <div className="h-[136px] relative">
-          <Image
-            src={"/assets/images/banner-coin1.png"}
-            alt="banner"
-            fill
-            className="rounded-md absolute max-lg:w-full max-lg:h-[136px] object-cover"
-          />
-        </div>
-        <div className="h-[136px] relative">
-          <Image
-            src={"/assets/images/banner-coin1.png"}
-            alt="banner"
-            fill
-            className="rounded-md absolute max-lg:w-full max-lg:h-[136px] object-cover"
-          />
-        </div> */}
       </Slider>
     </div>
   );
