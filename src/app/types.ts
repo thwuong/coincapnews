@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type DetailCoinType = {
   id: string;
   name: string;
@@ -172,4 +174,45 @@ export type ExchangeType = {
   number_of_perpetual_pairs: number;
   number_of_futures_pairs: number;
   image: string;
+};
+type Children = Leaf[];
+
+type Leaf = {
+  type: string;
+  value?: {
+    url: string;
+    alt: string;
+  };
+  children: Children;
+  url?: string;
+  [key: string]: unknown;
+};
+export type ContentBlock = {
+  id: string;
+  title?: string;
+  blockName: any;
+  blockType: string;
+  text?: Leaf[];
+};
+export type Doc = {
+  id: number;
+  title: string;
+  publishedDate: string;
+  slug: string;
+  contentBlocks: ContentBlock[];
+  updatedAt: string;
+  createdAt: string;
+  _status: string;
+};
+export type PageType = {
+  docs: Doc[];
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  limit: number;
+  nextPage: any;
+  page: number;
+  pagingCounter: number;
+  prevPage: any;
+  totalDocs: number;
+  totalPages: number;
 };
