@@ -123,7 +123,7 @@ function CoinTable({
         ?.classList.add(streamData.data.P >= 0 ? "text-up" : "text-down");
       document
         .querySelector(`tr[data-symbol="${streamData.data.s}"] td .fomo`)
-        ?.classList.toggle("!hidden", streamData.data.P < 0);
+        ?.classList.toggle("!hidden", streamData.data.P < 30);
     }
 
     socket.onopen = onConnect;
@@ -289,7 +289,7 @@ function CoinTable({
                             className={clsx(
                               "uppercase fomo leading-[14px] text-12 font-bold text-green-600 font-inter ml-auto ",
                               row.original
-                                .price_change_percentage_24h_in_currency < 0 &&
+                                .price_change_percentage_24h_in_currency < 30 &&
                                 "!hidden"
                             )}
                           >

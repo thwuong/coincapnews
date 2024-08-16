@@ -212,8 +212,8 @@ function MenuMobile({ onClose, isOpen, lang }: MenuMobileProps) {
     <Drawer
       onClose={onClose}
       isOpen={isOpen}
-      size={width > 768 ? "full" : "sm"}
-      placement={width > 768 ? "right" : "left"}
+      size={width >= 768 ? "sm" : "full"}
+      placement={width >= 768 ? "left" : "right"}
     >
       <DrawerOverlay />
       <DrawerContent>
