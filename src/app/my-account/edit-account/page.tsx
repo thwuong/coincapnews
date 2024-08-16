@@ -1,10 +1,15 @@
 import { EditAccount } from "@/components/Auth";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 interface PageProps {
-    params: {
-        lang: string;
-    };
+  params: {
+    lang: string;
+  };
 }
 export default function Page({ params }: PageProps) {
-    return <EditAccount />;
+  const cookieStore = cookies();
+  const token = cookieStore.get("c-token");
+  if (!token?.value) redirect("/");
+  return <EditAccount />;
 }

@@ -5,7 +5,6 @@ import { checkFormatImage } from "@/app/utils/checkFormatImage";
 import UseScroll from "@/hooks/UseScroll";
 import {
   Box,
-  Button,
   Input,
   InputGroup,
   InputLeftElement,
@@ -22,6 +21,10 @@ import { SpinnerLoading } from "../Loading";
 import { MenuMobile } from "../MenuMobile";
 import { Navigation } from "../Navigation";
 import { Topbar } from "../Topbar";
+import dynamic from "next/dynamic";
+const UserMenu = dynamic(() =>
+  import("../UserMenu").then((mod) => mod.UserMenu)
+);
 type HeaderProps = {
   lang: string;
 };
@@ -47,6 +50,7 @@ function Header({ lang }: HeaderProps) {
   const [searchList, setSearchList] = useState<SearchResultType | undefined>();
   const [scrollingUp] = UseScroll();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { t } = useTranslation(lang, "home");
   const router = useRouter();
   const ref = useDetectClickOutside({
@@ -77,7 +81,6 @@ function Header({ lang }: HeaderProps) {
       handleSearch(keyword);
     }, 600);
   }, [keyword]);
-
   return (
     <header className="flex items-center justify-center flex-col">
       <Container className="px-12">
@@ -259,22 +262,8 @@ function Header({ lang }: HeaderProps) {
                   height={24}
                 />
               </Box>
-              <Button
-                as={Link}
-                href={"/my-account"}
-                bgColor={"#3861fb"}
-                _hover={{
-                  bgColor: "none",
-                }}
-                px={"20px"}
-                color={"#fff"}
-                fontSize={"12px"}
-                fontWeight={"600"}
-                letterSpacing={"0.4px"}
-                lineHeight={"18px"}
-              >
-                {t("login")}
-              </Button>
+
+              <UserMenu onOpen={onOpen} />
             </div>
             {/* Show table and mobile */}
             <div className=" items-center gap-4 hidden max-lg:flex">

@@ -20,7 +20,10 @@
     "dex": "DEX",
     "knowledge": "Kiến thức",
     "converter": "Bộ quy đổi",
-    "news": "Tin tức"
+    "news": "Tin tức",
+    "profile_settings": "Cài đặt hồ sơ",
+    "order_management": "Quản lý đơn hàng",
+    "submit_coin": "Gửi xu"
   },
   "footer": {
     "crypto": "Tiền điện tử",
@@ -170,5 +173,7 @@
     "derivatives": "Các sàn giao dịch tiền mã hóa phát sinh",
     "dex": "Các sàn giao dịch tiền mã hóa phi tập trung"
   },
-  "knowledge": "Kiến thức"
+  "knowledge": "Kiến thức",
+  "logout": "Đăng xuất",
+  "login_register": "Đăng nhập / Đăng ký"
 }

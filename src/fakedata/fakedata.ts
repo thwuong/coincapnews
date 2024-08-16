@@ -271,3 +271,23 @@ export const coinSticky: any = {
   price_change_percentage_7d_in_currency: 0.660398971713524,
   currency: "usd",
 };
+export const navUser = [
+  {
+    icon: "/assets/icons/user.svg",
+    label: "Profile Settings",
+    key: "profile_settings",
+    href: "/my-account/edit-account",
+  },
+  {
+    icon: "/assets/icons/payment-method.svg",
+    label: "Order Management",
+    key: "order_management",
+    href: "/my-account/orders",
+  },
+  {
+    icon: "/assets/icons/submit-coin.svg",
+    label: "Submit coin",
+    key: "submit_coin",
+    href: "/submit-coin",
+  },
+];
