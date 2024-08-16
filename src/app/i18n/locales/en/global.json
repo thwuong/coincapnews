@@ -20,7 +20,10 @@
     "dex": "DEX",
     "knowledge": "Knowledge",
     "converter": "Converter",
-    "news": "News"
+    "news": "News",
+    "profile_settings": "Profile Settings",
+    "order_management": "Order Management",
+    "submit_coin": "Submit coin"
   },
   "footer": {
     "crypto": "Crypto",
@@ -238,5 +241,7 @@
     "dex": "Dex Exchanges",
     "submit_coin": "Submit a request"
   },
-  "knowledge": "Knowledge"
+  "knowledge": "Knowledge",
+  "logout": "Logout",
+  "login_register": "Log in / Register"
 }

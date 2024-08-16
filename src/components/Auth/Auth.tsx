@@ -2,7 +2,7 @@
 import { createUserAPI, loginAPI } from "@/api/authAPI";
 import { EMAIL_REGEX } from "@/app/contants";
 import { setUser } from "@/lib/features/user/userSlice";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import showToast from "@/utils";
 import {
   Button,
@@ -24,6 +24,7 @@ type Inputs = {
   password: string;
 };
 function AuthLogin() {
+  const { currentLanguage } = useAppSelector((state) => state.globalStore);
   const [cookies, setCookie] = useCookies(["c-token"]);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,7 @@ function AuthLogin() {
       dispatch(setUser(res.user));
       showToast("success", res.message || "Login successfully");
       setLoading(false);
-      router.push("/");
+      router.push(`/?lang=${currentLanguage}`);
     } catch (error) {
       showToast("error", "Login failed");
       setLoading(false);

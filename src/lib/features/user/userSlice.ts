@@ -2,25 +2,29 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const getLocalStorage = (key: string) => {
   if (typeof window !== "undefined") {
-    return window.localStorage.getItem(key);
+    const data = window.localStorage.getItem(key);
+    if (!data) return null;
+    return JSON.parse(data);
   }
 };
 const setLocalStorage = (key: string, value: any) => {
   if (typeof window !== "undefined") {
-    window.localStorage.setItem(key, value);
+    window.localStorage.setItem(key, JSON.stringify(value));
   }
 };
-
+type User = {
+  email?: string;
+  name?: string;
+  id?: number;
+};
 const initialState = {
-  user: getLocalStorage("user") || null,
+  user: (getLocalStorage("user") || null) as User | null,
 };
 const userSlide = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
     setUser(state, action) {
-      console.log(action.payload);
-
       state.user = action.payload;
       setLocalStorage("user", action.payload);
     },

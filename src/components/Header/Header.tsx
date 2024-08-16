@@ -4,13 +4,10 @@ import { useTranslation } from "@/app/i18n/client";
 import { checkFormatImage } from "@/app/utils/checkFormatImage";
 import UseScroll from "@/hooks/UseScroll";
 import {
-  Avatar,
   Box,
-  Button,
   Input,
   InputGroup,
   InputLeftElement,
-  WrapItem,
   useDisclosure,
 } from "@chakra-ui/react";
 import clsx from "clsx";
@@ -24,7 +21,10 @@ import { SpinnerLoading } from "../Loading";
 import { MenuMobile } from "../MenuMobile";
 import { Navigation } from "../Navigation";
 import { Topbar } from "../Topbar";
-import { useAppSelector } from "@/lib/hooks";
+import dynamic from "next/dynamic";
+const UserMenu = dynamic(() =>
+  import("../UserMenu").then((mod) => mod.UserMenu)
+);
 type HeaderProps = {
   lang: string;
 };
@@ -43,7 +43,6 @@ type SearchResultType = {
   exchanges: ResultItemsType[];
 };
 function Header({ lang }: HeaderProps) {
-  const user = useAppSelector((state) => state.userStore.user);
   const [keyword, setKeyword] = useState<string>("");
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -51,6 +50,7 @@ function Header({ lang }: HeaderProps) {
   const [searchList, setSearchList] = useState<SearchResultType | undefined>();
   const [scrollingUp] = UseScroll();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { t } = useTranslation(lang, "home");
   const router = useRouter();
   const ref = useDetectClickOutside({
@@ -81,7 +81,6 @@ function Header({ lang }: HeaderProps) {
       handleSearch(keyword);
     }, 600);
   }, [keyword]);
-
   return (
     <header className="flex items-center justify-center flex-col">
       <Container className="px-12">
@@ -264,28 +263,7 @@ function Header({ lang }: HeaderProps) {
                 />
               </Box>
 
-              {user ? (
-                <WrapItem>
-                  <Avatar size={"sm"} name={user?.email} colorScheme="blue" />
-                </WrapItem>
-              ) : (
-                <Button
-                  as={Link}
-                  href={"/my-account"}
-                  bgColor={"#3861fb"}
-                  _hover={{
-                    bgColor: "none",
-                  }}
-                  px={"20px"}
-                  color={"#fff"}
-                  fontSize={"12px"}
-                  fontWeight={"600"}
-                  letterSpacing={"0.4px"}
-                  lineHeight={"18px"}
-                >
-                  {t("login")}
-                </Button>
-              )}
+              <UserMenu onOpen={onOpen} />
             </div>
             {/* Show table and mobile */}
             <div className=" items-center gap-4 hidden max-lg:flex">
