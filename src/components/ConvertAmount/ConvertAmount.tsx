@@ -13,8 +13,8 @@ type ConvertType = {
   type: string;
 };
 function ConvertAmount() {
-  const currentLanguage = useAppSelector(
-    (state) => state.globalStore.currentLanguage
+  const { currentCurrency, currentLanguage } = useAppSelector(
+    (state) => state.globalStore
   );
   const { data, isLoading } = useFetchAPI(`/exchange_rates`);
   const [from, setFrom] = useState<string>("btc");
@@ -108,7 +108,7 @@ function ConvertAmount() {
         </Select>
         <p className="font-bold text-sm truncate">
           {result
-            ? formatCurrency(result, "USD", currentLanguage, {
+            ? formatCurrency(result, currentCurrency, currentLanguage, {
                 maximumFractionDigits: 2,
                 minimumIntegerDigits: 4,
               })

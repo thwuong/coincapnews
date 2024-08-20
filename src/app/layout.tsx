@@ -6,6 +6,8 @@ import { cookies } from "next/headers";
 import { WEBSITE_HOST_URL } from "./contants";
 import "./globals.css";
 import { cookieName } from "./i18n/settings";
+import Head from "next/head";
+import Script from "next/script";
 const meta = {
   title:
     "Coincapnews | Cryptocurrency Prices, Charts And Market Capitalizations",

@@ -134,16 +134,17 @@ function TableSection() {
     // setPage(selectedItem.selected + 1);
     setPage(page - 1);
   };
-  const { data: dataAPI, isLoading } = useFetchAPI(
-    `/v1/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}&sparkline=true`
-  );
-  const { data: features, isLoading: isLoadingFeature } = useFetchAPI(
-    `/v1/coins/markets/?ids=${IDS_FEATURE}&sparkline=true`
+  const { currentLanguage, currentCurrency } = useAppSelector(
+    (state) => state.globalStore
   );
 
-  const currentLanguage = useAppSelector(
-    (state) => state.globalStore.currentLanguage
+  const { data: dataAPI, isLoading } = useFetchAPI(
+    `/v1/coins/markets?page=${page}&per_page=${COIN_PER_PAGE}&search=${searchTerms}&sparkline=true&vs_currency=${currentCurrency}`
   );
+  const { data: features, isLoading: isLoadingFeature } = useFetchAPI(
+    `/v1/coins/markets/?ids=${IDS_FEATURE}&sparkline=true&vs_currency=${currentCurrency}`
+  );
+
   const { t } = useTranslation(currentLanguage, "home");
   React.useEffect(() => {
     // if (!keyword) return;

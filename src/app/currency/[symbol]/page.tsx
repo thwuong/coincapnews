@@ -16,7 +16,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDetectClickOutside } from "react-detect-click-outside";
 interface PageProps {
   params: {
@@ -27,13 +27,14 @@ interface PageProps {
 export default function Page({ params }: PageProps) {
   const { currentCurrency } = useAppSelector((state) => state.globalStore);
   const toast = useToast();
+  let socketInstance = useRef<any>(null);
   const [stream, setStream] = useState<NewDataType | any>();
   const [moreContract, setMoreContract] = useState<boolean>(false);
   const {
     data: coin,
     isLoading,
   }: { data: DetailCoinType; isLoading: boolean } = useFetchAPI(
-    `/v1/coins/details/${params.symbol}`
+    `/v1/coins/details/${params.symbol}?vs_currency=${currentCurrency}`
   );
   const copy = (contract: string) => {
     navigator.clipboard.writeText(contract);
@@ -50,13 +51,19 @@ export default function Page({ params }: PageProps) {
       setMoreContract(false);
     },
   });
+
   useEffect(() => {
     if (!coin) return;
-
-    const socket = socketDetail(coin.symbol);
+    if (currentCurrency !== "usd") {
+      if (socketInstance.current) {
+        socketInstance.current.close();
+      }
+      return setStream({});
+    }
+    const socket = socketDetail(coin.symbol, currentCurrency);
+    socketInstance.current = socket;
     function getMessage(this: WebSocket, ev: MessageEvent<any>) {
       const streamData = JSON.parse(ev.data);
-
       setStream({
         price: parseFloat(streamData.data.c),
         change24: parseFloat(streamData.data.P),
@@ -66,7 +73,7 @@ export default function Page({ params }: PageProps) {
     () => {
       socket.close();
     };
-  }, [coin]);
+  }, [coin, currentCurrency]);
 
   const platforms = useMemo(() => {
     if (!coin?.platforms) return;
@@ -138,7 +145,7 @@ export default function Page({ params }: PageProps) {
                 {formatCurrency(
                   getNewData(
                     stream?.price,
-                    coin.market_data?.current_price["usd"]
+                    coin.market_data?.current_price[currentCurrency]
                   ),
                   currentCurrency,
                   lang,
@@ -186,7 +193,7 @@ export default function Page({ params }: PageProps) {
                 <span className="text-white font-semibold text-sm">
                   {getNewData(
                     stream?.change24,
-                    coin.market_data.market_cap_change_percentage_24h || 0
+                    coin?.market_data?.market_cap_change_percentage_24h || 0
                   )?.toFixed(2)}
                   %
                 </span>
@@ -200,13 +207,13 @@ export default function Page({ params }: PageProps) {
               <p className="text-12 font-medium">{t("24h_low_24h_high")}</p>
               <p className="text-sm font-bold">
                 {formatCurrency(
-                  coin.market_data?.low_24h?.usd || 0,
+                  coin?.market_data?.low_24h[currentCurrency] || 0,
                   currentCurrency,
                   lang
                 )}{" "}
                 /{" "}
                 {formatCurrency(
-                  coin.market_data?.high_24h?.usd || 0,
+                  coin.market_data?.high_24h[currentCurrency] || 0,
                   currentCurrency,
                   lang
                 )}
@@ -216,7 +223,7 @@ export default function Page({ params }: PageProps) {
               <p className="text-12 font-medium">{t("24h_trading_vol")}</p>
               <p className="text-sm font-bold">
                 {formatCurrency(
-                  coin.market_data.total_volume["usd"] || 0,
+                  coin?.market_data?.total_volume[currentCurrency] || 0,
                   currentCurrency,
                   lang
                 )}

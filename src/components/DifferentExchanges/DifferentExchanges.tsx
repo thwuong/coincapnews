@@ -297,7 +297,8 @@ function DifferentExchangesTable({
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
                           row.original.trade_volume_24h_btc_normalized || 0,
-                          currentCurrency,
+                          // currentCurrency,
+                          "usd",
                           currentLanguage,
                           {
                             minimumFractionDigits: 0,
@@ -310,7 +311,8 @@ function DifferentExchangesTable({
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
                           row.original.trade_volume_24h_btc || 0,
-                          currentCurrency,
+                          // currentCurrency,
+                          "usd",
                           currentLanguage,
                           {
                             minimumFractionDigits: 0,
@@ -386,6 +388,7 @@ function DifferentExchanges({
   centralized = true,
 }: DifferentExchangesProps) {
   const [page, setPage] = useState(1);
+
   const { data, isLoading, error } = useFetchAPI(
     `${url}?per_page=${COIN_PER_PAGE}&page=${page}&centralized=${centralized}&exclude=tickers,status_updates`
   );

@@ -5,6 +5,7 @@ import Container from "@/components/Container/Container";
 import { ExchangeTableDetail } from "@/components/ExchangeTableDetail";
 import SpinnerLoading from "@/components/Loading/SpinnerLoading";
 import TablePagination from "@/components/TablePagination/TablePagination";
+import { useAppSelector } from "@/lib/hooks";
 import { Input, Select } from "@chakra-ui/react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
