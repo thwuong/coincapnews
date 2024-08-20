@@ -18,6 +18,8 @@ import { useMemo, useState } from "react";
 import { ShareModal } from "../Modal";
 import { Overview } from "../Overview";
 import { TablePagination } from "../TablePagination";
+import { Analysis } from "../Analysis";
+import { Social } from "../Social";
 const ExchangeTable = dynamic(() =>
   import("../ExchangeTable").then((mod) => mod.ExchangeTable)
 );
@@ -41,8 +43,8 @@ function DetailTabs({
     // setPage(selectedItem.selected + 1);
     setPage(page - 1);
   };
-  const currentLanguage = useAppSelector(
-    (state) => state.globalStore.currentLanguage
+  const { currentLanguage, currentCurrency } = useAppSelector(
+    (state) => state.globalStore
   );
   const { t } = useTranslation(currentLanguage);
   const exchanges = useMemo(() => {
@@ -80,13 +82,6 @@ function DetailTabs({
             className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit hover:bg-[#0000000a]"
           >
             <span className="text-13 ">{t("socials")}</span>
-          </Tab>
-          <Tab
-            _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
-            py={"4px"}
-            className=" text-black font-semibold rounded-lg leading-[30px] px-4  h-fit hover:bg-[#0000000a]"
-          >
-            <span className="text-13 ">{t("ratings")}</span>
           </Tab>
           <Tab
             _selected={{ color: "#fff", bg: "rgb(56,97,251)" }}
@@ -173,12 +168,18 @@ function DetailTabs({
               </div>
             )}
           </TabPanel>
+          <TabPanel p={"0px"}>
+            <Social name={coinData.name} />
+          </TabPanel>
+          <TabPanel p={"20px 0"}>
+            <Analysis symbol={coinData.symbol} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
       <ShareModal
         image={coinData.image?.large}
         newData={newData}
-        oldData={coinData?.market_data.current_price["usd"]}
+        oldData={coinData?.market_data?.current_price[currentCurrency]}
         symbol={coinData.symbol}
         isOpen={isOpen}
         onClose={onClose}

@@ -223,7 +223,7 @@ function GainersAndLosersTable({
                     <Td isNumeric={true} px={"4px"}>
                       <p className="capitalize text-sm text-center leading-4 font-semibold text-typo-1 font-inter">
                         {formatCurrency(
-                          row.original.usd,
+                          row.original[currentCurrency],
                           currentCurrency,
                           currentLanguage,
                           {
@@ -236,19 +236,22 @@ function GainersAndLosersTable({
                       <p
                         className={clsx(
                           "capitalize text-sm text-center leading-4 font-semibold font-inter",
-                          row.original.usd_24h_change > 0
+                          row.original[`${currentCurrency}_24h_change`] > 0
                             ? "text-up"
                             : "text-down"
                         )}
                       >
-                        {row.original.usd_24h_change?.toFixed(2)}%
+                        {row.original[`${currentCurrency}_24h_change`]?.toFixed(
+                          2
+                        )}
+                        %
                       </p>
                     </Td>
 
                     <Td isNumeric={true} px={"4px"} minW={"118px"}>
                       <p className="capitalize text-sm text-center leading-4 font-semibold text-typo-1 font-inter">
                         {formatCurrency(
-                          row.original.usd_24h_vol || 0,
+                          row.original[`${currentCurrency}_24h_vol`] || 0,
                           currentCurrency,
                           currentLanguage,
                           {
@@ -303,13 +306,13 @@ function GainersAndLosersTable({
 
 function GainersAndLosers() {
   const [page, setPage] = React.useState<number>(1);
-
+  const { currentCurrency } = useAppSelector((state) => state.globalStore);
   const handlePageClick = (selectedItem: any) => {
     // setPage(selectedItem.selected + 1);
     setPage(page + 1);
   };
   const { data: dataAPI, isLoading } = useFetchAPI(
-    `/coins/top_gainers_losers?vs_currency=usd&page=${page}&per_page=${COIN_PER_PAGE}`
+    `/coins/top_gainers_losers?vs_currency=${currentCurrency}&page=${page}&per_page=${COIN_PER_PAGE}`
   );
   const search = useSearchParams();
   const lang = search.get("lang") || "en";

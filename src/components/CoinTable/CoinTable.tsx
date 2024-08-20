@@ -89,7 +89,11 @@ function CoinTable({
 
   React.useEffect(() => {
     if (!list) return;
-    const url = list.map((i) => `${i.symbol}usdt@ticker/`).join("");
+    const changedCurrency =
+      currentCurrency === "usd" ? "usdt" : currentCurrency;
+    const url = list
+      .map((i) => `${i.symbol}${changedCurrency}@ticker/`)
+      .join("");
     const socket = connectSocket(url);
     function onConnect(this: WebSocket) {}
 
@@ -134,7 +138,7 @@ function CoinTable({
       socket.onclose = onDisconnect;
       socket.close();
     };
-  }, [list, currentLanguage]);
+  }, [list, currentLanguage, currentCurrency]);
   const { t } = useTranslation(currentLanguage);
   return (
     <TableContainer w={"100%"}>
@@ -368,8 +372,16 @@ function CoinTable({
                     </Td>
                     <Td isNumeric={true} px={"4px"} minW={"182px"}>
                       <div className="capitalize text-sm leading-4 font-semibold text-typo-1 font-inter flex gap-1 justify-end">
-                        <p>{formatQuoteCurrency(row.original.total_supply)}</p>
-                        <p className="uppercase">{row.original.symbol}</p>
+                        <p>
+                          {formatCurrency(
+                            row.original.total_supply,
+                            currentCurrency,
+                            currentLanguage,
+                            {
+                              minimumFractionDigits: 0,
+                            }
+                          )}
+                        </p>
                       </div>
                     </Td>
                     <Td

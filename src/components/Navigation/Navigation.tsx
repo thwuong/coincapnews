@@ -29,8 +29,6 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
       <Button
         as={Link}
         href={navItem.href}
-        lang={currentLanguage}
-        hrefLang={currentLanguage}
         bg={"transparent"}
         _hover={{
           bg: "transparent",
@@ -73,8 +71,6 @@ function NavItem({ navItem }: { navItem: NavItemType }) {
             <Button
               key={item.label}
               as={Link}
-              lang={currentLanguage}
-              hrefLang={currentLanguage}
               href={item.href}
               className="group/child"
               bg={

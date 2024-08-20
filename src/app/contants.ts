@@ -5,4 +5,5 @@ export const SOCKET_DETAIL_URL = `wss://stream.binance.com:9443/stream?streams=`
 export const COIN_PER_PAGE = process.env.NEXT_PUBLIC_PER_PAGE;
 export const IDS_FEATURE = process.env.NEXT_PUBLIC_IDS_FEATURE;
 export const STATIC_HOST_URL = process.env.NEXT_PUBLIC_STATIC_HOST_URL;
+export const INTOTHEBLOCK_KEY = process.env.NEXT_PUBLIC_INTOTHEBLOCK_KEY;
 export const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;

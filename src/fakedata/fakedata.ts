@@ -291,3 +291,21 @@ export const navUser = [
     href: "/submit-coin",
   },
 ];
+export const coinCategories = [
+  {
+    category_id: "binance-smart-chain",
+    name: "BNB Chain Ecosystem",
+  },
+  {
+    category_id: "decentralized-finance-defi",
+    name: "Decentralized Finance (DeFi)",
+  },
+  {
+    category_id: "dot-ecosystem",
+    name: "Polkadot Ecosystem",
+  },
+  {
+    category_id: "non-fungible-tokens-nft",
+    name: "NFT",
+  },
+];

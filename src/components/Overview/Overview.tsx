@@ -105,7 +105,9 @@ function Overview({
     "90": coinDetail?.price_change_percentage_60d_in_currency,
     "180": coinDetail?.price_change_percentage_200d_in_currency,
     "365":
-      overviewData?.market_data?.price_change_percentage_1y_in_currency?.usd,
+      overviewData?.market_data?.price_change_percentage_1y_in_currency[
+        currentCurrency
+      ],
   };
   return (
     <section className="grid grid-cols-12 gap-5 w-full max-lg:grid-cols-1">
@@ -348,7 +350,7 @@ function Overview({
                   {formatCurrency(
                     getNewData(
                       newData?.price,
-                      overviewData.market_data?.current_price?.usd
+                      overviewData.market_data?.current_price[currentCurrency]
                     ),
                     currentCurrency,
                     currentLanguage,
@@ -362,7 +364,8 @@ function Overview({
                 <p className="text-typo-1 text-sm  ">{t("trading_volume")}</p>
                 <p className="font-semibold text-sm">
                   {formatCurrency(
-                    overviewData.market_data.total_volume?.usd || 0,
+                    overviewData?.market_data?.total_volume[currentCurrency] ||
+                      0,
                     currentCurrency,
                     currentLanguage
                   )}
@@ -374,8 +377,9 @@ function Overview({
                   <StatNumber>
                     <p className="font-semibold text-sm">
                       {formatCurrency(
-                        overviewData.market_data?.price_change_24h_in_currency
-                          ?.usd || 0,
+                        overviewData?.market_data?.price_change_24h_in_currency[
+                          currentCurrency
+                        ] || 0,
                         currentCurrency,
                         currentLanguage
                       )}
@@ -420,13 +424,13 @@ function Overview({
                 <p className="text-typo-1 text-sm  ">{t("24h_low_24h_high")}</p>
                 <p className="font-semibold text-sm">
                   {formatCurrency(
-                    overviewData.market_data?.low_24h?.usd || 0,
+                    overviewData.market_data?.low_24h[currentCurrency] || 0,
                     currentCurrency,
                     currentLanguage
                   )}{" "}
                   {" / "}
                   {formatCurrency(
-                    overviewData.market_data?.high_24h?.usd || 0,
+                    overviewData.market_data?.high_24h[currentCurrency] || 0,
                     currentCurrency,
                     currentLanguage
                   )}
@@ -436,7 +440,7 @@ function Overview({
                                 <p className="text-typo-1 text-sm  ">{t("volume_market_cap")}</p>
                                 <p className="font-semibold text-sm">
                                     {formatQuoteCurrency(
-                                        overviewData.market_data?.market_cap?.usd || 0
+                                        overviewData.market_data?.market_cap[currentCurrency] || 0
                                     )}
                                 </p>
                             </Box> */}
@@ -456,7 +460,7 @@ function Overview({
                 <p className="text-typo-1 text-sm  ">{t("market_cap")}</p>
                 <p className="font-semibold text-sm">
                   {formatCurrency(
-                    overviewData.market_data?.market_cap?.usd || 0,
+                    overviewData.market_data?.market_cap[currentCurrency] || 0,
                     currentCurrency,
                     currentLanguage
                   )}
@@ -468,8 +472,9 @@ function Overview({
                 </p>
                 <p className="font-semibold text-sm">
                   {formatCurrency(
-                    overviewData?.market_data?.fully_diluted_valuation?.usd ||
-                      0,
+                    overviewData?.market_data?.fully_diluted_valuation[
+                      currentCurrency
+                    ] || 0,
                     currentCurrency,
                     currentLanguage
                   )}
@@ -487,13 +492,13 @@ function Overview({
                 </p>
                 <p className="font-semibold text-sm">
                   {formatCurrency(
-                    overviewData.market_data?.low_24h?.usd || 0,
+                    overviewData.market_data?.low_24h[currentCurrency] || 0,
                     currentCurrency,
                     currentLanguage
                   )}
                   {"/"}
                   {formatCurrency(
-                    overviewData.market_data?.high_24h?.usd || 0,
+                    overviewData.market_data?.high_24h[currentCurrency] || 0,
                     currentCurrency,
                     currentLanguage
                   )}
@@ -533,7 +538,7 @@ function Overview({
                 <p className="text-typo-1 text-sm  ">{t("yesterday_volume")}</p>
                 <p className="font-semibold text-sm">
                   {formatCurrency(
-                    overviewData.market_data?.market_cap?.usd || 0,
+                    overviewData.market_data?.market_cap[currentCurrency] || 0,
                     currentCurrency,
                     currentLanguage
                   )}
@@ -551,7 +556,7 @@ function Overview({
                   <StatNumber>
                     <p className="font-semibold text-sm">
                       {formatCurrency(
-                        overviewData.market_data.ath?.usd || 0,
+                        overviewData.market_data.ath[currentCurrency] || 0,
                         currentCurrency,
                         currentLanguage
                       )}
@@ -561,14 +566,18 @@ function Overview({
                     fontSize={"12px"}
                     fontWeight={"600"}
                     className={
-                      overviewData.market_data.ath_change_percentage?.usd > 0
+                      overviewData.market_data.ath_change_percentage[
+                        currentCurrency
+                      ] > 0
                         ? "text-up"
                         : "text-down"
                     }
                   >
                     <StatArrow
                       type={
-                        overviewData.market_data.ath_change_percentage?.usd > 0
+                        overviewData.market_data.ath_change_percentage[
+                          currentCurrency
+                        ] > 0
                           ? "increase"
                           : "decrease"
                       }
@@ -576,9 +585,9 @@ function Overview({
                       h={"8px"}
                     />
                     {formatQuoteCurrency(
-                      overviewData.market_data.ath_change_percentage?.usd?.toFixed(
-                        2
-                      )
+                      overviewData.market_data.ath_change_percentage[
+                        currentCurrency
+                      ]?.toFixed(2)
                     )}
                     %
                   </StatHelpText>
@@ -590,7 +599,7 @@ function Overview({
                   <StatNumber>
                     <p className="font-semibold text-sm">
                       {formatCurrency(
-                        overviewData.market_data.atl?.usd || 0,
+                        overviewData.market_data.atl[currentCurrency] || 0,
                         currentCurrency,
                         currentLanguage
                       )}
@@ -600,14 +609,18 @@ function Overview({
                     fontSize={"12px"}
                     fontWeight={"600"}
                     className={
-                      overviewData.market_data.atl_change_percentage?.usd > 0
+                      overviewData.market_data.atl_change_percentage[
+                        currentCurrency
+                      ] > 0
                         ? "text-up"
                         : "text-down"
                     }
                   >
                     <StatArrow
                       type={
-                        overviewData.market_data.atl_change_percentage?.usd > 0
+                        overviewData.market_data.atl_change_percentage[
+                          currentCurrency
+                        ] > 0
                           ? "increase"
                           : "decrease"
                       }
@@ -615,9 +628,9 @@ function Overview({
                       h={"8px"}
                     />
                     {formatQuoteCurrency(
-                      overviewData.market_data.atl_change_percentage?.usd?.toFixed(
-                        2
-                      )
+                      overviewData.market_data.atl_change_percentage[
+                        currentCurrency
+                      ]?.toFixed(2)
                     )}
                     %
                   </StatHelpText>

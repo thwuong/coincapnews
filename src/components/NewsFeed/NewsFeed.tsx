@@ -25,7 +25,7 @@ function NewsFeedItem(props: FeedType) {
 
   return (
     <li className="pb-8 border-b ">
-      {pathName !== `/${currentLanguage}/news` ? (
+      {pathName.includes("news") || pathName.includes("knowledge") ? (
         <Link
           href={`${post_permalink}`}
           rel="nofollow"

@@ -162,7 +162,7 @@ export type CoinTopType = {
   usd: number;
   usd_24h_change: number;
   usd_24h_vol: number;
-};
+} & Record<string, number>;
 export type ExchangeType = {
   id: string;
   name: string;
