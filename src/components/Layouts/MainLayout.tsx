@@ -9,6 +9,7 @@ import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import { SideBar } from "../SideBar";
+import UseResize from "@/hooks/UseResize";
 interface LayoutProps {
   children: Readonly<React.ReactNode>;
 }
@@ -40,9 +41,11 @@ function MainLayout({ children }: LayoutProps) {
   const search = useSearchParams();
   const lang = search.get("lang") || "en";
   const [scrollY] = UseGetScrollY();
+  const [width] = UseResize();
+
   return (
     <Providers lang={lang}>
-      {pathName !== `/my-account` && <Header lang={lang} />}
+      {pathName !== `/my-account` && <Header lang={lang} size={width} />}
       <section
         className={clsx(
           "flex w-full justify-center bg-secondary",

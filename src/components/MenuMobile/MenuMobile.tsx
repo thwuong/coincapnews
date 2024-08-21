@@ -39,6 +39,7 @@ type MenuMobileProps = {
   isOpen: boolean;
   onClose: () => void;
   lang: string;
+  size: number;
 };
 type NavItemType = {
   label?: string;
@@ -169,7 +170,7 @@ function NavItem({
   );
 }
 
-function MenuMobile({ onClose, isOpen, lang }: MenuMobileProps) {
+function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
   const router = useRouter();
   const nextPage = (href: string = "/") => {
     router.push(href, {
@@ -207,13 +208,13 @@ function MenuMobile({ onClose, isOpen, lang }: MenuMobileProps) {
       setLoadingLogout(false);
     }
   };
-  const [width] = UseResize();
+
   return (
     <Drawer
       onClose={onClose}
       isOpen={isOpen}
-      size={width >= 768 ? "sm" : "full"}
-      placement={width >= 768 ? "left" : "right"}
+      size={size >= 768 ? "sm" : "full"}
+      placement={size >= 768 ? "left" : "right"}
     >
       <DrawerOverlay />
       <DrawerContent>

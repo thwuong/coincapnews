@@ -27,6 +27,7 @@ const UserMenu = dynamic(() =>
 );
 type HeaderProps = {
   lang: string;
+  size: number;
 };
 type ResultItemsType = {
   id: string;
@@ -42,7 +43,7 @@ type SearchResultType = {
   coins: ResultItemsType[];
   exchanges: ResultItemsType[];
 };
-function Header({ lang }: HeaderProps) {
+function Header({ lang, size }: HeaderProps) {
   const [keyword, setKeyword] = useState<string>("");
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -283,7 +284,12 @@ function Header({ lang }: HeaderProps) {
                 height={24}
               />
             </div>
-            <MenuMobile lang={lang} isOpen={isOpen} onClose={onClose} />
+            <MenuMobile
+              lang={lang}
+              isOpen={isOpen}
+              onClose={onClose}
+              size={size}
+            />
           </section>
         </Container>
       </div>
