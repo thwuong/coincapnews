@@ -336,7 +336,7 @@ function NewCryptoTable({
                   </Tr>
                 );
               })
-            : Array(10)
+            : Array(16)
                 .fill(0)
                 .map((_, index) => {
                   return (

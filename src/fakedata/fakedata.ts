@@ -145,12 +145,12 @@ export const navDataOfSupport: NavItemType[] = [
     href: "/faq-frequently-asked-questions",
     key: "faq",
   },
-  {
-    icon: "/assets/images/bnb.webp",
-    label: "Submit coin",
-    href: "/submit-coin",
-    key: "submit_coin",
-  },
+  // {
+  //   icon: "/assets/images/bnb.webp",
+  //   label: "Submit coin",
+  //   href: "/submit-coin",
+  //   key: "submit_coin",
+  // },
 ];
 export const pageList = [
   "",

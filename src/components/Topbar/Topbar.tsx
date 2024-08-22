@@ -100,11 +100,11 @@ function Topbar() {
       )}
 
       <div className="flex items-center gap-2 max-lg:hidden">
-        {currentLanguage ? (
+        {/* {currentLanguage ? (
           <LanguageMenu />
         ) : (
           <div className="loader-lang mr-4"></div>
-        )}
+        )} */}
         {currency ? (
           <Button
             onClick={() => onOpen()}

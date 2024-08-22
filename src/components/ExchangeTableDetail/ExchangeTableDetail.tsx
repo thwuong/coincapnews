@@ -1,5 +1,6 @@
 import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency, formatPercentage } from "@/app/utils/formatCurrency";
+import UsePriceConversion from "@/hooks/UsePriceConversion";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
 import {
@@ -24,6 +25,7 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 type ExchangeChart = {
   coin_id: string;
@@ -32,6 +34,9 @@ type ExchangeChart = {
   bid_ask_spread_percentage: number;
   converted_last: any;
   base: string;
+  last: number;
+  volume: number;
+  trade_url: string;
 };
 export type ExchangeTableDetailProps = {
   data: ExchangeChart[];
@@ -60,14 +65,14 @@ const columns: ColumnDef<ExchangeChart, any>[] = [
       center: true,
     },
   }),
-  columnHelper.accessor("converted_last", {
+  columnHelper.accessor("last", {
     cell: (info) => info.getValue(),
     header: "Price",
     meta: {
       isNumeric: true,
     },
   }),
-  columnHelper.accessor("converted_volume", {
+  columnHelper.accessor("volume", {
     cell: (info) => info.getValue(),
     header: "Volume (24H)",
     meta: {
@@ -99,10 +104,11 @@ function ExchangeTableDetail({
     },
   });
   const [width] = UseResize();
-  const currentLanguage = useAppSelector(
-    (state) => state.globalStore.currentLanguage
+  const { currentLanguage, currentCurrency } = useAppSelector(
+    (state) => state.globalStore
   );
   const { t } = useTranslation(currentLanguage);
+  const { priceByCurrentCurrency } = UsePriceConversion();
   return (
     <TableContainer w={"100%"}>
       <Table>
@@ -198,26 +204,52 @@ function ExchangeTableDetail({
                         {row.original.coin_id}
                       </p>
                     </Td>
-                    <Td px={"4px"}>
-                      <p className="uppercase max-w-[600px] whitespace-normal text-center text-sm leading-4 font-semibold text-typo-4">
+                    <Td px={"4px"} textAlign={"center"}>
+                      <Link
+                        href={row.original.trade_url}
+                        target="_blank"
+                        className="uppercase max-w-[600px] whitespace-normal text-center text-sm leading-4 font-semibold text-typo-4"
+                      >
                         {row.original.base} / {row.original.target}
-                      </p>
+                      </Link>
                     </Td>
                     <Td px={"4px"} minW={"89px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                        {formatCurrency(row.original.converted_last["usd"])}
+                        {formatCurrency(
+                          Number(row.original.last * priceByCurrentCurrency),
+                          currentCurrency,
+                          currentLanguage,
+                          {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
+                          }
+                        )}
                       </p>
                     </Td>
                     <Td px={"4px"} minW={"145px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
-                        {formatCurrency(row.original.converted_volume["usd"])}
+                        {formatCurrency(
+                          Number(row.original.volume * priceByCurrentCurrency),
+                          currentCurrency,
+                          currentLanguage,
+                          {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
+                          }
+                        )}
                       </p>
                     </Td>
                     <Td px={"4px"} minW={"115px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatPercentage(
                           row.original.bid_ask_spread_percentage / 100,
-                          "USD",
+                          currentCurrency,
                           currentLanguage,
                           {
                             maximumFractionDigits: 2,
