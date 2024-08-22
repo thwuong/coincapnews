@@ -227,7 +227,7 @@ function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
           />
         </DrawerCloseButton>
         <DrawerHeader>
-          <Flex>
+          {/* <Flex>
             <Center gap={4}>
               {user ? (
                 <div className="flex items-center gap-2">
@@ -248,9 +248,9 @@ function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
                 </div>
               )}
             </Center>
-          </Flex>
+          </Flex> */}
         </DrawerHeader>
-        <DrawerBody className="flex flex-col justify-between">
+        <DrawerBody className="flex flex-col justify-between mt-4">
           <div className="flex flex-col gap-8">
             <InputGroup bg={"gray.50"} py={"16px"} borderRadius={"8px"}>
               <InputLeftElement
@@ -281,7 +281,7 @@ function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
                 placeholder="Search coin"
               />
             </InputGroup>
-            {user && (
+            {/* {user && (
               <Fragment>
                 <nav className="w-full flex flex-col gap-1">
                   {navUser.map((item, index) => {
@@ -292,14 +292,14 @@ function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
                 </nav>
                 <Divider />
               </Fragment>
-            )}
+            )} */}
             <nav className="w-full flex flex-col gap-1">
               {navigationHeaderData.map((item, index) => {
                 return <NavItem key={index} navItem={item} onClose={onClose} />;
               })}
             </nav>
             <div className="flex items-center justify-between">
-              <LanguageMenu />
+              {/* <LanguageMenu /> */}
               <Button
                 onClick={() => onOpenCurrency()}
                 bg={"transparent"}
@@ -307,7 +307,7 @@ function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
                   bg: "gray.100",
                 }}
                 borderRadius={6}
-                height={7}
+                height={10}
                 alignItems={"center"}
                 rightIcon={
                   <Image
@@ -325,7 +325,7 @@ function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
             </div>
             <CurrencyModal isOpen={isOpenCurrency} onClose={onCloseCurrency} />
           </div>
-          {user && (
+          {/* {user && (
             <div className="py-5 w-full flex items-center justify-center">
               <Button
                 onClick={logout}
@@ -350,7 +350,7 @@ function MenuMobile({ onClose, isOpen, lang, size }: MenuMobileProps) {
                 {t("logout")}
               </Button>
             </div>
-          )}
+          )} */}
         </DrawerBody>
       </DrawerContent>
     </Drawer>

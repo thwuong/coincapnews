@@ -1,5 +1,6 @@
 import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency, formatPercentage } from "@/app/utils/formatCurrency";
+import UsePriceConversion from "@/hooks/UsePriceConversion";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
 import {
@@ -24,12 +25,13 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
-import React, { useMemo } from "react";
+import Link from "next/link";
+import React from "react";
 type DerivativeChart = {
   coin_id: string;
   open_interest_usd: number;
   converted_volume: {
-    usd: number;
+    btc: number;
   };
   target: string;
   h24_volume: number;
@@ -37,10 +39,11 @@ type DerivativeChart = {
   last_traded: number;
   funding_rate: number;
   converted_last: {
-    usd: number;
+    btc: number;
   };
   base: string;
   symbol: string;
+  trade_url: string;
 };
 export type DerivativeTableDetailProps = {
   data: DerivativeChart[];
@@ -69,7 +72,7 @@ const columns: ColumnDef<DerivativeChart, any>[] = [
       center: true,
     },
   }),
-  columnHelper.accessor("converted_last.usd", {
+  columnHelper.accessor("converted_last.btc", {
     cell: (info) => Number(info.getValue()),
     header: "Price",
     meta: {
@@ -90,7 +93,7 @@ const columns: ColumnDef<DerivativeChart, any>[] = [
       isNumeric: true,
     },
   }),
-  columnHelper.accessor("converted_volume.usd", {
+  columnHelper.accessor("converted_volume.btc", {
     cell: (info) => Number(info.getValue()),
     header: "Volume (24H)",
     meta: {
@@ -131,6 +134,7 @@ function DerivativeTableDetail({
     (state) => state.globalStore
   );
   const { t } = useTranslation(currentLanguage);
+  const { priceByCurrentCurrency } = UsePriceConversion();
 
   return (
     <TableContainer w={"100%"}>
@@ -227,19 +231,29 @@ function DerivativeTableDetail({
                         {row.original.symbol}
                       </p>
                     </Td>
-                    <Td px={"4px"}>
-                      <p className="uppercase max-w-[600px] whitespace-normal text-center text-sm leading-4 font-semibold text-typo-4">
+                    <Td px={"4px"} textAlign={"center"}>
+                      <Link
+                        href={row.original.trade_url}
+                        target="_blank"
+                        className="uppercase hover:text-typo-2 max-w-[600px] whitespace-normal text-center text-sm leading-4 font-semibold text-typo-4"
+                      >
                         {row.original.base} / {row.original.target}
-                      </p>
+                      </Link>
                     </Td>
                     <Td px={"4px"} minW={"89px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
-                          row.original.converted_last["usd"],
+                          Number(
+                            row.original.converted_last["btc"] *
+                              priceByCurrentCurrency
+                          ),
                           currentCurrency,
                           currentLanguage,
                           {
-                            maximumFractionDigits: 6,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
                             minimumFractionDigits: 0,
                           }
                         )}
@@ -262,7 +276,7 @@ function DerivativeTableDetail({
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
                           row.original.open_interest_usd,
-                          currentCurrency,
+                          "USD",
                           currentLanguage,
                           {
                             maximumFractionDigits: 0,
@@ -274,11 +288,17 @@ function DerivativeTableDetail({
                     <Td px={"4px"} minW={"145px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
-                          row.original.converted_volume["usd"],
+                          Number(
+                            row.original.converted_volume["btc"] *
+                              priceByCurrentCurrency
+                          ),
                           currentCurrency,
                           currentLanguage,
                           {
-                            maximumFractionDigits: 0,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
                             minimumFractionDigits: 0,
                           }
                         )}

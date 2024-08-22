@@ -3,6 +3,7 @@ import useFetchAPI from "@/api/baseAPI";
 import { COIN_PER_PAGE } from "@/app/contants";
 import { useTranslation } from "@/app/i18n/client";
 import { formatCurrency } from "@/app/utils/formatCurrency";
+import UsePriceConversion from "@/hooks/UsePriceConversion";
 import UseResize from "@/hooks/UseResize";
 import { useAppSelector } from "@/lib/hooks";
 import {
@@ -26,14 +27,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { TablePagination } from "../TablePagination";
-const LineHighChart = dynamic(() =>
-  import("../Charts").then((mod) => mod.LineHighChart)
-);
+
 type Exchange = {
   id: string;
   name: string;
@@ -128,6 +126,7 @@ function DerivativesExchangesTable({
     (store) => store.globalStore
   );
   const { t } = useTranslation(currentLanguage);
+  const { priceByCurrentCurrency } = UsePriceConversion();
   return (
     <TableContainer w={"100%"}>
       <Table>
@@ -249,13 +248,18 @@ function DerivativesExchangesTable({
                     <Td px={"4px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
-                          row.original.open_interest_btc || 0,
-                          //   currentCurrency,
-                          "usd",
+                          Number(
+                            row.original.open_interest_btc *
+                              priceByCurrentCurrency
+                          ) || 0,
+                          currentCurrency,
                           currentLanguage,
                           {
                             minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
                           }
                         )}
                       </p>
@@ -263,13 +267,18 @@ function DerivativesExchangesTable({
                     <Td px={"4px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
-                          Number(row.original.trade_volume_24h_btc) || 0,
-                          //   currentCurrency,
-                          "usd",
+                          Number(
+                            row.original.trade_volume_24h_btc *
+                              priceByCurrentCurrency
+                          ) || 0,
+                          currentCurrency,
                           currentLanguage,
                           {
                             minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
                           }
                         )}
                       </p>

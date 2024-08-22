@@ -125,7 +125,7 @@ function Header({ lang, size }: HeaderProps) {
                   }}
                   borderRadius={"99px"}
                   height={"min-content"}
-                  bg={"btn"}
+                  bg={"btn.50"}
                   width={200}
                   py={"6px"}
                   type="text"
@@ -247,7 +247,7 @@ function Header({ lang, size }: HeaderProps) {
                   </Box>
                 )}
               </InputGroup>
-              <Box
+              {/* <Box
                 p={2}
                 cursor={"pointer"}
                 borderRadius={"50%"}
@@ -264,16 +264,16 @@ function Header({ lang, size }: HeaderProps) {
                 />
               </Box>
 
-              <UserMenu onOpen={onOpen} />
+              <UserMenu onOpen={onOpen} /> */}
             </div>
             {/* Show table and mobile */}
             <div className=" items-center gap-4 hidden max-lg:flex">
-              <Image
+              {/* <Image
                 src={"/assets/icons/noti.svg"}
                 alt="noti"
                 width={24}
                 height={24}
-              />
+              /> */}
               <Image
                 onClick={() => {
                   onOpen();

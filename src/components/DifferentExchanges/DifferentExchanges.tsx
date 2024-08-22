@@ -33,6 +33,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import TablePagination from "../TablePagination/TablePagination";
+import UsePriceConversion from "@/hooks/UsePriceConversion";
 const LineHighChart = dynamic(() =>
   import("../Charts").then((mod) => mod.LineHighChart)
 );
@@ -167,6 +168,8 @@ function DifferentExchangesTable({
     (store) => store.globalStore
   );
   const { t } = useTranslation(currentLanguage);
+  const { priceByCurrentCurrency } = UsePriceConversion();
+
   return (
     <TableContainer w={"100%"}>
       <Table>
@@ -296,12 +299,18 @@ function DifferentExchangesTable({
                     <Td px={"4px"} minW={"263px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
-                          row.original.trade_volume_24h_btc_normalized || 0,
-                          // currentCurrency,
-                          "usd",
+                          Number(
+                            row.original.trade_volume_24h_btc_normalized *
+                              priceByCurrentCurrency
+                          ) || 0,
+                          currentCurrency,
                           currentLanguage,
                           {
                             minimumFractionDigits: 0,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
                           }
                         )}
                         {/* <span className="uppercase"> BTC</span> */}
@@ -310,12 +319,18 @@ function DifferentExchangesTable({
                     <Td px={"4px"} minW={"233px"}>
                       <p className="capitalize text-center text-sm leading-4 font-medium text-typo-1 ">
                         {formatCurrency(
-                          row.original.trade_volume_24h_btc || 0,
-                          // currentCurrency,
-                          "usd",
+                          Number(
+                            row.original.trade_volume_24h_btc *
+                              priceByCurrentCurrency
+                          ) || 0,
+                          currentCurrency,
                           currentLanguage,
                           {
                             minimumFractionDigits: 0,
+                            maximumFractionDigits:
+                              priceByCurrentCurrency.toString().length > 4
+                                ? 0
+                                : 6,
                           }
                         )}
                         {/* <span className="uppercase"> BTC</span> */}

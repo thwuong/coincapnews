@@ -54,6 +54,7 @@ export type DetailCoinType = {
       converted_last: any;
       base: string;
       target: string;
+      trade_url: string;
     }
   ];
   platforms: any;
@@ -91,20 +92,23 @@ export type DetailExchangeType = {
     {
       coin_id: string;
       converted_volume: {
-        usd: number;
+        btc: number;
       };
       open_interest_usd: number;
       h24_volume: number;
       last_traded: number;
+      last: number;
       funding_rate: number;
       target: string;
       bid_ask_spread_percentage: number;
       bid_ask_spread: number;
       converted_last: {
-        usd: number;
+        btc: number;
       };
       base: string;
       symbol: string;
+      trade_url: string;
+      volume: number;
     }
   ];
 };
