@@ -488,7 +488,7 @@ export default function Page({ params }: PageProps) {
                         />
                       }
                     >
-                      <div className="flex flex-col items-start gap-1">
+                      <div className="flex flex-col items-start gap-1 flex-1">
                         <span className="text-12 font-medium text-typo-1 capitalize">
                           {item[0]}
                         </span>
@@ -502,13 +502,14 @@ export default function Page({ params }: PageProps) {
                     ref={ref}
                     className={clsx(
                       moreContract ? "flex" : "hidden",
-                      "absolute rounded-md flex-col gap-1 w-full bg-white top-[calc(100%+8px)] p-2 shadow-xl z-[2]"
+                      "absolute rounded-md flex-col gap-1 w-full bg-white top-[calc(100%+8px)] p-2 shadow-xl z-[2] max-h-[400px] overflow-y-auto"
                     )}
                   >
                     {platforms.slice(1).map((item) => (
                       <Button
                         key={`${item[0]}${item[1]}`}
                         height={"fit-content"}
+                        w={"100%"}
                         py={"8px"}
                         pl={"12px"}
                         pr={"16px"}
@@ -516,7 +517,7 @@ export default function Page({ params }: PageProps) {
                         _hover={{
                           bg: "rgba(0, 0, 0, 0.04)",
                         }}
-                        className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1"
+                        className="text-[11px] font-semibold capitalize text-black/80 hover:text-primary-1 w-full"
                         leftIcon={
                           <Image
                             src={"/assets/icons/placeholder_coin.svg"}
@@ -539,11 +540,11 @@ export default function Page({ params }: PageProps) {
                           />
                         }
                       >
-                        <div className="flex flex-col items-start gap-1">
+                        <div className="flex flex-col items-start gap-1 flex-1 truncate px-1">
                           <span className="text-12 font-medium text-typo-1 capitalize">
                             {item[0]}
                           </span>
-                          <p className="text-black text-12 font-bold truncate max-w-[180px] max-xl:max-w-[130px] max-md:max-w-[100px]">
+                          <p className="text-black text-12 font-bold truncate w-full text-left">
                             {item[1]}
                           </p>
                         </div>

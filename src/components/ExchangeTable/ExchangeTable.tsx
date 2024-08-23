@@ -210,8 +210,8 @@ function ExchangeTable({
                     </Td>
                     <Td px={"4px"} textAlign={"center"}>
                       <Link
-                        href={row.original.trade_url}
-                        target="_blank"
+                        href={row?.original?.trade_url || "#"}
+                        target={row?.original?.trade_url ? "_blank" : "_self"}
                         className="uppercase whitespace-normal text-center text-sm leading-4 font-medium text-primary-1 "
                       >
                         {row.original.base} / {row.original.target}
