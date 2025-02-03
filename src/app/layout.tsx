@@ -67,9 +67,11 @@ export const metadata: Metadata = {
     ],
   },
   robots: {
-    index: false,
+    index: true,
     follow: true,
-    nocache: true,
+    "max-snippet": -1,
+    "max-video-preview": -1,
+    "max-image-preview": "large",
     googleBot: {
       index: true,
       follow: false,
